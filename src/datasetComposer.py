@@ -91,7 +91,7 @@ class DatasetBuilder:
 
         self.test_dataset = val_dataset = RDFDataSetForLinearisedStructured(self.tokenizer_, eprocessed_test,
                                                                             self.modelbase, step_continue=self.step_continue)
-
+    
     def transform(self, data):
         if not self.step_continue:
             return self.test_dataset.processTableInfo(data)
