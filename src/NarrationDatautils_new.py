@@ -171,12 +171,12 @@ def linearizePredictionStatement(pred_str, predicted_class,):
 
     # if both labels are equally probable, we will just return the statement below
     if 'or' in predicted_class.split():
-        #preamble= f"case_label | predicted | {predicted_class.strip()} && "
+        # preamble= f"case_label | predicted | {predicted_class.strip()} && "
         preamble = f"prediction: predictionlabel && predictionlabel: {confidence_levels[0][1].strip()} "
         s = []
         idx_ = 1
         for idx, c in enumerate(confidence_levels):
-            #s.append(f'{c[0].strip()} | not_prob_less | {c[1].strip()} ')
+            # s.append(f'{c[0].strip()} | not_prob_less | {c[1].strip()} ')
             idx_ = labels[idx_+1]
             s.append(f'predictionrank{idx_}: {c[1].strip()} ')
             # c[0].strip()
@@ -218,12 +218,12 @@ def linearizePredictionStatementRt(pred_str, predicted_class,):
 
     # if both labels are equally probable, we will just return the statement below
     if 'or' in predicted_class.split():
-        #preamble= f"case_label | predicted | {predicted_class.strip()} && "
+        # preamble= f"case_label | predicted | {predicted_class.strip()} && "
         preamble = f"prediction: prediction_label && prediction_label: {confidence_levels[0][1].strip()} "
         s = []
         idx_ = 1
         for idx, c in enumerate(confidence_levels):
-            #s.append(f'{c[0].strip()} | not_prob_less | {c[1].strip()} ')
+            # s.append(f'{c[0].strip()} | not_prob_less | {c[1].strip()} ')
             idx_ = idx_+1
             s.append(f'rank{idx_}_predict: {c[1].strip()} ')
             placeholders[c[0].strip()] = f' rank{idx_}_predict'  # c[0].strip()
@@ -267,6 +267,12 @@ def PredictionProbabilityPrep(pred_str, predicted_class, randomise=False):
 def cleanFeature(s):
     js = ''.join(s.replace('<|', '').replace('|>', '').split('#')).capitalize()
     return js
+
+
+
+
+
+
 
 
 def processFeatureRanks(feature_division, narration, force_consistency=True, nb_base=None):
@@ -348,7 +354,7 @@ def linearisedFeaturesAttributions56(feature_ranks):
         else:
             s.append(f'{fl} | attr_direction | {dir_} ')
             neutral_features.append(fl)
-            #irrelevants.append(f'{fl} ')
+            # irrelevants.append(f'{fl} ')
 
     s = '&& '.join(s[:])
 
@@ -395,9 +401,9 @@ def linearisedFeaturesAttributions(feature_ranks, shrink=None):
 
     irrelevant = '&& '.join(irrelevants[:])
 
-    #negative_features = stringifyFeats(negative_features)
-    #positive_features = stringifyFeats(positive_features)
-    #neutral_features = stringifyFeats(neutral_features)
+    # negative_features = stringifyFeats(negative_features)
+    # positive_features = stringifyFeats(positive_features)
+    # neutral_features = stringifyFeats(neutral_features)
 
     if len(irrelevants) < 1:
         return s+' <|section-sep|> ', [positive_features, negative_features, neutral_features], [features_, directions]
@@ -405,6 +411,46 @@ def linearisedFeaturesAttributions(feature_ranks, shrink=None):
         return s+f' <|section-sep|> <IRRELEVANT_FEATURES> {irrelevant} <|section-sep|> ',\
             [positive_features, negative_features,
                 neutral_features], [features_, directions]
+
+def  lineariseExplanation(data, attributions, randomise_preds=False, force_consistency=True, shrink=None):
+    instance = data
+    narration = cleanNarrations(copy.deepcopy(instance['next_sequence']))
+    prev_seq = cleanNarrations(copy.deepcopy(instance['prev_seq']))
+    full_narra = cleanNarrations(copy.deepcopy(instance['narration']))
+
+    if len(narration) < 1:
+        force_consistency = False
+    feature_ranks =processFeatureAttributions(attributions, narration+prev_seq+full_narra, force_consistency=force_consistency)
+    feature_ranks2 = processFeatureAttributions(attributions, narration, force_consistency=force_consistency)
+    #processFeatureAttributions(attributions,nars[-1],force_consistency=iterative_gen)
+
+    feature_desc, [pf, nf, neu_f], directions = linearisedFeaturesAttributions(
+        feature_ranks, shrink=shrink)
+    feature_desc2, [pf2, nf2, neu_f2], directions2 = linearisedFeaturesAttributions(
+        feature_ranks2, shrink=shrink)
+
+    preamble, place_holderss = processPredictionProbabilities2(instance['prediction_confidence_level'],
+                                                               instance['predicted_class'], randomise=randomise_preds)
+
+    preamble = preamble+' <|section-sep|> '+feature_desc
+
+    class_labels = getClassLabels(7)
+    class_dict = {f'C{i+1}': c for i, c in enumerate(class_labels)}
+    class_dict['C1 or C2'] = '#CA or #CB'
+    class_dict['C2 or C1'] = '#CB or #CA'
+    class_dict.update({f'c{i+1}': c for i, c in enumerate(class_labels)})
+
+    class_dict = place_holderss
+
+    # [functools.reduce(lambda a, kv: a.replace(*kv), class_dict.items(),re.sub('\s+', ' ', ss.strip().replace('\n', ' '))) for ss in [preamble]][0]
+    extended1 = preamble
+    narr, prev = [functools.reduce(lambda a, kv: a.replace(*kv), class_dict.items(),
+                                   re.sub('\s+', ' ', ss.strip().replace('\n', ' '))) for ss in [narration, prev_seq]]
+
+    return {'rele_feat': [pf2, nf2, neu_f2], 'directions': directions, 'label_placeholders': place_holderss, 'preamble': extended1, 'narration': narr, 'prev_seq': prev,
+            'positives': pf, 'negatives': nf, 'neutral': neu_f, 'pred_label': class_dict[instance['predicted_class']]}
+    
+
 
 
 def processDataLinearized(data, randomise_preds=False, force_consistency=True, shrink=None):
@@ -623,6 +669,19 @@ def cleanNarrations(narration):
     narration = ''.join(c for c in ss if c.isprintable())
     narration = " ".join(repl(narration).split())
     return narration
+
+
+def inferenceIterativeGenerator(pack, 
+                               pr_c=1,
+                               ignore=False,
+                               force_section=False,
+                               include_full_set=False,
+                               ):
+    pack = pack_x = copy.deepcopy(pack)
+    outputs = pack['steps']
+
+    max_init = 1
+
 
 
 def iterNarationDataGenerators(pack, pr_c=1,

@@ -34,7 +34,7 @@ def filterOutAlreadyGenerated(past_generations, current_sentence, label_placehol
     else:
         return False
 
-
+# The post-processing function to clean out invalid tokens as well as replace *placeholders* with their correct values
 def cleanOutput(passages, label_holder):
     placeholders = {t: ' ' for t in ['[EON]', '[N9S]',
                                      '[N10S]', '[CON]',
