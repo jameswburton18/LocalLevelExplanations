@@ -641,8 +641,8 @@ def finalProcessor(package, ignore=False):
 
     def clear_pred_space(x): return re.sub('"\s+p', '"p', x)
 
-    fidx = sorted([int(f[1:]) for f in features], reverse=True)
-    feature_map = {f'F{idx}': f'feat{idx}value' for idx in fidx}
+    fidx = list(range(len(features)))#sorted([int(f[1:]) for f in features], reverse=True)
+    feature_map = {f'{feat}': f'feat{idx}value' for idx,feat in enumerate(features)}
     package['preamble'] = [functools.reduce(lambda a, kv: a.replace(*kv), feature_map.items(),
                                             re.sub('\s+', ' ', ss.strip().replace('\n', ' '))) for ss in [preamble]][0]
     package['output'] = clear_pred_space([functools.reduce(lambda a, kv: a.replace(*kv), feature_map.items(),
