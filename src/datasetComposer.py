@@ -53,6 +53,22 @@ def compactComposer(data, iterative_mode=True, force_consistency=True, force_sec
     return epre_test
 
 
+class InferenceDatasetBuilder:
+    def __init__(self, modelbase,
+                 preamble_choice=2,
+                 iterative_mode=True,
+                 composed_already=False,
+                 step_continue=False,
+                 include_full_set=False,
+                 ):
+        self.modelbase = modelbase
+        self.preamble_choice = preamble_choice
+
+        self.tokenizer_ = setupTokenizer(modelbase)
+        self.step_continue = step_continue
+
+        
+
 class DatasetBuilder:
     train_data_raw: List
     test_data_raw: List
@@ -79,7 +95,16 @@ class DatasetBuilder:
 
         self.tokenizer_ = setupTokenizer(modelbase)
         self.step_continue = step_continue
-
+    def build_default(self,):
+        
+        # Build the dataset framework for inference purposes
+        self.base_dataset =RDFDataSetForLinearisedStructured(
+            self.tokenizer_,[], self.modelbase, step_continue=self.step_continue)
+    
+    def dataset_fit(self, dataset):
+        self.base_dataset = RDFDataSetForLinearisedStructured(
+            self.tokenizer_,dataset, self.modelbase, step_continue=self.step_continue)
+    
     def fit(self,):
         # creates pytorch dataset for the training and testing sets
         eprocessed_train = self.train_data_raw
@@ -89,11 +114,11 @@ class DatasetBuilder:
         self.train_dataset = RDFDataSetForLinearisedStructured(
             self.tokenizer_, eprocessed_train, self.modelbase, step_continue=self.step_continue)
 
-        self.test_dataset = val_dataset = RDFDataSetForLinearisedStructured(self.tokenizer_, eprocessed_test,
+        self.test_dataset= self.base_dataset = val_dataset = RDFDataSetForLinearisedStructured(self.tokenizer_, eprocessed_test,
                                                                             self.modelbase, step_continue=self.step_continue)
     
     def transform(self, data):
         if not self.step_continue:
-            return self.test_dataset.processTableInfo(data)
+            return self.base_dataset.processTableInfo(data)
         else:
-            return self.test_dataset.processTableInfoStepContinue(data)
+            return self.base_dataset.processTableInfoStepContinue(data)

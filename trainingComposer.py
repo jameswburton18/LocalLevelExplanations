@@ -8,7 +8,7 @@ import torch
 from transformers import EarlyStoppingCallback
 
 from src.datasetComposer import DatasetBuilder, composed_train_path, composed_test_path, compactComposer, test_path,train_path,test_path
-from src.inference_utils import InferenceGenerator
+from src.inference_routine import InferenceGenerator
 from src.datasetHandlers import SmartCollator
 from src.model_utils import get_basic_model
 from src.trainerArgs import CustomTrainer, getTrainingArguments
