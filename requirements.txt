@@ -1,4 +1,4 @@
-bleurt==0.0.2
+git+https://github.com/google-research/bleurt.git
 evaluate==0.3.0
 inflect==6.0.2
 nltk==3.7
