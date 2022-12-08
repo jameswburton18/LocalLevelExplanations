@@ -1,0 +1,25 @@
+--- # ESSEL
+fast_dev_run: false
+tags:
+ - t5-base
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+
+--- # ord first
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+
+# --- # ESSEL test
+# fast_dev_run: true
+# tags:
+#  - t5-base
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
