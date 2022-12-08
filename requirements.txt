@@ -1,0 +1,9 @@
+bleurt==0.0.2
+evaluate==0.3.0
+inflect==6.0.2
+nltk==3.7
+pillow==9.3.0
+pip-chill==1.0.1
+torch==1.13.0
+transformers==4.25.1
+wandb==0.13.5
