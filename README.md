@@ -13,6 +13,8 @@ Dataset:
 * Of these 109 cases where the task or the model is not specified.
 * Of the remaining 469, there are 40 unique tasks and 20 unique models 
 
+in datasetHandlers.py Essel covers the special tokens that are used
+
 
 This is a datapoint
 
@@ -50,3 +52,32 @@ This is a datapoint
     "narration": "The model prediction for the test case is C1 and the confidence level of this prediction decision is 91.36%, while the predicted probability of C2 is only 8.64%. According to the attribution analysis, we can see that the features F3 and F4 have negative attributions, pushing the prediction decision towards the alternative label, C2. Conversely, the F6, F12, F11, and F14 have values with a positive impact, shifting the classification decision towards label C1. Furthermore, while the attributes F13 and F10 contradict the prediction made, F9 and F15 have values that support the prediction from the model for the test case under consideration. Finally, F7, F2, F1, and F8 are the least ranked features, and among them, only F8 has a negative influence that contributes marginally to the shift away from labelling the case as C1.",
 
     "features_placeholder"{"Type of Travel": "F3-V0", "Type Of Booking": "F4-V0", "Hotel wifi service": "F6", "Common Room entertainment": "F12", "Stay comfort": "F11", "Other service": "F14", "Checkin/Checkout service": "F13", "Hotel location": "F9", "Food and drink": "F10", "Cleanliness": "F15", "Age": "F5", "Departure/Arrival  convenience": "F7", "purpose_of_travel": "F2-V0", "Ease of Online booking": "F8", "Gender": "F1-V0"}]
+
+
+## On Essels part
+There is nowhere where the evaluation happens. This could be seperate? Just need to do it again.
+
+BLEU
+METEOR
+BLEURT
+
+Let's look back at my other work and see how I did the metrics
+
+# IDEAS
+Can follow https://arxiv.org/pdf/2004.04487.pdf and generate training data such that the model learns to identify the correct number.
+
+Eg generate inputs such as this:
+| F5 | 1st positive 0.05 | F8 | 2nd positive 0.03 | F1 | 3rd positive 0.03 | F11 | 4th negative -0.03 | F7 | 5th positive 0.02 | F6 | 6th negative -0.02 | F16 | 7th positive 0.02 | F15 | 8th positive 0.02 | F13 | 9th negative -0.02 | F3 | 10th positive 0.02 | F14 | 11th positive 0.01 | F9 | 12th positive 0.01 | F10 | 13th positive 0.00 | F2 | 14th negative -0.00 | F12 | 15th negative -0.00 | F4 | 16th negative -0.00
+
+And get the model to answer:
+Q: Which feature had the highest positive impact?
+A: F5
+
+Q: Which feature had the highest negative impact?
+A: F11
+
+Q: What was the feature importance of F13?
+A: -0.02
+
+Could also do a contrastive loss where I say that the answer (with correct numbers) is correct, contrasted with the same answer but with the wrong numbers, which would be incorrect.
+
