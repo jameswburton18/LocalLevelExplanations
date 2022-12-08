@@ -1,7 +1,7 @@
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments, Trainer, pipeline
 # import lmap
 from datasets import load_dataset
-import evaluate
+from evaluate import load
 from src.data_collator import linearise_input, convert_to_features
 import wandb
 import os
@@ -9,12 +9,13 @@ import numpy as np
 import torch.nn.functional as F
 import torch
 from tqdm import tqdm
+import json
 
 
 def main():
     args = {
         "fast_dev_run": True,
-        "do_train": True,
+        "do_train": False,
         "do_predict": True,
         "tags": ["t5-base"],
         "batch_size": 4, # default PC: 32, ncc: 100
@@ -44,7 +45,6 @@ def main():
         "max_output_len": 250,
         "predict_batch_size": 4,
         }
-    args["predict_batch_size"] = args["batch_size"]/args["num_beams"]
     print(f'\n{args}\n')
     
     model = AutoModelForSeq2SeqLM.from_pretrained('t5-base', return_dict=True)
@@ -82,6 +82,10 @@ def main():
         os.environ['WANDB_LOG_MODEL'] = 'True'
         output_dir = os.path.join(args['output_root'], wandb.run.name)
         print(f'Results will be saved @: {output_dir}')
+
+    # Save args to json file
+    with open(os.path.join(output_dir, 'args.json'), 'w') as f:
+        json.dump(args, f)
 
     # Set up training arguments
 
@@ -141,12 +145,33 @@ def main():
             all_preds.extend(preds)
         
         
-        readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
+        # Evaluate the predictions
+        bleurt = load('bleurt',checkpoint="bleurt-base-512")
+        bleurt_results = bleurt.compute(predictions=all_preds, 
+                                        references=dataset['test']['narration'])
+        bleu = load('bleu')
+        bleu_results = bleu.compute(predictions=all_preds, 
+                                    references=[[r] for r in dataset['test']['narration']])
+        meteor = load('meteor')
+        meteor_results = meteor.compute(predictions=all_preds, 
+                                        references=[[r] for r in dataset['test']['narration']])
+        # Log the results
+        results = {'bleurt': np.mean(bleurt_results['scores']),
+                   'bleu': bleu_results['bleu'],
+                   'meteor': meteor_results['meteor']}
+        wandb.log(results)
+        
         # Save the predictions
+        readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
+        print(f'Saving predictions to {output_dir}')
         with open(os.path.join(output_dir, 'test_predictions_readable.txt'), 'w') as f:
             f.write('\n\n'.join(readable_predictions))
         with open(os.path.join(output_dir, 'test_predictions.txt'), 'w') as f:
             f.write('\n'.join(all_preds))
+        with open(os.path.join(output_dir, 'test_results.txt'), 'w') as f:
+            f.write(str(results))
+            
+            
     print('Predictions complete')
     
     
