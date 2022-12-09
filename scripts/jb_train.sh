@@ -10,7 +10,7 @@
 #SBATCH --qos long-high-prio
 #SBATCH -t 04-00:00
 # -x shows which ones to ignore
-# #SBATCH -x gpu[0-8]
+#SBATCH -x gpu[7,8,10,11,12]
 
 # Job name appears in the squeue output, output is the output filename 
 #SBATCH -o ncc-logs/%x-%A.out
@@ -19,11 +19,16 @@
 #SBATCH --mem 8G
 #SBATCH --gres gpu
 
-# Make python available:
-module load python/3.9.9
 source ./env/bin/activate
 
 # Commands to be run:
+python --version
+nvidia-smi
+hostname
+echo "Node id: $SLURM_NODEID"
+
+mem=`nvidia-smi --query-gpu=memory.total --format=csv | tail -n 1 | awk '{print $1}'`
+echo "$mem Mb available"
 
 date '+%c'
 # python combine_LIME.py --dataset fraud --model joint
