@@ -11,47 +11,23 @@ import torch
 from tqdm import tqdm
 import json
 import yaml
+import argparse
 
-
+parser = argparse.ArgumentParser()
+parser.add_argument('--config', type=str, default='essel_test',
+                    help='Name of config from the the multi_config.yaml file')
+config_type = parser.parse_args().config
 
 def main():
-    # Set up the default args and then update with yaml file
-    args = {
-            "fast_dev_run": True,
-            "do_train": True,
-            "do_predict": True,
-            "tags": ["t5-base"],
-            "batch_size": 4, # default PC: 32, ncc: 100
-            
-            "linearisation": "essel", # ['essel', 'ord_first', 'ft_first']
-            "max_features": 50,
-            "model_base": "t5-base",
-            "output_root": 'models/t5-base/',
-            "max_input_len": 500,
-            "lr": 5e-5,
-            "weight_decay": 0.3,
-            "num_epochs": 50 ,
-            "early_stopping_patience": 3, # -1 for no early stopping
-            "grad_accumulation_steps": 1,
-            "seed": 43,
-            "logging_steps": 10,
-            "lr_scheduler": "linear",
-            "warmup_ratio": 0.1,
-            "device": "cuda",
-            "num_workers": 1,
-            "resume_from_checkpoint": False, #'models/bart-base/iconic-darkness-1/checkpoint-13360',
-            "eval_accumulation_steps": None,
-            
-            "num_beams": 4,
-            "repetition_penalty": 3.5,
-            "length_penalty": 1.5,
-            "max_output_len": 250,
-            "predict_batch_size": 4,
-            }
-    
     # import yaml file
-    with open('multi_config.yaml') as f:
-        yaml_args = yaml.safe_load(f)
+    with open('config_default.yaml') as f:
+        args = yaml.safe_load(f)
+    
+    # Update default args with chosen config
+    if config_type != 'default':
+        with open('multi_config.yaml') as f:
+            yaml_configs = yaml.safe_load_all(f)
+            yaml_args = next(conf for conf in yaml_configs if conf['config'] == config_type)
         args.update(yaml_args)
         print(f'Updating with:\n{yaml_args}\n')
     print(f'\n{args}\n')

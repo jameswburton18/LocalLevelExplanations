@@ -1,4 +1,5 @@
 --- # ESSEL
+config: essel
 fast_dev_run: false
 tags:
  - t5-base
@@ -7,6 +8,7 @@ linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 
 --- # ord first
+config: ord_first
 fast_dev_run: false
 do_train: true
 do_predict: true
@@ -16,10 +18,54 @@ batch_size: 4
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 
-# --- # ESSEL test
-# fast_dev_run: true
-# tags:
-#  - t5-base
-# batch_size: 4
-# linearisation: essel # ['essel', 'ord_first', 'ft_first']
-# model_base: t5-base
+--- # ft first
+config: ft_first
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+
+--- # ESSEL test
+config: essel_test
+fast_dev_run: true
+tags:
+ - t5-base
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+
+--- # DEFAULT
+config: default
+fast_dev_run: true
+do_train: true
+do_predict: true
+tags:
+- t5-base
+batch_size: 4
+linearisation: essel
+max_features: 50
+model_base: t5-base
+output_root: models/t5-base/
+max_input_len: 500
+lr: 5.0e-05
+weight_decay: 0.3
+num_epochs: 50
+early_stopping_patience: 3
+grad_accumulation_steps: 1
+seed: 43
+logging_steps: 10
+lr_scheduler: linear
+warmup_ratio: 0.1
+device: cuda
+num_workers: 1
+resume_from_checkpoint: false
+eval_accumulation_steps:
+num_beams: 4
+repetition_penalty: 3.5
+length_penalty: 1.5
+max_output_len: 250
+predict_batch_size: 4
