@@ -81,3 +81,8 @@ A: -0.02
 
 Could also do a contrastive loss where I say that the answer (with correct numbers) is correct, contrasted with the same answer but with the wrong numbers, which would be incorrect.
 
+### If i were beginning from now
+* Generate predictions for
+   - 3 input types x 2 models
+   - One question at a time
+   - Automatically generate the questions

@@ -36,13 +36,13 @@ predict_batch_size: 2
 config: essel_2
 fast_dev_run: false
 tags:
- - t5-base
+ - bart
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
 
---- # ord first
+--- # ord first 2
 config: ord_first_2
 fast_dev_run: false
 do_train: true
@@ -54,7 +54,7 @@ linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
 
---- # ft first
+--- # ft first 2
 config: ft_first_2
 fast_dev_run: false
 do_train: true

@@ -33,8 +33,8 @@ def main():
         print(f'Updating with:\n{yaml_args}\n')
     print(f'\n{args}\n')
     
-    model = AutoModelForSeq2SeqLM.from_pretrained('t5-base', return_dict=True)
-    tokenizer = AutoTokenizer.from_pretrained('t5-base')
+    model = AutoModelForSeq2SeqLM.from_pretrained(args['model_base'], return_dict=True)
+    tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
 
     dataset = load_dataset("james-burton/textual-explanations")
     # dataset.push_to_hub('james-burton/textual-explanations')
