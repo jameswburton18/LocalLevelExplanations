@@ -12,6 +12,7 @@ from tqdm import tqdm
 import json
 import yaml
 import argparse
+from transformers.trainer_callback import EarlyStoppingCallback
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='essel_test',
@@ -68,6 +69,10 @@ def main():
         output_dir = os.path.join(args['output_root'], wandb.run.name)
         print(f'Results will be saved @: {output_dir}')
 
+    # Make output directory
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        
     # Save args to json file
     with open(os.path.join(output_dir, 'args.json'), 'w') as f:
         json.dump(args, f)
@@ -95,6 +100,7 @@ def main():
         save_strategy='epoch',
         save_total_limit=3,
         load_best_model_at_end=True,   
+        
     )
 
     trainer = Trainer(
@@ -103,6 +109,7 @@ def main():
         tokenizer=tokenizer,
         train_dataset=dataset['train'],
         eval_dataset=dataset['validation'],
+        callbacks=[EarlyStoppingCallback(args['early_stopping_patience'])] if args['early_stopping_patience'] > 0 else []
     )
 
     if args['do_train']:
@@ -111,11 +118,12 @@ def main():
         print('Training complete')
     # Predict on the test set
     if args['do_predict']:
+        print("***** Running Prediction *****")
         input_ids = torch.tensor(dataset['test']['input_ids']).to(model.device)
         attention_mask = torch.tensor(dataset['test']['attention_mask']).to(model.device)
         all_preds = []
         for i in tqdm(range(0,input_ids.shape[0],args['predict_batch_size'])):
-            sample_outputs = model.generate(input_ids=input_ids[i:i+4],
+            sample_outputs = model.generate(input_ids=input_ids[i:i+args['predict_batch_size']],
                                                  attention_mask=attention_mask[i:i+args['predict_batch_size']],
                                                  num_beams=args['num_beams'],
                                                  repetition_penalty=args["repetition_penalty"],
