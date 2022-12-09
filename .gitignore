@@ -15,3 +15,4 @@ venv.bak/
 models/
 wandb/
 
+ncc-logs/
