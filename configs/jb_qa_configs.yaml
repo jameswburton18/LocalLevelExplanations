@@ -1,0 +1,81 @@
+--- # ESSEL
+config: essel
+fast_dev_run: false
+tags:
+ - t5-base
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+output_root: models/qa/t5-base/
+predict_batch_size: 2
+
+--- # ord first
+config: ord_first
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+output_root: models/qa/t5-base/
+predict_batch_size: 2
+
+--- # ft first
+config: ft_first
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+output_root: models/qa/t5-base/
+predict_batch_size: 2
+
+--- # ESSEL
+config: essel_2
+fast_dev_run: false
+tags:
+ - bart
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+output_root: models/qa/t5-base/
+predict_batch_size: 2
+
+--- # ord first 2
+config: ord_first_2
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+predict_batch_size: 2
+
+--- # ft first 2
+config: ft_first_2
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+predict_batch_size: 2
+
+--- # ESSEL test
+config: essel_test
+fast_dev_run: true
+tags:
+ - bart
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: facebook/bart-base
+output_root: models/qa/bart-base/

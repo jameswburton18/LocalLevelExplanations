@@ -1,0 +1,31 @@
+--- # DEFAULT
+config: default
+fast_dev_run: true
+do_train: true
+do_predict: true
+tags:
+- t5-base
+batch_size: 4
+linearisation: ord_first
+max_features: 50
+model_base: t5-base
+output_root: models/qa/t5-base/
+max_input_len: 500
+lr: 5.0e-05
+weight_decay: 0.3
+num_epochs: 50
+early_stopping_patience: 3
+grad_accumulation_steps: 1
+seed: 43
+logging_steps: 10
+lr_scheduler: linear
+warmup_ratio: 0.1
+device: cuda
+num_workers: 1
+resume_from_checkpoint: false
+eval_accumulation_steps:
+num_beams: 4
+repetition_penalty: 3.5
+length_penalty: 1.5
+max_output_len: 150
+predict_batch_size: 4

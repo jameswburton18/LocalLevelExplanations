@@ -7,7 +7,7 @@ from datasets.arrow_dataset import Dataset
 import inflect
 
 
-def linearise_input(data_row, method, max_fts=15):
+def linearise_input(data_row, method, max_fts=15, data_only=False):
     """Linearise data row to be in chosen form."""
     
     # Linearising the data
@@ -47,11 +47,15 @@ def linearise_input(data_row, method, max_fts=15):
 
     ft_first_input = ' '.join([f'| {f} | {o} {s} {v}' for o, f, s, v in zip(ordinals, feature_nums, sign, values)])
 
-    # Preamble
-    preamble = "\n <br> <br> Using the above information, answer the following \
-        in detail: <br> <br> "
-    questions = '\n'.join([f'{idx+1}. {q}' for idx, q in 
-                           enumerate(data_row['narrative_questions'])])
+    if data_only:
+        preamble = ''
+        questions = ''
+    else:
+        # Preamble
+        preamble = "\n <br> <br> Using the above information, answer the following \
+            in detail: <br> <br> "
+        questions = '\n'.join([f'{idx+1}. {q}' for idx, q in 
+                            enumerate(data_row['narrative_questions'])])
 
     if method == 'essel':
         data_row['input'] = essel_input + preamble + questions
@@ -62,6 +66,19 @@ def linearise_input(data_row, method, max_fts=15):
     else:
         raise ValueError('method must be one of essel, ord_first or ft_first')
 
+    return data_row
+
+def form_qa_input_output(data_row, method, max_fts=15):
+    """Combining the quesiton with the linearised data and a preamble. Also
+    renaming answer as narration so as to match `convert_to_features()`."""
+    # Linearising the data
+    data_row = linearise_input(data_row, method=method, max_fts=max_fts, data_only=True)
+    # Preamble
+    preamble = "\n <br> <br> Using the above information, answer the following \
+        question: <br> <br> "
+    
+    data_row['input'] = data_row['input'] + preamble + data_row['question']
+    data_row['narration'] = data_row['answer']
     return data_row
 
 def convert_to_features(batch, tokenizer, max_input_length=400, max_output_length=350):

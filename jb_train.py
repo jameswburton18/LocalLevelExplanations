@@ -21,20 +21,20 @@ config_type = parser.parse_args().config
 
 def main():
     # import yaml file
-    with open('config_default.yaml') as f:
+    with open('configs/jb_train_default.yaml') as f:
         args = yaml.safe_load(f)
     
     # Update default args with chosen config
     if config_type != 'default':
-        with open('multi_config.yaml') as f:
+        with open('configs/jb_train_configs.yaml') as f:
             yaml_configs = yaml.safe_load_all(f)
             yaml_args = next(conf for conf in yaml_configs if conf['config'] == config_type)
         args.update(yaml_args)
         print(f'Updating with:\n{yaml_args}\n')
     print(f'\n{args}\n')
     
-    model = AutoModelForSeq2SeqLM.from_pretrained('t5-base', return_dict=True)
-    tokenizer = AutoTokenizer.from_pretrained('t5-base')
+    model = AutoModelForSeq2SeqLM.from_pretrained(args['model_base'], return_dict=True)
+    tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
 
     dataset = load_dataset("james-burton/textual-explanations")
     # dataset.push_to_hub('james-burton/textual-explanations')
