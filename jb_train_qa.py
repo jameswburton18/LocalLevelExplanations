@@ -119,6 +119,57 @@ def main():
         trainer.train()
         print('Training complete')
     
+    if args['do_predict']:
+        print("***** Running Prediction *****")
+        input_ids = torch.tensor(dataset['test']['input_ids']).to(model.device)
+        attention_mask = torch.tensor(dataset['test']['attention_mask']).to(model.device)
+        all_preds = []
+        for i in tqdm(range(0,input_ids.shape[0],args['predict_batch_size'])):
+            sample_outputs = model.generate(input_ids=input_ids[i:i+args['predict_batch_size']],
+                                                 attention_mask=attention_mask[i:i+args['predict_batch_size']],
+                                                 num_beams=args['num_beams'],
+                                                 repetition_penalty=args["repetition_penalty"],
+                                                 length_penalty=args["length_penalty"],
+                                                 max_length=args['max_output_len'],
+                                                 no_repeat_ngram_size=2,
+                                                 num_return_sequences=1,
+                                                 do_sample=True,
+                                                 early_stopping=True,
+                                                 use_cache=False)
+            preds = tokenizer.batch_decode(sample_outputs, skip_special_tokens=True)
+            all_preds.extend(preds)
+        
+        
+        # Evaluate the predictions
+        bleurt = load('bleurt',checkpoint="bleurt-base-512")
+        bleurt_results = bleurt.compute(predictions=all_preds, 
+                                        references=dataset['test']['narration'])
+        bleu = load('bleu')
+        bleu_results = bleu.compute(predictions=all_preds, 
+                                    references=[[r] for r in dataset['test']['narration']])
+        meteor = load('meteor')
+        meteor_results = meteor.compute(predictions=all_preds, 
+                                        references=[[r] for r in dataset['test']['narration']])
+        # Log the results
+        results = {'bleurt': np.mean(bleurt_results['scores']),
+                   'bleu': bleu_results['bleu'],
+                   'meteor': meteor_results['meteor']}
+        
+        # Save the predictions
+        readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
+        print(f'Saving predictions to {output_dir}')
+        with open(os.path.join(output_dir, 'test_predictions_readable.txt'), 'w') as f:
+            f.write('\n\n'.join(readable_predictions))
+        with open(os.path.join(output_dir, 'test_predictions.txt'), 'w') as f:
+            f.write('\n'.join(all_preds))
+        with open(os.path.join(output_dir, 'test_results.txt'), 'w') as f:
+            f.write(str(results))
+        if not args['fast_dev_run']:
+            wandb.log(results)
+            
+            
+    print('Predictions complete')
+    
 
     
     
