@@ -68,11 +68,18 @@ def linearise_input(data_row, method, max_fts=15, data_only=False):
 
     return data_row
 
-def form_question_input(data_row, q_idx):
-    """Form question input."""
+def form_qa_input_output(data_row, method, max_fts=15):
+    """Combining the quesiton with the linearised data and a preamble. Also
+    renaming answer as narration so as to match `convert_to_features()`."""
     # Linearising the data
-    chosen_class = data_row["predicted_class"]
-    # classes_dict = eval(data_row
+    data_row = linearise_input(data_row, method=method, max_fts=max_fts, data_only=True)
+    # Preamble
+    preamble = "\n <br> <br> Using the above information, answer the following \
+        question: <br> <br> "
+    
+    data_row['input'] = data_row['input'] + preamble + data_row['question']
+    data_row['narration'] = data_row['answer']
+    return data_row
 
 def convert_to_features(batch, tokenizer, max_input_length=400, max_output_length=350):
     input_encodings = tokenizer(batch['input'], padding="max_length", truncation=True, max_length=max_input_length)
