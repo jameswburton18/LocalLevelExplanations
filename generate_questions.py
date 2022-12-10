@@ -19,7 +19,7 @@ def create_classes_dict():
     x['values'] =  x['values'] = [format(v, '.2f') for v in values]
     return x
 
-def question_generator(dict):
+def question_generator(dict, i=None):
     # 'What is the value of FA?'
     choice = random.randint(0,len(dict['feature_nums'])-1)
     feat = dict['feature_nums'][choice]
@@ -56,13 +56,17 @@ def question_generator(dict):
     q4 = f'What are the top {x} negative features?'
     a4 = ', '.join(top_x_neg_fts)
     
-    dict['questions'] = [q1, q2, q3, q4]
-    dict['answers'] = [a1, a2, a3, a4]
+    q_a_choice = random.randint(0,3)
+    dict['question'] = [q1, q2, q3, q4][q_a_choice]
+    dict['answer'] = [a1, a2, a3, a4][q_a_choice]
+    
+    if i is not None:
+        dict['id'] = i
     
     return dict
 
 random.seed(77)
-qa_data = [question_generator(create_classes_dict()) for i in range(20000)]
+qa_data = [question_generator(create_classes_dict(),i) for i in range(20000)]
 # Split into train, test, val 80:10:10
 random.shuffle(qa_data)
 train = qa_data[:int(0.8*len(qa_data))]
