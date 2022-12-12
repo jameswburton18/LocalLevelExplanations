@@ -2,7 +2,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments
 # import lmap
 from datasets import load_dataset
 from evaluate import load
-from src.data_collator import linearise_input, convert_to_features
+from src.data_collator import linearise_input, convert_to_features, form_stepwise_input
 import wandb
 import os
 import numpy as np
@@ -13,6 +13,7 @@ import json
 import yaml
 import argparse
 from transformers.trainer_callback import EarlyStoppingCallback
+from src.stepwise_model import StepWiseT5ForConditionalGeneration
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='essel_test',
@@ -33,15 +34,23 @@ def main():
         print(f'Updating with:\n{yaml_args}\n')
     print(f'\n{args}\n')
     
+    # Load model, tokenizer and dataset
     model = AutoModelForSeq2SeqLM.from_pretrained(args['model_base'], return_dict=True)
+    # model = StepWiseT5ForConditionalGeneration
     tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
-
     dataset = load_dataset("james-burton/textual-explanations")
-    # dataset.push_to_hub('james-burton/textual-explanations')
+    
+    # Form the linearised or stepwise (and linearised) input
     dataset = dataset.map(
         lambda x: linearise_input(x, args['linearisation'], args['max_features']),
-        load_from_cache_file=False)
-    # dataset = linearise_input(dataset['train'][99], args['linearisation'])
+        load_from_cache_file=False
+        ) if not args['stepwise'] else \
+            dataset.map(
+        lambda x: form_stepwise_input(x, args['linearisation'], args['max_features']),
+        load_from_cache_file=False
+        )
+    
+    # Convert to tokens
     dataset = dataset.map(
         lambda x: convert_to_features(x, tokenizer, args['max_input_len']), 
         batched=True, load_from_cache_file=False
@@ -77,8 +86,7 @@ def main():
     with open(os.path.join(output_dir, 'args.json'), 'w') as f:
         json.dump(args, f)
 
-    # Set up training arguments
-
+    # Initialise training arguments and trainer
     training_args = TrainingArguments(
         output_dir=output_dir,
         num_train_epochs=args['num_epochs'],
@@ -99,10 +107,8 @@ def main():
         evaluation_strategy='epoch',
         save_strategy='epoch',
         save_total_limit=3,
-        load_best_model_at_end=True,   
-        
+        load_best_model_at_end=True,     
     )
-
     trainer = Trainer(
         model=model,
         args=training_args,
@@ -112,6 +118,7 @@ def main():
         callbacks=[EarlyStoppingCallback(args['early_stopping_patience'])] if args['early_stopping_patience'] > 0 else []
     )
 
+    # Train model
     if args['do_train']:
         print('Training...')
         trainer.train()

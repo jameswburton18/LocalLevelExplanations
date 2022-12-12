@@ -125,7 +125,7 @@ def main():
         attention_mask = torch.tensor(dataset['test']['attention_mask']).to(model.device)
         all_preds = []
         for i in tqdm(range(0,input_ids.shape[0],args['predict_batch_size'])):
-            sample_outputs = model.generate(input_ids=input_ids[i:i+args['predict_batch_size']],
+            output_tokens = model.generate(input_ids=input_ids[i:i+args['predict_batch_size']],
                                                  attention_mask=attention_mask[i:i+args['predict_batch_size']],
                                                  num_beams=args['num_beams'],
                                                  repetition_penalty=args["repetition_penalty"],
@@ -136,24 +136,8 @@ def main():
                                                  do_sample=True,
                                                  early_stopping=True,
                                                  use_cache=False)
-            preds = tokenizer.batch_decode(sample_outputs, skip_special_tokens=True)
+            preds = tokenizer.batch_decode(output_tokens, skip_special_tokens=True)
             all_preds.extend(preds)
-        
-        
-        # Evaluate the predictions
-        bleurt = load('bleurt',checkpoint="bleurt-base-512")
-        bleurt_results = bleurt.compute(predictions=all_preds, 
-                                        references=dataset['test']['narration'])
-        bleu = load('bleu')
-        bleu_results = bleu.compute(predictions=all_preds, 
-                                    references=[[r] for r in dataset['test']['narration']])
-        meteor = load('meteor')
-        meteor_results = meteor.compute(predictions=all_preds, 
-                                        references=[[r] for r in dataset['test']['narration']])
-        # Log the results
-        results = {'bleurt': np.mean(bleurt_results['scores']),
-                   'bleu': bleu_results['bleu'],
-                   'meteor': meteor_results['meteor']}
         
         # Save the predictions
         readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
@@ -167,6 +151,37 @@ def main():
                                  ]))
         with open(os.path.join(output_dir, 'test_predictions.txt'), 'w') as f:
             f.write('\n'.join(all_preds))
+            
+        # Evaluate the predictions
+        bleurt = load('bleurt',checkpoint="bleurt-base-512")
+        bleurt_results = bleurt.compute(predictions=all_preds, 
+                                        references=dataset['test']['narration'])
+        bleu = load('bleu')
+        bleu_results = bleu.compute(predictions=all_preds, 
+                                    references=[[r] for r in dataset['test']['narration']])
+        meteor = load('meteor')
+        meteor_results = meteor.compute(predictions=all_preds, 
+                                        references=[[r] for r in dataset['test']['narration']])
+        
+        pred_eq_ans = [a.strip()==p.strip() for a, p in zip(dataset['test']['narration'], all_preds)]
+        q_ids = dataset['test']['question_id']
+        Q_ID_DICT = {0: 'val_of_F', 1: 'FA_minus_FB', 2: 'xth_most_important', 3: 'top_x_pos', 4: 'top_x_neg'}
+        # check accuracy per question id
+        q_id_acc = {}
+        for qid, eq in zip(q_ids, pred_eq_ans):
+            qid = Q_ID_DICT[qid]
+            if qid not in q_id_acc:
+                q_id_acc[qid] = []
+            q_id_acc[qid].append(eq)
+        q_id_acc = {k+'_acc':np.mean(v) for k,v in q_id_acc.items()}
+        
+        # Log the results
+        results = {'bleurt': np.mean(bleurt_results['scores']),
+                   'bleu': bleu_results['bleu'],
+                   'meteor': meteor_results['meteor'],
+                   'acc': np.mean(pred_eq_ans),
+                   **q_id_acc
+                   }
         with open(os.path.join(output_dir, 'test_results.txt'), 'w') as f:
             f.write(str(results))
         if not args['fast_dev_run']:

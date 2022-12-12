@@ -53,12 +53,13 @@ def question_generator(dict, i=None):
     # Top x negative features: 
     x = random.randint(1,5)
     top_x_neg_fts = [ft for ft, sign in zip(dict['feature_nums'],dict['sign']) if sign == 'negative'][:x]
-    q4 = f'What are the top {x} negative features?'
-    a4 = ', '.join(top_x_neg_fts)
+    q5 = f'What are the top {x} negative features?'
+    a5 = ', '.join(top_x_neg_fts)
     
     q_a_choice = random.randint(0,3)
-    dict['question'] = [q1, q2, q3, q4][q_a_choice]
-    dict['answer'] = [a1, a2, a3, a4][q_a_choice]
+    dict['question'] = [q1, q2, q3, q4, q5][q_a_choice]
+    dict['answer'] = [a1, a2, a3, a4, a5][q_a_choice]
+    dict['question_id'] = q_a_choice
     
     if i is not None:
         dict['id'] = i
@@ -66,7 +67,7 @@ def question_generator(dict, i=None):
     return dict
 
 random.seed(77)
-qa_data = [question_generator(create_classes_dict(),i) for i in range(20000)]
+qa_data = [question_generator(create_classes_dict(),i) for i in range(30000)]
 # Split into train, test, val 80:10:10
 random.shuffle(qa_data)
 train = qa_data[:int(0.8*len(qa_data))]

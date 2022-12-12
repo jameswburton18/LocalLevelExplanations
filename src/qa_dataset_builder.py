@@ -45,6 +45,7 @@ class QADatasetBuilder(datasets.GeneratorBasedBuilder):
                     "question": datasets.Value("string"),
                     "answer": datasets.Value("string"),
                     "id": datasets.Value("int32"),
+                    "question_id": datasets.Value("int32"),
                 }
             ),
             supervised_keys=None,
@@ -76,13 +77,13 @@ class QADatasetBuilder(datasets.GeneratorBasedBuilder):
                     "question": row["question"],
                     "answer": row["answer"],
                     "id": row["id"],
+                    "question_id": row["question_id"],
                 }
 
 if __name__ == "__main__":
-    # builder = TextualExplanationDatasetBuilder()
-    # builder.download_and_prepare()
-    dataset = datasets.load_dataset("src/qa_dataset_builder.py", download_mode="force_redownload")#, ignore_verifications=True)
+    # Note that if changes are made to the dataset then it will raise a ChecksumError.
+    # To fix this you need to delete the cached files in ~/.cache/huggingface/datasets/qa_dataset_builder/
+    dataset = datasets.load_dataset("src/qa_dataset_builder.py", download_mode="force_redownload", load_from_cache_file=False)#, ignore_verifications=True)
+    
     # Save the dataset to huggingface
     dataset.push_to_hub("text-exp-qa", private=True)
-    
-    print()

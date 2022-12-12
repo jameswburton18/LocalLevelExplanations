@@ -90,11 +90,18 @@ def form_qa_input_output(data_row, method, max_fts=15):
     return data_row
 
 def convert_to_features(batch, tokenizer, max_input_length=400, max_output_length=350):
-    input_encodings = tokenizer(batch['input'], padding="max_length", truncation=True, max_length=max_input_length)
+    if type(batch['input'][0]) == list:
+        input_encodings = [tokenizer(i, padding="max_length", truncation=True, max_length=max_input_length) for i in batch['input']]
+        input_ids = [i['input_ids'] for i in input_encodings]
+        attention_mask = [i['attention_mask'] for i in input_encodings]
+    else:
+        input_encodings = tokenizer(batch['input'], padding="max_length", truncation=True, max_length=max_input_length)
+        input_ids = input_encodings['input_ids']
+        attention_mask = input_encodings['attention_mask']
     target_encodings = tokenizer(batch['narration'], padding="max_length", truncation=True, max_length=max_output_length)
     encodings = {
-        'input_ids': input_encodings['input_ids'],
-        'attention_mask': input_encodings['attention_mask'],
+        'input_ids': input_ids,
+        'attention_mask': attention_mask,
         'labels': target_encodings['input_ids'],
     }
     return encodings
