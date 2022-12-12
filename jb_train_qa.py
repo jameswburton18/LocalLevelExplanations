@@ -100,7 +100,7 @@ def main():
         report_to="wandb" if not args['fast_dev_run'] else "none",
         evaluation_strategy='epoch',
         save_strategy='epoch',
-        save_total_limit=3,
+        save_total_limit=args['save_total_limit'],
         load_best_model_at_end=True,   
         
     )
