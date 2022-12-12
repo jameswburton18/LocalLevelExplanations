@@ -159,7 +159,12 @@ def main():
         readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
         print(f'Saving predictions to {output_dir}')
         with open(os.path.join(output_dir, 'test_predictions_readable.txt'), 'w') as f:
-            f.write('\n\n'.join(readable_predictions))
+            f.write('\n\n'.join([f'Q: {q}\nA: {a}\nPred: {p}' for q,a,p in 
+                                 zip(dataset['test']['question'], 
+                                     dataset['test']['answer'], 
+                                     readable_predictions
+                                     )
+                                 ]))
         with open(os.path.join(output_dir, 'test_predictions.txt'), 'w') as f:
             f.write('\n'.join(all_preds))
         with open(os.path.join(output_dir, 'test_results.txt'), 'w') as f:
