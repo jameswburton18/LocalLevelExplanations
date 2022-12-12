@@ -68,6 +68,14 @@ def linearise_input(data_row, method, max_fts=15, data_only=False):
 
     return data_row
 
+def form_stepwise_input(data_row, method, max_fts):
+    # Linearising the data
+    data_row = linearise_input(data_row, method=method, max_fts=max_fts, data_only=True)
+    preamble = "\n <br> <br> Using the above information, answer the following \
+            in detail: <br> <br> "
+    data_row['input'] = [data_row['input'] + preamble + q for q in data_row['narrative_questions']]
+    return data_row
+
 def form_qa_input_output(data_row, method, max_fts=15):
     """Combining the quesiton with the linearised data and a preamble. Also
     renaming answer as narration so as to match `convert_to_features()`."""
@@ -90,90 +98,4 @@ def convert_to_features(batch, tokenizer, max_input_length=400, max_output_lengt
         'labels': target_encodings['input_ids'],
     }
     return encodings
-
-@dataclass
-class DataCollator:
-    
-    def tokenize_question(self, questions: List[str]):
-        question_encoding = self.tokenizer(questions, 
-                                           return_attention_mask=True,
-                                           max_length=self.max_question_len,
-                                           padding='max_length',
-                                           add_special_tokens=True,
-                                           truncation=True,
-                                           return_tensors='pt')
-        return {
-            "question_tokens": question_encoding['input_ids'].squeeze(),
-            "question_att_mask": question_encoding['attention_mask'].squeeze(),
-        }
-
-    def tokenize_answer(self, answers: List[str]):
-        split_answers = [clean_and_split(answer) for answer in answers]
-        answers = [re.sub(r"'", "", ans) for ans in answers]
-        answers = [re.sub(r"\[", "", ans) for ans in answers]
-        answers = [re.sub(r"\]", "", ans) for ans in answers]
-        answers = ['None' if ans == '[]' or ans =='' else ans for ans in answers]
-        
-        chosen_answers = split_answers if self.use_split_answers else answers
-        
-        target_encoding = self.tokenizer(chosen_answers, 
-                                         max_length=self.max_answer_len,
-                                         padding='max_length',
-                                         truncation=True,
-                                         return_attention_mask=False,
-                                         add_special_tokens=True,
-                                         is_split_into_words=self.use_split_answers,
-                                         return_tensors='pt'
-                                         )
-        
-        return {
-            "ans_tokens": target_encoding['input_ids'].squeeze(),
-            # "labels_attention_mask": target_encoding['attention_mask'].squeeze()
-        }
-
-    def preprocess_images(self, image_path_batch: List[str]):
-        processed_images = self.preprocessor(
-            images=[Image.open(im).convert('RGB') for im in image_path_batch],
-            return_tensors="pt",
-        )
-        return {
-            "pixel_values": processed_images['pixel_values'].squeeze(),
-        }
-    
-    def preprocess_ques_type(self, ques_types: List[str]):
-        ids = [QUES_TYPE_DICT[ques_type] for ques_type in ques_types]
-        return {
-            "ques_type_ids": torch.tensor(ids),
-        }    
-            
-    def __call__(self, raw_batch_dict):
-        print()
-        output_dict = {
-            **self.tokenize_question(
-                raw_batch_dict['question']
-                if isinstance(raw_batch_dict, dict) else
-                [i['question'] for i in raw_batch_dict]
-            ),
-            **self.tokenize_answer(
-                raw_batch_dict['answer']
-                if isinstance(raw_batch_dict, dict) else
-                [i['answer'] for i in raw_batch_dict]
-            ),
-            **self.preprocess_images(
-                raw_batch_dict['image_path']
-                if isinstance(raw_batch_dict, dict) else
-                [i['image_path'] for i in raw_batch_dict]
-            ),
-            # "ques_type_ids": QUES_TYPE_DICT[raw_batch_dict['ques_type']]
-            #     if isinstance(raw_batch_dict, dict) else
-            #     [QUES_TYPE_DICT[i['ques_type']] for i in raw_batch_dict]
-            # ,
-            **self.preprocess_ques_type(
-                raw_batch_dict['ques_type']
-                if isinstance(raw_batch_dict, dict) else
-                [i['ques_type'] for i in raw_batch_dict]
-            ),
-        }
-        return output_dict
- 
 

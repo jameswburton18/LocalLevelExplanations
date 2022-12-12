@@ -73,5 +73,6 @@ tags:
  - bart
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart/
+model_base: t5-base
+output_root: models/qa/t5-base/
+stepwise: false
