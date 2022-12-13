@@ -10,7 +10,7 @@ linearisation: essel
 max_features: 50
 model_base: t5-base
 output_root: models/t5-base/
-max_input_len: 500
+max_input_len: 400
 lr: 5.0e-05
 weight_decay: 0.3
 num_epochs: 50

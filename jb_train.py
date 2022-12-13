@@ -36,7 +36,7 @@ def main():
     # Load model, tokenizer and dataset
     model = AutoModelForSeq2SeqLM.from_pretrained(args['model_base'], return_dict=True)
     tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
-    dataset = load_dataset("james-burton/textual-explanations") if not args['augmented'] else \
+    dataset = load_dataset("james-burton/textual-explanations") if not args['augmented_ds'] else \
         load_dataset("james-burton/aug-text-exps")
     
     # Form the linearised or stepwise (and linearised) input

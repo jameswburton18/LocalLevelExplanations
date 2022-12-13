@@ -159,7 +159,7 @@ batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
-augmented_ds: false
+augmented_ds: true
 
 --- # ord first 3
 config: ord_first_3
@@ -173,7 +173,7 @@ batch_size: 4
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
-augmented_ds: false
+augmented_ds: true
 
 --- # ft first 3
 config: ft_first_3
@@ -187,7 +187,7 @@ batch_size: 4
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
-augmented_ds: false
+augmented_ds: true
 
 --- # ESSEL 4
 config: essel_4
@@ -200,7 +200,7 @@ linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: facebook/bart-base
 output_root: models/bart-base/
 predict_batch_size: 2
-augmented_ds: false
+augmented_ds: true
 
 --- # ord first 4
 config: ord_first_4
@@ -215,7 +215,7 @@ linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: facebook/bart-base
 output_root: models/bart-base/
 predict_batch_size: 2
-augmented_ds: false
+augmented_ds: true
 
 --- # ft first 4
 config: ft_first_4
@@ -230,7 +230,7 @@ linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: facebook/bart-base
 output_root: models/bart-base/
 predict_batch_size: 2
-augmented_ds: false
+augmented_ds: true
 
 --- # ESSEL test
 config: essel_test
