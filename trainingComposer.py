@@ -23,8 +23,8 @@ args.add_argument('--modelbase', '-mbase',
                   default='facebook/bart-base', type=str)
 args.add_argument('--run_id', '-run_id', type=str, default='')
 args.add_argument('--iterative_gen', '-itg', action='store_true', )
-args.add_argument('--output_dir', '-output_dir', type=str, required=True)
-args.add_argument('--inference_dir', '-inf_dir', type=str, required=True)
+args.add_argument('--output_dir', '-output_dir', type=str, default='testing')
+args.add_argument('--inference_dir', '-inf_dir', type=str, default='testing')
 
 args.add_argument('--warmup_ratio', '-wr', default=0.2, type=float)
 args.add_argument('--weight_decay', '-weight_decay', type=float, default=0.3)
@@ -61,7 +61,7 @@ if not os.path.exists(inf_path):
 
 
 # Build the dataset manager with the already cleaned dataset saved at the "composed_train_path" and "composed_test_path"
-composed_already = True
+composed_already = False#True
 if not parsed_args.iterative_gen:
     composed_already = False
 
