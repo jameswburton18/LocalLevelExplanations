@@ -1,7 +1,7 @@
 #!/bin/bash
 
-for cfg in essel_2 ord_first_2 ft_first_2
+for cfg in ft_first_2_qa #essel_qa #ord_first_2_qa essel_2_qa ft_first_2_qa
 do
     sbatch --job-name=$cfg scripts/jb_train.sh $cfg
-    sleep 8 # so that wandb runs don't get assigned the same number
+    sleep 4 # so that wandb runs don't get assigned the same number
 done

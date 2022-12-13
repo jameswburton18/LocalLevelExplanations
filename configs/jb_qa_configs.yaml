@@ -3,7 +3,7 @@ config: essel
 fast_dev_run: false
 tags:
  - t5-base
-batch_size: 64
+batch_size: 8
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 output_root: models/qa/t5-base/
@@ -16,7 +16,7 @@ do_train: true
 do_predict: true
 tags:
  - t5-base
-batch_size: 64
+batch_size: 32
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 output_root: models/qa/t5-base/
@@ -29,7 +29,7 @@ do_train: true
 do_predict: true
 tags:
  - t5-base
-batch_size: 64
+batch_size: 8
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 output_root: models/qa/t5-base/

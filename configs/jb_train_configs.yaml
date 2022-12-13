@@ -66,6 +66,86 @@ linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
 
+--- # ESSEL qa first
+config: essel_qa
+fast_dev_run: false
+tags:
+ - t5-base
+ - qa pretrain
+batch_size: 8
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/silver-sky-30/checkpoint-30000
+output_root: models/t5-base/
+predict_batch_size: 2
+
+# --- # ord first qa first
+# config: ord_first_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - qa pretrain
+# batch_size: 32
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: ?
+# output_root: models/t5-base/
+# predict_batch_size: 2
+
+# --- # ft first qa first
+# config: ft_first_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - qa pretrain
+# batch_size: 8
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: ?
+# output_root: models/t5-base/
+# predict_batch_size: 2
+
+--- # ESSEL 2 qa first
+config: essel_2_qa
+fast_dev_run: false
+tags:
+ - bart
+ - qa pretrain
+batch_size: 16
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/helpful-aardvark-21/checkpoint-6000
+output_root: models/bart-base/
+predict_batch_size: 2
+
+--- # ord first 2 qa first
+config: ord_first_2_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - bart
+ - qa pretrain
+batch_size: 16
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/warm-sky-22/checkpoint-18750
+output_root: models/bart-base/
+predict_batch_size: 2
+
+--- # ft first 2 qa first
+config: ft_first_2_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - bart
+ - qa pretrain
+batch_size: 8
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/chocolate-dust-23/checkpoint-18750
+output_root: models/bart-base/
+predict_batch_size: 2
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
@@ -73,6 +153,5 @@ tags:
  - bart
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-output_root: models/qa/t5-base/
+model_base: models/bart-base/legendary-valley-31
 stepwise: false
