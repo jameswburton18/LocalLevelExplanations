@@ -5,22 +5,18 @@ from typing import Dict
 from datasets import set_caching_enabled
 
 DESCRIPTION = """\
-    This is a collection of 469 textual explanations paired with the raw data that
-    was used to generate a visualization. The explanations were created by computer
-    science experts. Explanations themselves comes from LIME, SHAP and gradient
-    based methods. The explanations are to explain classification results from a 
-    selection of machine learning models; there are 40 different tasks and 9 
-    different models that were used. Anonymised and randomised feature names were
-    used to ensure that there is no data leakage.
+    This dataset is exactly the format of the original dataset, but with the feature 
+    names randomised for 10 repetitions. Therefore the train and val sets are 10x
+    the size of the original dataset. The test set is the same as the original dataset.
     """
     
 
     
-_TRAIN_DOWNLOAD_URL = "jb_data/train.json"
-_DEV_DOWNLOAD_URL = "jb_data/val.json"
+_TRAIN_DOWNLOAD_URL = "jb_data/train_augmented.json"
+_DEV_DOWNLOAD_URL = "jb_data/val_augmented.json"
 _TEST_DOWNLOAD_URL = "jb_data/test.json"
 
-class TextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
+class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
     """TextualExplanationDataset dataset."""
     
     VERSION = datasets.Version("2.7.0")
@@ -98,8 +94,8 @@ class TextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
 if __name__ == "__main__":
     # Note that if changes are made to the dataset then it will raise a ChecksumError.
     # To fix this you need to delete the cached files in ~/.cache/huggingface/datasets/
-    dataset = datasets.load_dataset("src/textual_explanations_dataset_builder.py", download_mode="force_redownload", load_from_cache_file=False)#, ignore_verifications=True)
+    dataset = datasets.load_dataset("src/aug_textual_explanations_dataset_builder.py", download_mode="force_redownload", load_from_cache_file=False)#, ignore_verifications=True)
     
     # Save the dataset to huggingface
-    dataset.push_to_hub("textual-explanations", private=True)
+    dataset.push_to_hub("aug-text-exps", private=True)
     print()
