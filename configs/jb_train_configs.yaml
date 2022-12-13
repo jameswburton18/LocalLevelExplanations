@@ -75,7 +75,7 @@ fast_dev_run: false
 tags:
  - t5-base
  - qa pretrain
-batch_size: 8
+# batch_size: 8
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: models/qa/t5-base/silver-sky-30/checkpoint-30000
 output_root: models/t5-base/
@@ -115,7 +115,7 @@ fast_dev_run: false
 tags:
  - bart
  - qa pretrain
-batch_size: 16
+# batch_size: 16
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: models/qa/bart-base/helpful-aardvark-21/checkpoint-6000
 output_root: models/bart-base/
@@ -129,7 +129,7 @@ do_predict: true
 tags:
  - bart
  - qa pretrain
-batch_size: 16
+# batch_size: 16
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: models/qa/bart-base/warm-sky-22/checkpoint-18750
 output_root: models/bart-base/
@@ -143,7 +143,7 @@ do_predict: true
 tags:
  - bart
  - qa pretrain
-batch_size: 8
+# batch_size: 8
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: models/qa/bart-base/chocolate-dust-23/checkpoint-18750
 output_root: models/bart-base/
@@ -155,7 +155,7 @@ fast_dev_run: false
 tags:
  - t5-base
  - augmented
-batch_size: 4
+batch_size: 8
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
@@ -195,7 +195,7 @@ fast_dev_run: false
 tags:
  - bart
  - augmented
-batch_size: 4
+batch_size: 16
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: facebook/bart-base
 output_root: models/bart-base/
@@ -226,6 +226,95 @@ tags:
  - bart
  - augmented
 batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: facebook/bart-base
+output_root: models/bart-base/
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ESSEL 3 qa
+config: essel_3_qa
+fast_dev_run: false
+tags:
+ - t5-base
+ - augmented
+ - qa pretrain
+# batch_size: 8
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ord first 3 qa
+config: ord_first_3_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+ - augmented
+ - qa pretrain
+# batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ft first 3 qa
+config: ft_first_3_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+ - augmented
+ - qa pretrain
+# batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ESSEL 4 qa
+config: essel_4_qa
+fast_dev_run: false
+tags:
+ - bart
+ - augmented
+ - qa pretrain
+# batch_size: 16
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: facebook/bart-base
+output_root: models/bart-base/
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ord first 4 qa
+config: ord_first_4_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - bart
+ - augmented
+ - qa pretrain
+# batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: facebook/bart-base
+output_root: models/bart-base/
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ft first 4 qa
+config: ft_first_4_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - bart
+ - augmented
+ - qa pretrain
+# batch_size: 4
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: facebook/bart-base
 output_root: models/bart-base/

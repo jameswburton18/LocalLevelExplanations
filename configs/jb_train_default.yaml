@@ -5,7 +5,7 @@ do_train: true
 do_predict: true
 tags:
 - t5-base
-batch_size: 4
+batch_size: 8
 linearisation: essel
 max_features: 50
 model_base: t5-base
