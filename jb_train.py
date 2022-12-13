@@ -13,7 +13,6 @@ import json
 import yaml
 import argparse
 from transformers.trainer_callback import EarlyStoppingCallback
-from src.stepwise_model import StepWiseT5ForConditionalGeneration
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='essel_test',
@@ -36,19 +35,20 @@ def main():
     
     # Load model, tokenizer and dataset
     model = AutoModelForSeq2SeqLM.from_pretrained(args['model_base'], return_dict=True)
-    # model = StepWiseT5ForConditionalGeneration
     tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
-    dataset = load_dataset("james-burton/textual-explanations")
+    dataset = load_dataset("james-burton/textual-explanations") if not args['augmented'] else \
+        load_dataset("james-burton/aug-text-exps")
     
     # Form the linearised or stepwise (and linearised) input
     dataset = dataset.map(
         lambda x: linearise_input(x, args['linearisation'], args['max_features']),
         load_from_cache_file=False
-        ) if not args['stepwise'] else \
-            dataset.map(
-        lambda x: form_stepwise_input(x, args['linearisation'], args['max_features']),
-        load_from_cache_file=False
-        )
+        ) 
+    # if not args['stepwise'] else \
+    #         dataset.map(
+    #     lambda x: form_stepwise_input(x, args['linearisation'], args['max_features']),
+    #     load_from_cache_file=False
+    #     )
     
     # Convert to tokens
     dataset = dataset.map(
