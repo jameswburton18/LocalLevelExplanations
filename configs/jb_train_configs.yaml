@@ -81,33 +81,33 @@ model_base: models/qa/t5-base/silver-sky-30/checkpoint-30000
 output_root: models/t5-base/
 predict_batch_size: 2
 
-# --- # ord first qa first
-# config: ord_first_qa
-# fast_dev_run: false
-# do_train: true
-# do_predict: true
-# tags:
-#  - t5-base
-#  - qa pretrain
+--- # ord first qa first
+config: ord_first_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+ - qa pretrain
 # batch_size: 32
-# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-# model_base: ?
-# output_root: models/t5-base/
-# predict_batch_size: 2
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/dark-bird-35/checkpoint-37500
+output_root: models/t5-base/
+predict_batch_size: 2
 
-# --- # ft first qa first
-# config: ft_first_qa
-# fast_dev_run: false
-# do_train: true
-# do_predict: true
-# tags:
-#  - t5-base
-#  - qa pretrain
-# batch_size: 8
-# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-# model_base: ?
-# output_root: models/t5-base/
-# predict_batch_size: 2
+--- # ft first qa first
+config: ft_first_qa
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+ - qa pretrain
+batch_size: 8
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/lunar-sponge-36/checkpoint-123000
+output_root: models/t5-base/
+predict_batch_size: 2
 
 --- # ESSEL 2 qa first
 config: essel_2_qa
@@ -239,7 +239,7 @@ tags:
  - t5-base
  - augmented
  - qa pretrain
-# batch_size: 8
+batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
@@ -254,7 +254,7 @@ tags:
  - t5-base
  - augmented
  - qa pretrain
-# batch_size: 4
+batch_size: 4
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
@@ -269,7 +269,7 @@ tags:
  - t5-base
  - augmented
  - qa pretrain
-# batch_size: 4
+batch_size: 4
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 predict_batch_size: 2
