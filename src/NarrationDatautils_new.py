@@ -280,6 +280,7 @@ def processFeatureRanks(feature_division, narration, force_consistency=True, nb_
         'contradict'], feature_division['support'], feature_division['ignore']
     output = {'features': [], 'order': [], 'direction': []}
     nat = set([c.strip() for c in word_tokenize(narration)])
+    # pack: [['<|f#3|>', 0], ['<|f#4|>', 1], ['<|f#6|>', 2], ...
     pack = feature_division['rank'] if 'rank' in feature_division.keys(
     ) else feature_division['ranks']
 
@@ -287,6 +288,7 @@ def processFeatureRanks(feature_division, narration, force_consistency=True, nb_
     nb_features = len(pack)
 
     for f, pos in pack:
+        # '<|f#3|>' to F3
         f_ = cleanFeature(f)
         include = False
         if f_ in nat and force_consistency:
@@ -691,6 +693,7 @@ def iterNarationDataGenerators(pack, pr_c=1,
                                ):
     pack = pack_x = copy.deepcopy(pack)
     outputs = sent_tokenize(cleanNarrations(pack['narration']))
+    # A random number of sentences are chosen to make up the initial sequence
     max_init = random.choice([3, 3, 2, 2, 2, 3, 1]) if not ignore else len(
         outputs) if not force_section else 1
     results = []
@@ -713,6 +716,7 @@ def iterNarationDataGenerators(pack, pr_c=1,
 
     for idx, sent in enumerate(outputs[max_init:-1]):
         # print(idx+1)
+        # Lotto seemingly not used at all
         lotto = [0, 1, 1, 0, 0, 1]
         random.shuffle(lotto)
         pack_x = copy.deepcopy(pack)

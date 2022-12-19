@@ -28,6 +28,11 @@ def composeDataset(data, iterative_mode=True, force_section=False, include_full_
         'narration': textual explanations. (Empty when generating for test set)
         'prediction_confidence_level': confidence levels across the classes
         'feature_division': Attribution information from lime or shap or LRP or feature importance
+        
+        
+    The iterative dataset has random choice of 1, 2 or 3 sentences for the initial generation. 
+    From there one sentence at a time is chosen for the next split. Each split is
+    marked with a special token, such as [N1S], [N2S], [N3S] etc.
     """
     def pass_through(x): return iterNarationDataGenerators(
         x, ignore=not iterative_mode, force_section=force_section, include_full_set=include_full_set)
