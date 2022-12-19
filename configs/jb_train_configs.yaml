@@ -37,7 +37,7 @@ config: essel_2
 fast_dev_run: false
 tags:
  - bart
-batch_size: 64
+batch_size: 8
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: facebook/bart-base
 output_root: models/bart-base/
