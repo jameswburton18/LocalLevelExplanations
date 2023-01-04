@@ -13,19 +13,20 @@ from src.inference_routine import InferenceGenerator
 from src.datasetHandlers import SmartCollator
 from src.model_utils import get_basic_model
 from src.trainerArgs import CustomTrainer, getTrainingArguments
+from transformers import TrainingArguments
 os.environ["WANDB_DISABLED"] = "true"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # %%
 
-iterative_gen = True
-composed_already = False
+iterative_gen = False
+composed_already = True
 
 # Define the parameters used to set up the models
 modeltype = 'iterative' if iterative_gen else 'normal'  # either baseline or 'earlyfusion'
 
 # either t5-small,t5-base, t5-large, facebook/bart-base, or facebook/bart-large
-modelbase = 'facebook/bart-base'
+modelbase = 't5-base'#'facebook/bart-base'
 
 # we will use the above variables to set up the folder to save our model
 pre_trained_model_name = modelbase.split(
@@ -44,8 +45,8 @@ output_path = 'TrainModels/' + modeltype + '/'+pre_trained_model_name+'/'
 # %%
 # Load the dataset
 if iterative_gen:
-    experiments_dataset = DatasetBuilder(train_data_path=train_path,#composed_train_path,
-                                     test_data_path=test_path,#composed_test_path,
+    experiments_dataset = DatasetBuilder(train_data_path=composed_train_path,#train_path,#
+                                     test_data_path=composed_test_path,#test_path,#
                                      modelbase= modelbase,
                                      iterative_mode= iterative_gen,
                                      composed_already=composed_already)
@@ -62,24 +63,11 @@ experiments_dataset.fit()
 print('Dataset built')
 print(f"Training size: {len(experiments_dataset.train_dataset)}")
 print(f"Test size: {len(experiments_dataset.test_dataset)}")
-'''
-# %%
-''.join(experiments_dataset.tokenizer_.batch_decode(experiments_dataset.train_dataset[2].input_ids))
 
-# %%
-experiments_dataset.train_dataset[0].input_ids
 
-# %% [markdown]
 # # Model
 # Below we create the narration model
 
-# %%
-from transformers import TrainingArguments
-
-# %%
-TrainingArguments??
-
-# %%
 rand_seed = 453
 seed_everything(rand_seed)
 device = torch.device(
@@ -89,11 +77,11 @@ arguments = train_arguments = {'output_dir': output_path,
                                'warmup_ratio': 0.2,
                                #'disable_tqdm':False,
                                'per_device_train_batch_size': 8,
-                               'num_train_epochs': 4,
+                               'num_train_epochs': 6,
                                'lr_scheduler_type': 'cosine',
                                'learning_rate': 5e-5,
-                               'evaluation_strategy': 'steps',
-                               'logging_steps': 500,
+                            #    'evaluation_strategy': 'steps',
+                               'logging_steps': 20,
                                
                                'seed': rand_seed}
 
@@ -110,8 +98,9 @@ trainer = CustomTrainer(model_init=getModel,
                             pad_token_id=experiments_dataset.tokenizer_.pad_token_id),
                         args=training_arguments,
                         train_dataset=experiments_dataset.train_dataset,
-                        eval_dataset=experiments_dataset.test_dataset,
-                        callbacks=[EarlyStoppingCallback(early_stopping_patience=4)])
+                        # eval_dataset=experiments_dataset.test_dataset,
+                        # callbacks=[EarlyStoppingCallback(early_stopping_patience=4)]
+                        )
 
 # %%
 trainer.train()
@@ -153,13 +142,18 @@ iterativeGen = InferenceGenerator(inference_model,
                                   device,
                                   max_iter=8,
                                   sampling=False, verbose=False)
-
+iterative_gen
 
 # %%
 
 
 # %%
 max_full_len = 300
+'''
+During the inference, the model is still passed as input/preamble, only features which
+it has already seen are part of the answer.
+
+'''
 if iterative_gen:
     print("Explanation Generation Iteratively")
     iterativeGen.sampling = False
@@ -174,10 +168,7 @@ else:
         test_examples, rand_seed, max_length=max_full_len)
 
 # %%
-test_examples[:1][0]
+print(test_examples[:1][0])
 
 # %%
-output_sentences
-
-
-'''
+print(output_sentences)
