@@ -423,7 +423,7 @@ class NarratorUtils:
         params_dict = json.load(
             open(self.trained_model_path+'/parameters.json'))
         #state_dict = json.load(open(args.model_base_dir+'/parameters.json'))
-        best_check_point = params_dict['best_check_point']
+        best_check_point = 'TrainModels/iterative/t5-base/checkpoint-1500' #params_dict['best_check_point']
         best_check_point_model = best_check_point + '/pytorch_model.bin'
 
         state_dict = torch.load(best_check_point_model)
