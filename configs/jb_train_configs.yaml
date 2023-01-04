@@ -328,5 +328,5 @@ tags:
  - bart
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: models/bart-base/legendary-valley-31
-stepwise: false
+model_base: facebook/bart-base
+output_root: models/bart-base/
