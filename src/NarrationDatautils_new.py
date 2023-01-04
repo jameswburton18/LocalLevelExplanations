@@ -500,24 +500,24 @@ def processDataLinearized(data, randomise_preds=False, force_consistency=True, s
 
 
 def composeTrainingData(data, force_consistency=True, shrink=None):
-    aug_train = []
-    preambles = []
+    # aug_train = []
+    # preambles = []
     processed_train = []
-    positive_preambles = []
-    negative_preambles = []
-    neutral_preambles = []
+    # positive_preambles = []
+    # negative_preambles = []
+    # neutral_preambles = []
     for dat in data:
         examples = processDataLinearized(
             copy.deepcopy(dat), randomise_preds=False, force_consistency=force_consistency, shrink=shrink)
-        tt = examples['preamble']  # +examples['narration']
-        zz = examples['preamble']+examples['narration']
-        preambles.append(zz)
+        # tt = examples['preamble']  # +examples['narration']
+        # zz = examples['preamble']+examples['narration']
+        # preambles.append(zz)
         examples_ = copy.deepcopy(examples)
         examples_['preamble'] = examples['preamble']+' <explain>'
         narr = examples['narration']
-        positives = examples['positives']
-        negatives = examples['negatives']
-        neutrals = examples['neutral']
+        # positives = examples['positives']
+        # negatives = examples['negatives']
+        # neutrals = examples['neutral']
         examples_['output'] = narr
         processed_train.append(examples_)
     return processed_train
@@ -706,14 +706,17 @@ def iterNarationDataGenerators(pack, pr_c=1,
         return [pack_x]
 
     if len(outputs[max_init:]) > 0:
+        # sofar is the first max_init sentences plus the [N1S] token
         sofar = ' '.join(outputs[:max_init])+' [N1S]'+' '
         pack_x = copy.deepcopy(pack)
 
+        # the goal is to generate sofar from just the <prem> token
         pack_x['next_sequence'] = sofar
         pack_x['prev_seq'] = '<prem>'
         results.append(pack_x)
     prev = copy.deepcopy(sofar)
 
+    # For the rest of the sentences, we generate the next sentence given the previous sentences
     for idx, sent in enumerate(outputs[max_init:-1]):
         # print(idx+1)
         # Lotto seemingly not used at all
@@ -727,6 +730,7 @@ def iterNarationDataGenerators(pack, pr_c=1,
 
         sofar += sent+f' [N{idx+2}S]'+' '
     pack_x = copy.deepcopy(pack)
+    # The last sentence and the [EON] token is generated given the previous sentences 
     pack_x['prev_seq'] = sofar+' [EON]'
     pack_x['next_sequence'] = outputs[-1]+' [EON]'
     results.append(pack_x)
