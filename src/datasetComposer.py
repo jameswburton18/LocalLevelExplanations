@@ -33,18 +33,55 @@ def composeDataset(data, iterative_mode=True, force_section=False, include_full_
     The iterative dataset has random choice of 1, 2 or 3 sentences for the initial generation. 
     From there one sentence at a time is chosen for the next split. Each split is
     marked with a special token, such as [N1S], [N2S], [N3S] etc.
+    
+    # full_set becomes a list of dictionaries, where one entry contains 
+    # prev_seq (the previous sequence) and next_sequence. These are the 
+    # inputs and outputs for the model
+    
+    composeTrainingData loops over these dictionaries and calls processDataLinearized
+    
+    processDataLinearized:
+      - processFeatureRanks first extracts all the features that are mentioned in the next_sentence
+      - linearisedFeaturesAttributions generates a 'F3:- && F4:- && ... && F1:+  <|section-sep|> '
+      - processPredictionProbabilities2 makes 'prediction: predictionlabel && predictionlabel: 91.36%  && predictionrankB: 8.64% '
+      - classes C1 and C2 are replaced by predictionlabel and predictionrankB
+      
+    data['narration'] == data['output'] == next sentence to be generated
+    data['preamble'] is the 'F3:- && F4:- && ... && F1:+  <|section-sep|> ' + ' <explain>'
+    data['prev_seq'] is the previous sequence
+    
+    finalProcessor changes F1, F2 to feat0value, feat1value etc
+      - % signs are changed to percent
+    
+    reformulateInput changes the format of the input once more
+      - new_preamble_[1-4] are created
+      - new_preamble_2: old preamble + **only features that are mentioned in the following sentence**
+      - attributions is just a list of pos/neg/zero values
+    
+    simpleMapper changes the format of the input *again*
+      - This time feat0value, feat1value etc are replaced by the featAN, featCN, featDP
+      - new_preamble_2 is now:
+        - 'prediction: predictionlabel && predictionlabel: 91.36% && predictionrankB: 8.64% 
+        <|section-sep|> featAN featCN featDP featEP featFP featGP featHN featIP featJN featKP 
+        featLP featMP featQN featRP <|section-sep|> <mentions> featDP featEP featFP featGP 
+        <|section-sep|> featAN featCN <|section-sep|> </mentions> <|section-sep|> <explain>'
     """
     def pass_through(x): return iterNarationDataGenerators(
         x, ignore=not iterative_mode, force_section=force_section, include_full_set=include_full_set)
     if type(data) is not list:
         data = [data]
+
     full_set = []
     for p in data:
         full_set += pass_through(p)
 
-    final_data = [simpleMapper(reformulateInput(finalProcessor(
-        p))) for p in composeTrainingData(full_set, force_consistency=True, shrink=None)]
-    return final_data
+    # final_data = [simpleMapper(reformulateInput(finalProcessor(
+    #     p))) for p in composeTrainingData(full_set, force_consistency=True, shrink=None)]
+    final_data0 = composeTrainingData(full_set, force_consistency=True, shrink=None)
+    final_data1 = [finalProcessor(p) for p in final_data0]
+    final_data2 = [reformulateInput(p) for p in final_data1]
+    final_data3 = [simpleMapper(p) for p in final_data2]
+    return final_data3
 
 
 def compactComposer(data, iterative_mode=True, force_consistency=True, force_section=False, include_full_set=False):
