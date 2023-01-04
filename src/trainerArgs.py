@@ -27,7 +27,7 @@ def getTrainingArguments(arg_dict):
         **arg_dict,
         overwrite_output_dir=True,
         adafactor =True,
-        load_best_model_at_end=True,
+        # load_best_model_at_end=True,
         save_total_limit = 1,
-        disable_tqdm=True,
+        # disable_tqdm=True,
         )
