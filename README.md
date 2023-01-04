@@ -53,6 +53,17 @@ This is a datapoint
 
     "features_placeholder"{"Type of Travel": "F3-V0", "Type Of Booking": "F4-V0", "Hotel wifi service": "F6", "Common Room entertainment": "F12", "Stay comfort": "F11", "Other service": "F14", "Checkin/Checkout service": "F13", "Hotel location": "F9", "Food and drink": "F10", "Cleanliness": "F15", "Age": "F5", "Departure/Arrival  convenience": "F7", "purpose_of_travel": "F2-V0", "Ease of Online booking": "F8", "Gender": "F1-V0"}]
 
+## Input types
+There are 3 input types:
+
+### 1) Essel input
+"| predicted class | C1 64.66% | other classes | C2 35.34% |     features | F5 && F8 && F1 && F11 && F7 && F6 && F16 && F15 && F13 && F3 && F14 && F9 && F10 && F2 && F12 && F4 | postive features | F5 && F8 && F1 && F7 && F16 && F15 && F3 && F14 && F9 && F10  | negative features | F11 && F6 && F13 && F2 && F12 && F4  |     negligible features | None |\n <br> <br> Using the above information, answer the following             in detail: <br> <br> 1. For this test instance, provide information on the predicted label along with the confidence level of the model's decision.\n2. Summarize the top features influencing the model's decision along with the respective directions of influence on the prediction?\n3. Summarize the direction of influence of the features (F6, F16 and F15) with moderate impact on the prediction made for this test case."
+
+### 2) Ord first input
+"| predicted class | C1 64.66% | other classes | C2 35.34% | 1st | F5 positive 0.05 | 2nd | F8 positive 0.03 | 3rd | F1 positive 0.03 | 4th | F11 negative -0.03 | 5th | F7 positive 0.02 | 6th | F6 negative -0.02 | 7th | F16 positive 0.02 | 8th | F15 positive 0.02 | 9th | F13 negative -0.02 | 10th | F3 positive 0.02 | 11th | F14 positive 0.01 | 12th | F9 positive 0.01 | 13th | F10 positive 0.00 | 14th | F2 negative -0.00 | 15th | F12 negative -0.00 | 16th | F4 negative -0.00 |\n <br> <br> Using the above information, answer the following             in detail: <br> <br> 1. For this test instance, provide information on the predicted label along with the confidence level of the model's decision.\n2. Summarize the top features influencing the model's decision along with the respective directions of influence on the prediction?\n3. Summarize the direction of influence of the features (F6, F16 and F15) with moderate impact on the prediction made for this test case."
+
+### 3) Feat first input
+"| F5 | 1st positive 0.05 | F8 | 2nd positive 0.03 | F1 | 3rd positive 0.03 | F11 | 4th negative -0.03 | F7 | 5th positive 0.02 | F6 | 6th negative -0.02 | F16 | 7th positive 0.02 | F15 | 8th positive 0.02 | F13 | 9th negative -0.02 | F3 | 10th positive 0.02 | F14 | 11th positive 0.01 | F9 | 12th positive 0.01 | F10 | 13th positive 0.00 | F2 | 14th negative -0.00 | F12 | 15th negative -0.00 | F4 | 16th negative -0.00\n <br> <br> Using the above information, answer the following             in detail: <br> <br> 1. For this test instance, provide information on the predicted label along with the confidence level of the model's decision.\n2. Summarize the top features influencing the model's decision along with the respective directions of influence on the prediction?\n3. Summarize the direction of influence of the features (F6, F16 and F15) with moderate impact on the prediction made for this test case."
 
 ## On Essels part
 There is nowhere where the evaluation happens. This could be seperate? Just need to do it again.
@@ -86,3 +97,28 @@ Could also do a contrastive loss where I say that the answer (with correct numbe
    - 3 input types x 2 models
    - One question at a time
    - Automatically generate the questions
+
+
+# 03/01/23, Where are we now?
+* In `generate_questions.py` I have a built a Q and A dataset with 5 question types:
+    * What is the value of FA?
+    * What is FA - FB?
+    * What is the xth most important feature?
+    * Top x postive features: 
+    * Top x negative features:
+* I have also built an augmented dataset in `jb_prepare_dataset.py` has the same data-TextExp pairs but the feature and class names are reshuffled.
+
+I have generated outputs for: 
+* 3 input types
+* 2 models (T5 and BART)
+* Pretrained/not pretrained on QA dataset 
+* 2 datasets (original and augmented)
+
+# How Essels stepwise mode works
+(More details in `datasetComposer.py`)
+* The narration is split
+    * A **random** number [1-3] of sentences are selected from the beginning to make up the initial "step"
+    * Each following sentence represents another step
+
+* Instead of being provided with all of the features, it is only provided with the features that are mentioned in the answer
+* **The validation set is the same as the test set**
