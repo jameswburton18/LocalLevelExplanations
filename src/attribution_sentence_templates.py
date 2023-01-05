@@ -1,7 +1,5 @@
 import copy
-import functools
-import re
-import random
+
 negative_singular = ['#fnegatives is the only feature shown to have negative contribution to the classification made here.',
                      'The correct label could be different from #pred_label given the attribution of #fnegatives. This input feature supports assigning an alternative label.',
                      'Among the input variables or features, the only one with influence decreasing the odds of the selected label, #pred_label is #fnegatives.',

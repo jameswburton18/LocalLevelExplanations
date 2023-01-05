@@ -9,9 +9,9 @@ import torch
 from nltk.tokenize import sent_tokenize, word_tokenize
 from pytorch_lightning import seed_everything
 
-from src.datasetHandlers import RDFDataSetForLinearisedStructured, setupTokenizer
-from src.model_utils import get_basic_model
-from src.NarrationDatautils_new import (finalProcessor,
+from archive.datasetHandlers import RDFDataSetForLinearisedStructured, setupTokenizer
+from archive.model_utils import get_basic_model
+from archive.NarrationDatautils_new import (finalProcessor,
                                     linearisedFeaturesAttributions,
                                     processPredictionProbabilities2,
                                     reformulateInput, simpleMapper)

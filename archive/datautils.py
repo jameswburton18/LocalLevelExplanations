@@ -1,11 +1,10 @@
-from attribution_sentence_templates import *
+from src.attribution_sentence_templates import *
 import copy
 import functools
 import re
 import random
 from nltk.tokenize import word_tokenize
 import json
-
 
 def stringifyFeats(feats):
     if len(feats) > 1:

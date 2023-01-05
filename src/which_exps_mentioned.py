@@ -1,7 +1,7 @@
 from datasets import load_dataset
-from src.data_collator import linearise_input
+from src.utils import linearise_input
 import re
-from src.data_collator import linearise_input
+from src.utils import linearise_input
 import torch
 from sklearn.metrics import f1_score, roc_auc_score, accuracy_score
 from transformers import EvalPrediction

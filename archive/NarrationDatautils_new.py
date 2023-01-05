@@ -9,7 +9,7 @@ import numpy as np
 import sacrebleu
 from nltk.tokenize import sent_tokenize, word_tokenize
 
-from .attribution_sentence_templates import *
+from src.attribution_sentence_templates import *
 
 
 def readSentences(file, lower=False):

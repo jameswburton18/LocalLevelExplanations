@@ -1,8 +1,5 @@
-import csv
 import datasets
 import json
-from typing import Dict
-from datasets import set_caching_enabled
 
 DESCRIPTION = """\
     This dataset is exactly the format of the original dataset, but with the feature 

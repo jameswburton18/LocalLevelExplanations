@@ -1,7 +1,5 @@
 import json
 import re
-from collections import Counter
-import inflect
 import random
 
 random.seed(42)

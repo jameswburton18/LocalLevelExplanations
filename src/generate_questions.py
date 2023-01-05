@@ -80,3 +80,4 @@ with open('jb_data/qa_test.json', 'w') as f:
     json.dump(test, f)
 with open('jb_data/qa_val.json', 'w') as f:
     json.dump(val, f)
+

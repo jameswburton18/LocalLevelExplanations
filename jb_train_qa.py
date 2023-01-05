@@ -2,7 +2,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments
 # import lmap
 from datasets import load_dataset
 from evaluate import load
-from src.data_collator import linearise_input, convert_to_features, form_qa_input_output
+from src.utils import linearise_input, convert_to_features, form_qa_input_output
 import wandb
 import os
 import numpy as np

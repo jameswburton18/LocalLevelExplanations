@@ -4,9 +4,9 @@ import pickle as pk
 
 from typing import List
 
-from .datasetHandlers import (RDFDataSetForLinearisedStructured, SmartCollator,
+from archive.datasetHandlers import (RDFDataSetForLinearisedStructured, SmartCollator,
                               setupTokenizer)
-from .NarrationDatautils_new import *
+from archive.NarrationDatautils_new import *
 
 # replace these urls with the paths to your files
 main_path = 'raw_data/'

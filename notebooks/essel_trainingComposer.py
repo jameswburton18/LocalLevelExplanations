@@ -7,11 +7,11 @@ from pytorch_lightning import seed_everything
 import torch
 from transformers import EarlyStoppingCallback
 
-from src.datasetComposer import DatasetBuilder, composed_train_path, composed_test_path, compactComposer, test_path,train_path,test_path
-from src.inference_routine import InferenceGenerator
-from src.datasetHandlers import SmartCollator
-from src.model_utils import get_basic_model
-from src.trainerArgs import CustomTrainer, getTrainingArguments
+from archive.datasetComposer import DatasetBuilder, composed_train_path, composed_test_path, compactComposer, test_path,train_path,test_path
+from archive.inference_routine import InferenceGenerator
+from archive.datasetHandlers import SmartCollator
+from archive.model_utils import get_basic_model
+from archive.trainerArgs import CustomTrainer, getTrainingArguments
 
 os.environ["WANDB_DISABLED"] = "true"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
