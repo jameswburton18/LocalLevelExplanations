@@ -1,5 +1,5 @@
 # This is so we can import from the parent directory when using notebooks
-# Simply run pip install -e . from the root directory
+# Simply run "pip install -e ." from the root directory
 import setuptools
 
 setuptools.setup(
