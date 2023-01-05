@@ -321,12 +321,55 @@ output_root: models/bart-base/
 predict_batch_size: 2
 augmented_ds: true
 
+--- # ESSEL 5
+config: essel_5
+fast_dev_run: false
+tags:
+ - flan-t5
+ - augmented
+batch_size: 16
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: google/flan-t5-base
+output_root: models/flan-t5/
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ord first 5
+config: ord_first_5
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - flan-t5
+ - augmented
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: google/flan-t5-base
+output_root: models/flan-t5/
+predict_batch_size: 2
+augmented_ds: true
+
+--- # ft first 5
+config: ft_first_5
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - flan-t5
+ - augmented
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: google/flan-t5-base
+output_root: models/flan-t5/
+predict_batch_size: 2
+augmented_ds: true
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
 tags:
- - bart
+ - flan-t5
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
+model_base: google/flan-t5-base
+output_root: models/flan-t5/
