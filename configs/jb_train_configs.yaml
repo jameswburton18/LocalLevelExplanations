@@ -373,7 +373,6 @@ tags:
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
-output_root: models/flan-t5/
 add_fts_as_tokens: true
 predict_batch_size: 2
 
@@ -389,7 +388,6 @@ tags:
 batch_size: 4
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
-output_root: models/flan-t5/
 add_fts_as_tokens: true
 predict_batch_size: 2
 
@@ -404,7 +402,6 @@ tags:
 batch_size: 4
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
-output_root: models/flan-t5/
 add_fts_as_tokens: true
 predict_batch_size: 2
 
