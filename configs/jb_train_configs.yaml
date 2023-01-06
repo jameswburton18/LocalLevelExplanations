@@ -364,6 +364,47 @@ output_root: models/flan-t5/
 predict_batch_size: 2
 augmented_ds: true
 
+--- # ESSEL 6
+config: essel_6
+fast_dev_run: false
+tags:
+ - t5-base
+ - fts_as_tokens
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+add_fts_as_tokens: true
+predict_batch_size: 2
+
+--- # ord first 6
+config: ord_first_6
+fast_dev_run: false
+do_train: true
+do_predict: true
+
+tags:
+ - t5-base
+ - fts_as_tokens
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+add_fts_as_tokens: true
+predict_batch_size: 2
+
+--- # ft first 6
+config: ft_first_6
+fast_dev_run: false
+do_train: true
+do_predict: true
+tags:
+ - t5-base
+ - fts_as_tokens
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+add_fts_as_tokens: true
+predict_batch_size: 2
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
@@ -372,4 +413,5 @@ tags:
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: google/flan-t5-base
+add_fts_as_tokens: true
 output_root: models/flan-t5/

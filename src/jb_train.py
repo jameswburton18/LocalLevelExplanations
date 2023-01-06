@@ -39,16 +39,17 @@ def main():
     dataset = load_dataset("james-burton/textual-explanations") if not args['augmented_ds'] else \
         load_dataset("james-burton/aug-text-exps")
     
+    # Add fts as special tokens
+    if args['add_fts_as_tokens']:
+        feature_tokens = [f'F{i}' for i in range(47)]
+        tokenizer.add_tokens(feature_tokens)
+        model.resize_token_embeddings(len(tokenizer))
+    
     # Form the linearised or stepwise (and linearised) input
     dataset = dataset.map(
         lambda x: linearise_input(x, args['linearisation'], args['max_features']),
         load_from_cache_file=False
         ) 
-    # if not args['stepwise'] else \
-    #         dataset.map(
-    #     lambda x: form_stepwise_input(x, args['linearisation'], args['max_features']),
-    #     load_from_cache_file=False
-    #     )
     
     # Convert to tokens
     dataset = dataset.map(

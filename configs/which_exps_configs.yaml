@@ -1,3 +1,8 @@
 --- #  test
 config: test
 fast_dev_run: true
+
+--- #  test
+config: test_2
+fast_dev_run: true
+model_base: ../models/exps_mentioned/splendid-jazz-1/checkpoint-4690
