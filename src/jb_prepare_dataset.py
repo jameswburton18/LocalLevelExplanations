@@ -2,6 +2,7 @@ import json
 import re
 import random
 
+# This part of the code is the format the data in a nice way, from the raw data
 random.seed(42)
 
 all_train = json.load(open('raw_data/all_train.json',encoding='utf-8'))
@@ -66,6 +67,7 @@ for i in range(len(all)):
 # no_task = prepare_all(no_task)
 json.dump(all, open('jb_data/all.json', 'w', encoding='utf-8'), indent=4)
 
+# This second part of the code is to create the augmented datasets
 # Split into train, test, val 80:10:10
 random.shuffle(all)
 train = all[:int(0.8*len(all))]
