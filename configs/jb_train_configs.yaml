@@ -327,7 +327,7 @@ fast_dev_run: false
 tags:
  - flan-t5
  - augmented
-batch_size: 16
+batch_size: 8
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: google/flan-t5-base
 output_root: models/flan-t5/
@@ -342,7 +342,7 @@ do_predict: true
 tags:
  - flan-t5
  - augmented
-batch_size: 4
+batch_size: 8
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: google/flan-t5-base
 output_root: models/flan-t5/
@@ -357,7 +357,7 @@ do_predict: true
 tags:
  - flan-t5
  - augmented
-batch_size: 4
+batch_size: 8
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: google/flan-t5-base
 output_root: models/flan-t5/
