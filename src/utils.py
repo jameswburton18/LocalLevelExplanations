@@ -1,5 +1,5 @@
 import inflect
-
+import re
 
 def linearise_input(data_row, method, max_fts=15, data_only=False):
     """Linearise data row to be in chosen form."""
@@ -100,3 +100,6 @@ def convert_to_features(batch, tokenizer, max_input_length=400, max_output_lengt
     }
     return encodings
 
+def simplify_narr_question(row):
+    row['narrative_questions'] = [re.sub(r' \(([^()]*\bequal[^()]*)\)', '', q) for q in row['narrative_questions']]
+    return row

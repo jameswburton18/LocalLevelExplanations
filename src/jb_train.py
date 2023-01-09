@@ -2,7 +2,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments
 # import lmap
 from datasets import load_dataset
 from evaluate import load
-from src.utils import linearise_input, convert_to_features, form_stepwise_input
+from src.utils import linearise_input, convert_to_features, form_stepwise_input, simplify_narr_question
 import wandb
 import os
 import numpy as np
@@ -39,11 +39,14 @@ def main():
     dataset = load_dataset("james-burton/textual-explanations") if not args['augmented_ds'] else \
         load_dataset("james-burton/aug-text-exps")
     
-    # Add fts as special tokens
-    if args['add_fts_as_tokens']:
-        feature_tokens = [f'F{i}' for i in range(47)]
-        tokenizer.add_tokens(feature_tokens)
-        model.resize_token_embeddings(len(tokenizer))
+    # # Add fts as special tokens
+    # if args['add_fts_as_tokens']:
+    #     feature_tokens = [f'F{i}' for i in range(47)]
+    #     tokenizer.add_tokens(feature_tokens)
+    #     model.resize_token_embeddings(len(tokenizer))
+        
+    if args['simplify_narr_qs']:
+        dataset = dataset.map(simplify_narr_question)
     
     # Form the linearised or stepwise (and linearised) input
     dataset = dataset.map(
