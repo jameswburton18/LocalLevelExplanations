@@ -413,5 +413,5 @@ tags:
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: google/flan-t5-base
-add_fts_as_tokens: true
+simplify_narr_qs: true
 output_root: models/flan-t5/
