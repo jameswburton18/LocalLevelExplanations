@@ -405,6 +405,42 @@ model_base: t5-base
 add_fts_as_tokens: true
 predict_batch_size: 2
 
+--- # ESSEL 7
+config: essel_7
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_qs
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_ft_names: true
+predict_batch_size: 2
+
+--- # ord first 7
+config: ord_first_7
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_qs
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_ft_names: true
+predict_batch_size: 2
+
+--- # ft first 7
+config: ft_first_7
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_qs
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_ft_names: true
+predict_batch_size: 2
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
