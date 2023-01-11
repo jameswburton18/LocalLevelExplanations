@@ -100,6 +100,75 @@ def convert_to_features(batch, tokenizer, max_input_length=400, max_output_lengt
     }
     return encodings
 
-def simplify_narr_question(row):
+def simplify_feat_names(row):
+    '''Simplifying the feature names to make them more readable. We do this
+    by removing the cases where it says (value equal to V0)
+    '''
     row['narrative_questions'] = [re.sub(r' \(([^()]*\bequal[^()]*)\)', '', q) for q in row['narrative_questions']]
+    return row
+
+def label_qs(row):
+    narr_qs = row['narrative_questions']
+    if narr_qs[0] == 'In a single sentence, state the prediction output of the model for the selected test case along with the confidence level of the prediction (if applicable).':
+        label = 'A'
+    elif narr_qs[0] == "For this test instance, provide information on the predicted label along with the confidence level of the model's decision.":
+        label = 'B'
+    elif narr_qs[0] == 'Summarize the prediction for the given test example?' and narr_qs[1] == "In two sentences, provide a brief overview of the features with a higher impact on the model's output prediction.":
+        label = 'C'
+    elif narr_qs[0] == 'Summarize the prediction for the given test example?' and narr_qs[1] == "For this test case, summarize the top features influencing the model's decision.": 
+        label = 'D'
+    elif narr_qs[0] == "Summarize the prediction made for the test under consideration along with the likelihood of the different possible class labels." and narr_qs[1] == 'Provide a statement summarizing the ranking of the features as shown in the feature impact plot.':
+        label = 'E'
+    elif narr_qs[0] == 'Provide a statement summarizing the prediction made for the test case.':
+        label = 'F'
+    elif narr_qs[0] == 'Provide a statement summarizing the ranking of the features as shown in the feature impact plot.':
+        label = 'G'
+    elif narr_qs[0] == 'Summarize the prediction made for the test under consideration along with the likelihood of the different possible class labels.' and narr_qs[1][:53] == 'Summarize the direction of influence of the variables':
+        label = 'H'
+    else:
+        raise ValueError('Unknown narrative question')
+    row['narr_q_label'] = label
+    grouping = {'A': 'A-B', 'B': 'A-B', 'C': 'C-E', 'D': 'C-E', 
+                'E': 'C-E', 'F': 'F-H', 'G': 'F-H', 'H': 'F-H'}
+    row['narr_q_label_group'] = grouping[label]
+    return row
+
+def simplify_narr_question(row):
+    label = row['narr_q_label']
+    reg = re.compile(r'F\d+')
+    mentioned_fts = [reg.findall(n) for n in row['narrative_questions']]
+    q1 = "Summarise the prediction."
+    
+    def _commas_and_and(fts_list):
+        if len(fts_list) == 0:
+            return ' '
+        elif len(fts_list) == 1:
+            return fts_list[0]
+        elif len(fts_list) == 2:
+            return f'{fts_list[0]} and {fts_list[1]}'
+        else:
+            return f'{", ".join(fts_list[:-1])}, and {fts_list[-1]}'
+    
+    if label in ['A', 'B', 'C', 'D']:
+        q2 = 'Summarise the top features.'
+    elif label == 'E':
+        q2 = f'Summarise these top features ({_commas_and_and(mentioned_fts[2])}).'
+    else: # label in ['F', 'G', 'H']
+        q2 = f'Summarise these top features ({_commas_and_and(mentioned_fts[1])}).'
+        
+    if label in ['A', 'B', 'C', 'F', 'G', 'H']:
+        q3 = f'Summarise these moderate features ({_commas_and_and(mentioned_fts[2])}).'
+    elif label ==  'D':
+        q3 = '' # Ds have no q3 
+    else: # label ==  'E'
+        q3 = f'Summarise these moderate features ({_commas_and_and(mentioned_fts[3])}).'
+    
+    if label in ['A', 'B']:
+        q4 = ''
+    elif label in ['C', 'D', 'E']:
+        q4 = f'Summarise the negligible features.'
+    else: # label in ['F', 'G', 'H']
+        q4 = f'Summarise these negligible features ({_commas_and_and(mentioned_fts[3])}).'
+        
+    row['narrative_questions'] = [q1, q2, q3, q4]
     return row

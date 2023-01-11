@@ -1,8 +1,13 @@
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments, Trainer, pipeline
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments, Trainer
 # import lmap
 from datasets import load_dataset
 from evaluate import load
-from src.utils import linearise_input, convert_to_features, form_stepwise_input, simplify_narr_question
+from src.utils import (
+    linearise_input, convert_to_features, form_stepwise_input, 
+    simplify_feat_names,
+    label_qs,
+    simplify_narr_question
+)
 import wandb
 import os
 import numpy as np
@@ -45,8 +50,11 @@ def main():
     #     tokenizer.add_tokens(feature_tokens)
     #     model.resize_token_embeddings(len(tokenizer))
         
+    # dataset = dataset.map(simplify_feat_names) if args['simplify_ft_names'] else dataset
+    
     if args['simplify_narr_qs']:
-        dataset = dataset.map(simplify_narr_question)
+        dataset = dataset.map(lambda x: simplify_narr_question(label_qs(x)),
+                              load_from_cache_file=False)
     
     # Form the linearised or stepwise (and linearised) input
     dataset = dataset.map(
@@ -163,6 +171,24 @@ def main():
         results = {'bleurt': np.mean(bleurt_results['scores']),
                    'bleu': bleu_results['bleu'],
                    'meteor': meteor_results['meteor']}
+        
+        # Results by narr_q_label_group
+        for grp in set(dataset['test']['narr_q_label_group']):
+            grp_data = dataset['test'][dataset['test']['narr_q_label_group'] == grp]['narration']
+            grp_data = grp_data if type(grp_data) == list else [grp_data]
+            grp_all_preds = all_preds[dataset['test']['narr_q_label_group'] == grp]
+            grp_all_preds = grp_all_preds if type(grp_all_preds) == list else [grp_all_preds]
+            grp_bleurt_results = bleurt.compute(predictions=grp_all_preds, 
+                                            references=grp_data)
+            grp_bleu_results = bleu.compute(predictions=grp_all_preds, 
+                                        references=[[r] for r in grp_data])
+            grp_meteor_results = meteor.compute(predictions=grp_all_preds, 
+                                            references=[[r] for r in grp_data])
+            results[f'bleurt_{grp}'] = np.mean(grp_bleurt_results['scores'])
+            results[f'bleu_{grp}'] = grp_bleu_results['bleu']
+            results[f'meteor_{grp}'] = grp_meteor_results['meteor']
+            
+
         
         # Save the predictions
         readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
