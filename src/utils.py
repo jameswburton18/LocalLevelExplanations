@@ -3,52 +3,46 @@ import re
 
 def linearise_input(data_row, method, max_fts=15, data_only=False):
     """Linearise data row to be in chosen form."""
+    sign_dict = {'positive': 'pos', 'negative': 'neg', 'negligible': 'null'}
+    
     
     # Linearising the data
     chosen_class = data_row["predicted_class"]
     classes_dict = eval(data_row["classes_dict"])
-    other_classes = "&& ".join([f"{k} {v}" for k,v in classes_dict.items() if k != chosen_class])
+    other_classes = "& ".join([f"{k} {v}" for k,v in classes_dict.items() if k != chosen_class])
     
     feature_nums = data_row['feature_nums'][:max_fts]
-    sign = data_row['sign'][:max_fts]
+    sign = [sign_dict[s] for s in data_row['sign']][:max_fts]
     values = data_row['values'][:max_fts]
 
-    fts_and_signs = "&& ".join([f'{a} {b} ' for a, b in zip(feature_nums, sign)])
-    fts_and_pos = "&& ".join([f'{a} {b} ' for a, b in zip(feature_nums, sign) if b == 'positive'])
-    fts_and_nega = "&& ".join([f'{a} {b} ' for a, b in zip(feature_nums, sign) if b == 'negative'])
-    fts_and_negl = "&& ".join([f'{a} {b} ' for a, b in zip(feature_nums, sign) if b == 'negligible'])
-    fts_and_negl = 'None' if fts_and_negl == '' else fts_and_negl
-    
-    fts = "&& ".join([f'{a} ' for a in feature_nums])
-    pos_fts = "&& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'positive'])
-    nega_fts = "&& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'negative'])
-    negl_fts = "&& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'negligible'])
+    fts = "& ".join([f'{a} ' for a in feature_nums])
+    pos_fts = "& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'pos'])
+    nega_fts = "& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'neg'])
+    negl_fts = "& ".join([f'{a} ' for a, b in zip(data_row['feature_nums'], sign) if b == 'null'])
     negl_fts = 'None' if negl_fts == '' else negl_fts
 
-    essel_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} | \
-    features | {fts}| postive features | {pos_fts} | negative features | {nega_fts} | \
-    negligible features | {negl_fts} |'
+    essel_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} | features | {fts}| postive features | {pos_fts} | negative features | {nega_fts} | negligible features | {negl_fts} |'
 
     p = inflect.engine()
 
     ordinals = [p.ordinal(i+1) for i in range(len(feature_nums))]
 
-    features = ' '.join([f'| {o} | {f} {s} {v}' for o, f, s, v in 
-                         zip(ordinals, feature_nums, sign, 
-                             values)])
+    ord_first_fts = ' '.join([f'| {o} | {f} {s} {v}' for o, f, s, v in 
+                              zip(ordinals, feature_nums, sign, values)])
+    ft_first_fts = ' '.join([f'| {f} | {o} {s} {v}' for o, f, s, v in
+                             zip(ordinals, feature_nums, sign, values)])
         
-    ord_first_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} {features} |'
+    ord_first_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} {ord_first_fts} |'
 
-    ft_first_input = ' '.join([f'| {f} | {o} {s} {v}' for o, f, s, v in zip(ordinals, feature_nums, sign, values)])
+    ft_first_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} {ft_first_fts} |'
 
     if data_only:
         preamble = ''
         questions = ''
     else:
         # Preamble
-        preamble = "\n <br> <br> Using the above information, answer the following \
-            in detail: <br> <br> "
-        questions = '\n'.join([f'{idx+1}. {q}' for idx, q in 
+        preamble = " | Questions | "
+        questions = ' '.join([f'{idx+1}. {q}' for idx, q in 
                             enumerate(data_row['narrative_questions'])])
 
     if method == 'essel':
@@ -170,5 +164,64 @@ def simplify_narr_question(row):
     else: # label in ['F', 'G', 'H']
         q4 = f'Summarise these negligible features ({_commas_and_and(mentioned_fts[3])}).'
         
+    row['original_narrative_questions'] = row['narrative_questions']
     row['narrative_questions'] = [q1, q2, q3, q4]
     return row
+
+def old_linearise_input(data_row, method, max_fts=15, data_only=False):
+    """Linearise data row to be in chosen form. 
+    This is the old version being kept just in case. the new 'linearise_input'
+    is slimmed down and includes the class values which were mistakenly
+    missed out here"""
+    
+    # Linearising the data
+    chosen_class = data_row["predicted_class"]
+    classes_dict = eval(data_row["classes_dict"])
+    other_classes = "&& ".join([f"{k} {v}" for k,v in classes_dict.items() if k != chosen_class])
+    
+    feature_nums = data_row['feature_nums'][:max_fts]
+    sign = data_row['sign'][:max_fts]
+    values = data_row['values'][:max_fts]
+    
+    fts = "&& ".join([f'{a} ' for a in feature_nums])
+    pos_fts = "&& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'positive'])
+    nega_fts = "&& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'negative'])
+    negl_fts = "&& ".join([f'{a} ' for a, b in zip(feature_nums, sign) if b == 'negligible'])
+    negl_fts = 'None' if negl_fts == '' else negl_fts
+
+    essel_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} | \
+    features | {fts}| postive features | {pos_fts} | negative features | {nega_fts} | \
+    negligible features | {negl_fts} |'
+
+    p = inflect.engine()
+
+    ordinals = [p.ordinal(i+1) for i in range(len(feature_nums))]
+
+    features = ' '.join([f'| {o} | {f} {s} {v}' for o, f, s, v in 
+                         zip(ordinals, feature_nums, sign, 
+                             values)])
+        
+    ord_first_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} {features} |'
+
+    ft_first_input = ' '.join([f'| {f} | {o} {s} {v}' for o, f, s, v in zip(ordinals, feature_nums, sign, values)])
+
+    if data_only:
+        preamble = ''
+        questions = ''
+    else:
+        # Preamble
+        preamble = "\n <br> <br> Using the above information, answer the following in detail: <br> <br> "
+        questions = '\n'.join([f'{idx+1}. {q}' for idx, q in 
+                            enumerate(data_row['narrative_questions'])])
+
+    if method == 'essel':
+        data_row['input'] = essel_input + preamble + questions
+    elif method == 'ord_first':
+        data_row['input'] = ord_first_input + preamble + questions
+    elif method == 'ft_first':
+        data_row['input'] = ft_first_input + preamble + questions
+    else:
+        raise ValueError('method must be one of essel, ord_first or ft_first')
+
+    return data_row
+
