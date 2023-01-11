@@ -172,24 +172,23 @@ def main():
                    'bleu': bleu_results['bleu'],
                    'meteor': meteor_results['meteor']}
         
-        # Results by narr_q_label_group
-        for grp in set(dataset['test']['narr_q_label_group']):
-            grp_data = dataset['test'][dataset['test']['narr_q_label_group'] == grp]['narration']
-            grp_data = grp_data if type(grp_data) == list else [grp_data]
-            grp_all_preds = all_preds[dataset['test']['narr_q_label_group'] == grp]
-            grp_all_preds = grp_all_preds if type(grp_all_preds) == list else [grp_all_preds]
-            grp_bleurt_results = bleurt.compute(predictions=grp_all_preds, 
-                                            references=grp_data)
-            grp_bleu_results = bleu.compute(predictions=grp_all_preds, 
-                                        references=[[r] for r in grp_data])
-            grp_meteor_results = meteor.compute(predictions=grp_all_preds, 
+        if args['simplify_narr_qs']:
+            # Results by narr_q_label_group
+            for grp in set(dataset['test']['narr_q_label_group']):
+                grp_data = dataset['test'][dataset['test']['narr_q_label_group'] == grp]['narration']
+                grp_data = grp_data if type(grp_data) == list else [grp_data]
+                grp_all_preds = all_preds[dataset['test']['narr_q_label_group'] == grp]
+                grp_all_preds = grp_all_preds if type(grp_all_preds) == list else [grp_all_preds]
+                grp_bleurt_results = bleurt.compute(predictions=grp_all_preds, 
+                                                references=grp_data)
+                grp_bleu_results = bleu.compute(predictions=grp_all_preds, 
                                             references=[[r] for r in grp_data])
-            results[f'bleurt_{grp}'] = np.mean(grp_bleurt_results['scores'])
-            results[f'bleu_{grp}'] = grp_bleu_results['bleu']
-            results[f'meteor_{grp}'] = grp_meteor_results['meteor']
+                grp_meteor_results = meteor.compute(predictions=grp_all_preds, 
+                                                references=[[r] for r in grp_data])
+                results[f'bleurt_{grp}'] = np.mean(grp_bleurt_results['scores'])
+                results[f'bleu_{grp}'] = grp_bleu_results['bleu']
+                results[f'meteor_{grp}'] = grp_meteor_results['meteor']
             
-
-        
         # Save the predictions
         readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
         print(f'Saving predictions to {output_dir}')

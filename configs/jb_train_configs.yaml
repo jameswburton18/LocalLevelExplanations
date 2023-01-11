@@ -410,7 +410,7 @@ config: essel_7
 fast_dev_run: false
 tags:
  - t5-base
- - simplify_qs
+ - simplify_ft_names
 batch_size: 4
 linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
@@ -422,7 +422,7 @@ config: ord_first_7
 fast_dev_run: false
 tags:
  - t5-base
- - simplify_qs
+ - simplify_ft_names
 batch_size: 4
 linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
@@ -434,20 +434,89 @@ config: ft_first_7
 fast_dev_run: false
 tags:
  - t5-base
- - simplify_qs
+ - simplify_ft_names
 batch_size: 4
 linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 simplify_ft_names: true
 predict_batch_size: 2
 
+--- # ESSEL 7
+config: essel_7
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_ft_names
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_ft_names: true
+predict_batch_size: 2
+
+--- # ord first 7
+config: ord_first_7
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_ft_names
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_ft_names: true
+predict_batch_size: 2
+
+--- # ft first 7
+config: ft_first_7
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_ft_names
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_ft_names: true
+predict_batch_size: 2
+
+--- # ESSEL 8
+config: essel_8
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_qs
+batch_size: 4
+linearisation: essel # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_narr_qs: true
+predict_batch_size: 2
+
+--- # ord first 8
+config: ord_first_8
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_qs
+batch_size: 4
+linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_narr_qs: true
+predict_batch_size: 2
+
+--- # ft first 8
+config: ft_first_8
+fast_dev_run: false
+tags:
+ - t5-base
+ - simplify_narr_qs
+batch_size: 4
+linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+simplify_narr_qs: true
+predict_batch_size: 2
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
 tags:
- - flan-t5
+ - t5-base
 batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: google/flan-t5-base
 simplify_narr_qs: true
-output_root: models/flan-t5/
