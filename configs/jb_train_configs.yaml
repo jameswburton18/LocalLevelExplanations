@@ -517,6 +517,7 @@ predict_batch_size: 2
 config: essel_9
 fast_dev_run: false
 tags:
+ - input_size_fix
  - t5-base
  - simplify_qs
 batch_size: 4
@@ -524,12 +525,14 @@ linearisation: essel # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 simplify_narr_qs: true
 max_features: 35
+max_input_len: 500
 predict_batch_size: 2
 
 --- # ord first 9
 config: ord_first_9
 fast_dev_run: false
 tags:
+ - input_size_fix
  - t5-base
  - simplify_qs
 batch_size: 4
@@ -537,12 +540,14 @@ linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 simplify_narr_qs: true
 max_features: 35
+max_input_len: 500
 predict_batch_size: 2
 
 --- # ft first 9
 config: ft_first_9
 fast_dev_run: false
 tags:
+ - input_size_fix
  - t5-base
  - simplify_qs
 batch_size: 4
@@ -550,6 +555,7 @@ linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
 simplify_narr_qs: true
 max_features: 35
+max_input_len: 500
 predict_batch_size: 2
 
 --- # ESSEL test
