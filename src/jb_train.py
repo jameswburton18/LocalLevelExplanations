@@ -33,7 +33,8 @@ def main():
     if config_type != 'default':
         with open('configs/jb_train_configs.yaml') as f:
             yaml_configs = yaml.safe_load_all(f)
-            yaml_args = next(conf for conf in yaml_configs if conf['config'] == config_type)
+            yaml_args = next(
+                conf for conf in yaml_configs if conf['config'] == config_type)
         args.update(yaml_args)
         print(f'Updating with:\n{yaml_args}\n')
     print(f'\n{args}\n')
@@ -127,7 +128,8 @@ def main():
         tokenizer=tokenizer,
         train_dataset=dataset['train'],
         eval_dataset=dataset['validation'],
-        callbacks=[EarlyStoppingCallback(args['early_stopping_patience'])] if args['early_stopping_patience'] > 0 else []
+        callbacks=[EarlyStoppingCallback(
+            args['early_stopping_patience'])] if args['early_stopping_patience'] > 0 else []
     )
 
     # Train model
@@ -159,36 +161,52 @@ def main():
         
         # Evaluate the predictions
         bleurt = load('bleurt',checkpoint="bleurt-base-512")
-        bleurt_results = bleurt.compute(predictions=all_preds, 
-                                        references=dataset['test']['narration'])
         bleu = load('bleu')
-        bleu_results = bleu.compute(predictions=all_preds, 
-                                    references=[[r] for r in dataset['test']['narration']])
         meteor = load('meteor')
-        meteor_results = meteor.compute(predictions=all_preds, 
-                                        references=[[r] for r in dataset['test']['narration']])
-        # Log the results
-        results = {'bleurt': np.mean(bleurt_results['scores']),
-                   'bleu': bleu_results['bleu'],
-                   'meteor': meteor_results['meteor']}
         
         if args['simplify_narr_qs']:
             # Results by narr_q_label_group
+            grp_lens = {}
+            results = {}
             for grp in set(dataset['test']['narr_q_label_group']):
-                grp_data = dataset['test'][dataset['test']['narr_q_label_group'] == grp]['narration']
-                grp_data = grp_data if type(grp_data) == list else [grp_data]
-                grp_all_preds = all_preds[dataset['test']['narr_q_label_group'] == grp]
-                grp_all_preds = grp_all_preds if type(grp_all_preds) == list else [grp_all_preds]
+                # Select only the data predictions for this group
+                grp_data = dataset['test'].filter(
+                    lambda x: x['narr_q_label_group'] == grp)['narration']
+                grp_all_preds = [p for x, p in zip(
+                    [lab_grp == grp for lab_grp in dataset['test']['narr_q_label_group']], all_preds) if x]
+                
                 grp_bleurt_results = bleurt.compute(predictions=grp_all_preds, 
                                                 references=grp_data)
                 grp_bleu_results = bleu.compute(predictions=grp_all_preds, 
                                             references=[[r] for r in grp_data])
                 grp_meteor_results = meteor.compute(predictions=grp_all_preds, 
                                                 references=[[r] for r in grp_data])
+                grp_lens[grp] = len(grp_data)
+                
                 results[f'bleurt_{grp}'] = np.mean(grp_bleurt_results['scores'])
                 results[f'bleu_{grp}'] = grp_bleu_results['bleu']
                 results[f'meteor_{grp}'] = grp_meteor_results['meteor']
             
+            results['bleurt'] = sum(
+                [results[f'bleurt_{grp}'] * grp_lens[grp] for grp in grp_lens]) / sum(grp_lens.values())
+            results['bleu'] = sum(
+                [results[f'bleu_{grp}'] * grp_lens[grp] for grp in grp_lens]) / sum(grp_lens.values())
+            results['meteor'] = sum(
+                [results[f'meteor_{grp}'] * grp_lens[grp] for grp in grp_lens]) / sum(grp_lens.values())
+        
+        else:
+            bleurt_results = bleurt.compute(predictions=all_preds,
+                                            references=dataset['test']['narration'])
+            bleu_results = bleu.compute(predictions=all_preds,
+                                        references=[[r] for r in dataset['test']['narration']])
+            meteor_results = meteor.compute(predictions=all_preds,
+                                            references=[[r] for r in dataset['test']['narration']])
+            # Log the results
+            results = {'bleurt': np.mean(bleurt_results['scores']),
+                    'bleu': bleu_results['bleu'],
+                    'meteor': meteor_results['meteor']}
+        
+        
         # Save the predictions
         readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
         print(f'Saving predictions to {output_dir}')
