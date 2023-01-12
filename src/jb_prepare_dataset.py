@@ -67,7 +67,6 @@ for i in range(len(all)):
 # no_task = prepare_all(no_task)
 json.dump(all, open('jb_data/all.json', 'w', encoding='utf-8'), indent=4)
 
-# This second part of the code is to create the augmented datasets
 # Split into train, test, val 80:10:10
 random.shuffle(all)
 train = all[:int(0.8*len(all))]
@@ -77,6 +76,9 @@ val = all[int(0.9*len(all)):]
 json.dump(train, open('jb_data/train.json', 'w', encoding='utf-8'), indent=4)
 json.dump(test, open('jb_data/test.json', 'w', encoding='utf-8'), indent=4)
 json.dump(val, open('jb_data/val.json', 'w', encoding='utf-8'), indent=4)
+
+
+# This second part of the code is to create the augmented datasets
 random.seed(2)
 
 for ds in ['train', 'val']:
