@@ -21,7 +21,8 @@ def linearise_input(data_row, method, max_fts=15, data_only=False):
     negl_fts = "& ".join([f'{a} ' for a, b in zip(data_row['feature_nums'], sign) if b == 'null'])
     negl_fts = 'None' if negl_fts == '' else negl_fts
 
-    essel_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} | features | {fts}| postive features | {pos_fts} | negative features | {nega_fts} | negligible features | {negl_fts} |'
+    essel_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} '\
+        f'| features | {fts}| postive features | {pos_fts} | negative features | {nega_fts} | negligible features | {negl_fts} |'
 
     p = inflect.engine()
 
@@ -35,6 +36,16 @@ def linearise_input(data_row, method, max_fts=15, data_only=False):
     ord_first_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} {ord_first_fts} |'
 
     ft_first_input = f'| predicted class | {chosen_class} {classes_dict[chosen_class]} | other classes | {other_classes} {ft_first_fts} |'
+    
+    #### Text input
+    text_negl_fts = data_row['feature_nums'][-5:]
+    text_input = f'Predicted class is {chosen_class}, value of {classes_dict[chosen_class]}. '\
+        f'Other classes and values are {other_classes}. '\
+        f'Top features are [{commas_and_and(feature_nums)}], with values [{commas_and_and(values)}]. '\
+        f'Postive features are [{commas_and_and([f for f, s in zip(feature_nums, sign) if s == "pos"])}]. '\
+        f'Negative features are [{commas_and_and([f for f, s in zip(feature_nums, sign) if s == "neg"])}]. '\
+        f'Lowest impact features are [{commas_and_and(data_row["feature_nums"][-5:])}] with values [{commas_and_and(data_row["values"][-5:])}].'
+
 
     if data_only:
         preamble = ''
@@ -51,6 +62,8 @@ def linearise_input(data_row, method, max_fts=15, data_only=False):
         data_row['input'] = ord_first_input + preamble + questions
     elif method == 'ft_first':
         data_row['input'] = ft_first_input + preamble + questions
+    elif method == 'text':
+        data_row['input'] = text_input
     else:
         raise ValueError('method must be one of essel, ord_first or ft_first')
 
@@ -127,42 +140,42 @@ def label_qs(row):
     row['narr_q_label_group'] = grouping[label]
     return row
 
+def commas_and_and(fts_list):
+    if len(fts_list) == 0:
+        return ' '
+    elif len(fts_list) == 1:
+        return fts_list[0]
+    elif len(fts_list) == 2:
+        return f'{fts_list[0]} and {fts_list[1]}'
+    else:
+        return f'{", ".join(fts_list[:-1])}, and {fts_list[-1]}'
+
 def simplify_narr_question(row):
     label = row['narr_q_label']
     reg = re.compile(r'F\d+')
     mentioned_fts = [reg.findall(n) for n in row['narrative_questions']]
     q1 = "Summarise the prediction."
     
-    def _commas_and_and(fts_list):
-        if len(fts_list) == 0:
-            return ' '
-        elif len(fts_list) == 1:
-            return fts_list[0]
-        elif len(fts_list) == 2:
-            return f'{fts_list[0]} and {fts_list[1]}'
-        else:
-            return f'{", ".join(fts_list[:-1])}, and {fts_list[-1]}'
-    
     if label in ['A', 'B', 'C', 'D']:
         q2 = 'Summarise the top features.'
     elif label == 'E':
-        q2 = f'Summarise these top features ({_commas_and_and(mentioned_fts[2])}).'
+        q2 = f'Summarise these top features ({commas_and_and(mentioned_fts[2])}).'
     else: # label in ['F', 'G', 'H']
-        q2 = f'Summarise these top features ({_commas_and_and(mentioned_fts[1])}).'
+        q2 = f'Summarise these top features ({commas_and_and(mentioned_fts[1])}).'
         
     if label in ['A', 'B', 'C', 'F', 'G', 'H']:
-        q3 = f'Summarise these moderate features ({_commas_and_and(mentioned_fts[2])}).'
+        q3 = f'Summarise these moderate features ({commas_and_and(mentioned_fts[2])}).'
     elif label ==  'D':
         q3 = '' # Ds have no q3 
     else: # label ==  'E'
-        q3 = f'Summarise these moderate features ({_commas_and_and(mentioned_fts[3])}).'
+        q3 = f'Summarise these moderate features ({commas_and_and(mentioned_fts[3])}).'
     
     if label in ['A', 'B']:
         q4 = ''
     elif label in ['C', 'D', 'E']:
         q4 = f'Summarise the negligible features.'
     else: # label in ['F', 'G', 'H']
-        q4 = f'Summarise these negligible features ({_commas_and_and(mentioned_fts[3])}).'
+        q4 = f'Summarise these negligible features ({commas_and_and(mentioned_fts[3])}).'
         
     row['original_narrative_questions'] = row['narrative_questions']
     row['narrative_questions'] = [q1, q2, q3, q4]
