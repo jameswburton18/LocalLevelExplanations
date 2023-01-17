@@ -561,6 +561,7 @@ predict_batch_size: 2
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
+do_train: false
 tags:
  - t5-base
 batch_size: 4
