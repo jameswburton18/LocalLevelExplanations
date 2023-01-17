@@ -83,8 +83,7 @@ def form_qa_input_output(data_row, method, max_fts=15):
     # Linearising the data
     data_row = linearise_input(data_row, method=method, max_fts=max_fts, data_only=True)
     # Preamble
-    preamble = "\n <br> <br> Using the above information, answer the following \
-        question: <br> <br> "
+    preamble = " Answer the following question: "
     
     data_row['input'] = data_row['input'] + preamble + data_row['question']
     data_row['narration'] = data_row['answer']
@@ -92,14 +91,17 @@ def form_qa_input_output(data_row, method, max_fts=15):
 
 def convert_to_features(batch, tokenizer, max_input_length=400, max_output_length=350):
     if type(batch['input'][0]) == list:
-        input_encodings = [tokenizer(i, padding="max_length", truncation=True, max_length=max_input_length) for i in batch['input']]
+        # input_encodings = [tokenizer(i, padding="max_length", truncation=True, max_length=max_input_length) for i in batch['input']]
+        input_encodings = [tokenizer(i, padding=True, truncation=True) for i in batch['input']]
         input_ids = [i['input_ids'] for i in input_encodings]
         attention_mask = [i['attention_mask'] for i in input_encodings]
     else:
-        input_encodings = tokenizer(batch['input'], padding="max_length", truncation=True, max_length=max_input_length)
+        # input_encodings = tokenizer(batch['input'], padding="max_length", truncation=True, max_length=max_input_length)
+        input_encodings = tokenizer(batch['input'], padding=True, truncation=True)
         input_ids = input_encodings['input_ids']
         attention_mask = input_encodings['attention_mask']
-    target_encodings = tokenizer(batch['narration'], padding="max_length", truncation=True, max_length=max_output_length)
+    # target_encodings = tokenizer(batch['narration'], padding="max_length", truncation=True, max_length=max_output_length)
+    target_encodings = tokenizer(batch['narration'], padding=True, truncation=True)
     encodings = {
         'input_ids': input_ids,
         'attention_mask': attention_mask,

@@ -2,6 +2,7 @@ import numpy as np
 import json
 import random
 import inflect
+from tqdm import tqdm
 
 def create_classes_dict():
     sign_dict = {1: 'positive', -1: 'negative', 0: 'negligible'}
@@ -66,18 +67,82 @@ def question_generator(dict, i=None):
     
     return dict
 
-random.seed(77)
-qa_data = [question_generator(create_classes_dict(),i) for i in range(30000)]
-# Split into train, test, val 80:10:10
-random.shuffle(qa_data)
-train = qa_data[:int(0.8*len(qa_data))]
-test = qa_data[int(0.8*len(qa_data)):int(0.9*len(qa_data))]
-val = qa_data[int(0.9*len(qa_data)):]
+def question_generator_hard(dict, i=None):
+    '''
+    1) Of top x features, which are positive?
+    2) Of top x features, which are negative?
+    3) Of these features [list], which are support the prediction?
+    4) Of these features [list], which are against the prediction?
+    5) What is the value of FX?
+    '''
+    # 1) Of top x features, which are positive?
+    x = random.randint(2,5)
+    top_x_fts = dict['feature_nums'][:x]
+    q1 = f'Of the top {x} features, which are positive?'
+    a1 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'positive'])
+    
+    # 2) Of top x features, which are negative?
+    x = random.randint(2,5)
+    top_x_fts = dict['feature_nums'][:x]
+    q2 = f'Of the top {x} features, which are negative?'
+    a2 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'negative'])
+    
+    # 3) Of these features [list], which are support the prediction?
+    x = random.randint(2,5)
+    top_x_fts = dict['feature_nums'][:x]
+    q3 = f'Of these features [{", ".join(top_x_fts)}], which support the prediction?'
+    a3 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'positive'])
+    
+    # 4) Of these features [list], which are against the prediction?
+    x = random.randint(2,5)
+    top_x_fts = dict['feature_nums'][:x]
+    q4 = f'Of these features [{", ".join(top_x_fts)}], which are against the prediction?'
+    a4 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'negative'])
+    
+    # 5) What is the value of FX?
+    choice = random.randint(0,len(dict['feature_nums'])-1)
+    feat = dict['feature_nums'][choice]
+    q5 = f'What is the value of {feat}?'
+    a5 = dict['values'][choice]
+    
+    
+    q_a_choice = random.randint(0,4)
+    dict['question'] = [q1, q2, q3, q4, q5][q_a_choice]
+    dict['answer'] = [a1, a2, a3, a4, a5][q_a_choice]
+    dict['question_id'] = q_a_choice
+    
+    if i is not None:
+        dict['id'] = i
+        
+    return dict
 
-with open('jb_data/qa_train.json', 'w') as f:
-    json.dump(train, f)
-with open('jb_data/qa_test.json', 'w') as f:
-    json.dump(test, f)
-with open('jb_data/qa_val.json', 'w') as f:
-    json.dump(val, f)
+if __name__ == '__main__':
+    # random.seed(77)
+    # qa_data = [question_generator(create_classes_dict(),i) for i in range(30000)]
+    # # Split into train, test, val 80:10:10
+    # random.shuffle(qa_data)
+    # train = qa_data[:int(0.8*len(qa_data))]
+    # test = qa_data[int(0.8*len(qa_data)):int(0.9*len(qa_data))]
+    # val = qa_data[int(0.9*len(qa_data)):]
 
+    # with open('jb_data/qa_train.json', 'w') as f:
+    #     json.dump(train, f)
+    # with open('jb_data/qa_test.json', 'w') as f:
+    #     json.dump(test, f)
+    # with open('jb_data/qa_val.json', 'w') as f:
+    #     json.dump(val, f)
+
+    random.seed(77)
+    qa_data_hard = [question_generator_hard(create_classes_dict(),i) for i in tqdm(range(30000))]
+    # Split into train, test, val 80:10:10
+    random.shuffle(qa_data_hard)
+    train = qa_data_hard[:int(0.8*len(qa_data_hard))]
+    test = qa_data_hard[int(0.8*len(qa_data_hard)):int(0.9*len(qa_data_hard))]
+    val = qa_data_hard[int(0.9*len(qa_data_hard)):]
+
+    with open('jb_data/qa_train_hard.json', 'w') as f:
+        json.dump(train, f)
+    with open('jb_data/qa_test_hard.json', 'w') as f:
+        json.dump(test, f)
+    with open('jb_data/qa_val_hard.json', 'w') as f:
+        json.dump(val, f)

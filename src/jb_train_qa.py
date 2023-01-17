@@ -36,7 +36,8 @@ def main():
     model = AutoModelForSeq2SeqLM.from_pretrained(args['model_base'], return_dict=True)
     tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
 
-    dataset = load_dataset("james-burton/text-exp-qa")
+    dataset = load_dataset("james-burton/text-exp-qa") if args['version'] == 'normal' \
+        else load_dataset("james-burton/text-exp-qa-hard")
     # dataset.push_to_hub('james-burton/textual-explanations')
     dataset = dataset.map(
         lambda x: form_qa_input_output(x, args['linearisation'], args['max_features']),
@@ -165,7 +166,9 @@ def main():
         
         pred_eq_ans = [a.strip()==p.strip() for a, p in zip(dataset['test']['narration'], all_preds)]
         q_ids = dataset['test']['question_id']
-        Q_ID_DICT = {0: 'val_of_F', 1: 'FA_minus_FB', 2: 'xth_most_important', 3: 'top_x_pos', 4: 'top_x_neg'}
+        Q_ID_DICT = \
+            {0: 'val_of_F', 1: 'FA_minus_FB', 2: 'xth_most_important', 3: 'top_x_pos', 4: 'top_x_neg'} if args['version'] == 'normal' else {
+                0: 'of_top_pos', 1: 'of_top_neg', 2: 'of_these_support', 3: 'of_these_against', 4: 'val_of_F', 5: 'val_of_C'}
         # check accuracy per question id
         q_id_acc = {}
         for qid, eq in zip(q_ids, pred_eq_ans):
