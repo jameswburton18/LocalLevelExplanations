@@ -19,17 +19,24 @@ for i in range(len(all)):
         all[i]['feature_division'] = eval(all[i]['feature_division'])
     except:
         all[i]['feature_division'] = all[i]['feature_division']
-    all[i]['feature_division']['explainable_df'] = eval(all[i]['feature_division']['explainable_df'])
-    
+    all[i]['feature_division']['explainable_df'] = eval(
+        all[i]['feature_division']['explainable_df'])
+
     # Some of the fields we want are inside the feature_division dict, moving them to the top level
-    all[i]['values'] = [format(val, '.2f') for val in all[i]['feature_division']['explainable_df']['Values'].values()]
-    ft_nums =[re.search('F\d*', val).group() for val in list(all[i]['feature_division']['explainable_df']['annotate_placeholder'].values())]
-    ft_names = list(all[i]['feature_division']['explainable_df']['Variable'].values())
-    all[i]['sign'] = [sign_dict[x] for x in all[i]['feature_division']['explainable_df']['Sign'].values()]
+    all[i]['values'] = [format(val, '.2f') for val in all[i]
+                        ['feature_division']['explainable_df']['Values'].values()]
+    ft_nums = [re.search('F\d*', val).group() for val in list(
+        all[i]['feature_division']['explainable_df']['annotate_placeholder'].values())]
+    ft_names = list(all[i]['feature_division']
+                    ['explainable_df']['Variable'].values())
+    all[i]['sign'] = [sign_dict[x]
+                      for x in all[i]['feature_division']['explainable_df']['Sign'].values()]
     all[i]['narrative_id'] = all[i].pop('id')
     all[i]['unique_id'] = i
-    all[i]['classes_dict'] = {v[0].strip(): v[1].strip() for v in [y.split(':') for y in [x for x in all[i]['prediction_confidence_level'].split(',')]]}
-    all[i]['narrative_questions'] = all[i]['narrative_question'].strip('<ul><li>/ ').split(' </li> <li> ')
+    all[i]['classes_dict'] = {v[0].strip(): v[1].strip() for v in [y.split(
+        ':') for y in [x for x in all[i]['prediction_confidence_level'].split(',')]]}
+    all[i]['narrative_questions'] = all[i]['narrative_question'].strip(
+        '<ul><li>/ ').split(' </li> <li> ')
     
     # Shuffle feature names to ensure separation of train and test
     new_ft_nums = ft_nums.copy()
@@ -40,8 +47,10 @@ for i in range(len(all)):
     all[i]['feature_nums'] = new_ft_nums
     all[i]['ft_num_to_name'] = str(dict(zip(new_ft_nums, ft_names)))
     all[i]['old2new_ft_nums'] = str(old2new_ft_nums)
-    all[i]['narration'] = ft_ptn.sub(lambda m: old2new_ft_nums[re.escape(m.group(0))], all[i]['narration'])
-    all[i]['narrative_questions'] = [ft_ptn.sub(lambda m: old2new_ft_nums[re.escape(m.group(0))], x) for x in all[i]['narrative_questions']]
+    all[i]['narration'] = ft_ptn.sub(
+        lambda m: old2new_ft_nums[re.escape(m.group(0))], all[i]['narration'])
+    all[i]['narrative_questions'] = [ft_ptn.sub(lambda m: old2new_ft_nums[re.escape(
+        m.group(0))], x) for x in all[i]['narrative_questions']]
     
     # # Shuffle class names too
     new_classes = list(all[i]['classes_dict'].keys()).copy()
@@ -49,10 +58,14 @@ for i in range(len(all)):
     old2new_classes = dict(zip(list(all[i]['classes_dict'].keys()), new_classes))
     cls_ptn = re.compile("|".join([f'{k}\\b' for k in old2new_classes.keys()]))
     
-    all[i]['predicted_class'] = cls_ptn.sub(lambda m: old2new_classes[re.escape(m.group(0))], all[i]['predicted_class'])
-    all[i]['narration'] = cls_ptn.sub(lambda m: old2new_classes[re.escape(m.group(0))], all[i]['narration'])
-    all[i]['classes_dict'] = str({old2new_classes[k]: v for k, v in all[i]['classes_dict'].items()})
-    all[i]['narrative_questions'] = [cls_ptn.sub(lambda m: old2new_classes[re.escape(m.group(0))], x) for x in all[i]['narrative_questions']]
+    all[i]['predicted_class'] = cls_ptn.sub(
+        lambda m: old2new_classes[re.escape(m.group(0))], all[i]['predicted_class'])
+    all[i]['narration'] = cls_ptn.sub(
+        lambda m: old2new_classes[re.escape(m.group(0))], all[i]['narration'])
+    all[i]['classes_dict'] = str(
+        {old2new_classes[k]: v for k, v in all[i]['classes_dict'].items()})
+    all[i]['narrative_questions'] = [cls_ptn.sub(lambda m: old2new_classes[re.escape(
+        m.group(0))], x) for x in all[i]['narrative_questions']]
     all[i]['old2new_classes'] = str(old2new_classes)
 
     
@@ -100,20 +113,28 @@ for ds in ['train', 'val']:
             ft_ptn = re.compile("|".join([f'{k}\\b' for k in old_new2new_ft_nums.keys()]))
             
             new[i+j*len(original)]['feature_nums'] = new_ft_nums
-            new[i+j*len(original)]['ft_num_to_name'] = str(dict(zip(new_ft_nums, ft_names)))
+            new[i+j*len(original)
+                ]['ft_num_to_name'] = str(dict(zip(new_ft_nums, ft_names)))
             new[i+j*len(original)]['old2new_ft_nums'] = str(old2new_ft_nums)
-            new[i+j*len(original)]['narration'] = ft_ptn.sub(lambda m: old_new2new_ft_nums[re.escape(m.group(0))], new[i+j*len(original)]['narration'])
-            new[i+j*len(original)]['narrative_questions'] = [ft_ptn.sub(lambda m: old_new2new_ft_nums[re.escape(m.group(0))], x) for x in new[i+j*len(original)]['narrative_questions']]
+            new[i+j*len(original)]['narration'] = ft_ptn.sub(
+                lambda m: old_new2new_ft_nums[re.escape(m.group(0))], new[i+j*len(original)]['narration'])
+            new[i+j*len(original)]['narrative_questions'] = [ft_ptn.sub(lambda m: old_new2new_ft_nums[re.escape(m.group(0))], x)
+                                                             for x in new[i+j*len(original)]['narrative_questions']]
             
             # # Shuffle class names too
-            new[i+j*len(original)]['classes_dict'] = eval(new[i+j*len(original)]['classes_dict'])
-            new_classes = list(new[i+j*len(original)]['classes_dict'].keys()).copy()
+            new[i+j*len(original)]['classes_dict'] = eval(new[i +
+                                                              j*len(original)]['classes_dict'])
+            new_classes = list(new[i+j*len(original)]
+                               ['classes_dict'].keys()).copy()
             random.shuffle(new_classes)
             # old_new are the 'new' class names from the original train set creation
             # We maintain old2new as the original raw data classes to the newly shuffled classes
-            old_new2new_classes = dict(zip(list(eval(new[i+j*len(original)]['old2new_classes']).values()), new_classes))
-            old2new_classes = dict(zip(list(new[i+j*len(original)]['classes_dict'].keys()), new_classes))
-            cls_ptn = re.compile("|".join([f'{k}\\b' for k in old_new2new_classes.keys()]))
+            old_new2new_classes = dict(
+                zip(list(eval(new[i+j*len(original)]['old2new_classes']).values()), new_classes))
+            old2new_classes = dict(
+                zip(list(new[i+j*len(original)]['classes_dict'].keys()), new_classes))
+            cls_ptn = re.compile(
+                "|".join([f'{k}\\b' for k in old_new2new_classes.keys()]))
             
             new[i+j*len(original)]['predicted_class'] = cls_ptn.sub(lambda m: old_new2new_classes[re.escape(m.group(0))], new[i+j*len(original)]['predicted_class'])
             new[i+j*len(original)]['narration'] = cls_ptn.sub(lambda m: old_new2new_classes[re.escape(m.group(0))], new[i+j*len(original)]['narration'])
