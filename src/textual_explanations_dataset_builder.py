@@ -12,6 +12,15 @@ DESCRIPTION = """\
     selection of machine learning models; there are 40 different tasks and 9 
     different models that were used. Anonymised and randomised feature names were
     used to ensure that there is no data leakage.
+    
+    There are several features that are dictionaries
+    that have been stored as strings as the keys for said diciotnaries are not the same 
+    across all examples. These features are:
+        - classes_dict
+        - ft_num2name
+        - old2new_ft_nums
+        - old2new_classes
+        - class2name
     """
     
 
@@ -37,7 +46,6 @@ class TextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
         super().__init__()
     
     def _info(self):
-        # classes_dict is a dictionary
         return datasets.DatasetInfo(
             description=DESCRIPTION,
             features=datasets.Features(
@@ -53,9 +61,11 @@ class TextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
                     "classes_dict": datasets.Value("string"),
                     "narrative_questions": datasets.Sequence(datasets.Value("string")),
                     "feature_nums": datasets.Sequence(datasets.Value("string")),
-                    "ft_num_to_name": datasets.Value("string"),
+                    "ft_num2name": datasets.Value("string"),
                     "old2new_ft_nums": datasets.Value("string"),
                     "old2new_classes": datasets.Value("string"),
+                    "predicted_class_label": datasets.Value("string"),
+                    "class2name": datasets.Value("string"),
                 }
             ),
             supervised_keys=None,
@@ -90,9 +100,11 @@ class TextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
                     "classes_dict": row["classes_dict"],
                     "narrative_questions": row["narrative_questions"],
                     "feature_nums": row["feature_nums"],
-                    "ft_num_to_name": row["ft_num_to_name"],
+                    "ft_num2name": row["ft_num2name"],
                     "old2new_ft_nums": row["old2new_ft_nums"],
                     "old2new_classes": row["old2new_classes"],
+                    "predicted_class_label": row["predicted_class_label"],
+                    "class2name": row["class2name"],
                 }
 
 if __name__ == "__main__":
