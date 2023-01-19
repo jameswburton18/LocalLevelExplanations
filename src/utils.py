@@ -240,3 +240,10 @@ def old_linearise_input(data_row, method, max_fts=15, data_only=False):
 
     return data_row
 
+def nums_to_names(narration, class2name_dict, ft_num2name_dict):
+    """Converts feature numbers to names"""
+    cls_ptn = re.compile("|".join([f'{k}\\b' for k in class2name_dict.keys() if k != None]))
+    narr = cls_ptn.sub(lambda x: f'\"{class2name_dict[x.group()]}\"', narration)
+    ft_ptn = re.compile("|".join([f'{k}\\b' for k in ft_num2name_dict.keys()]))
+    narr = ft_ptn.sub(lambda x: ft_num2name_dict[x.group()], narr)
+    return narr
