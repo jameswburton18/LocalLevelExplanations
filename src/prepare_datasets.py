@@ -334,6 +334,6 @@ def prepare_qa_dataset_hard():
 
 if __name__ == "__main__":
     prepare_dataset()
-    # prepare_aug_dataset()
-    # prepare_qa_dataset()
-    # prepare_qa_dataset_hard()
+    prepare_aug_dataset()
+    prepare_qa_dataset()
+    prepare_qa_dataset_hard()
