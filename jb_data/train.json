@@ -3694,7 +3694,7 @@
         "ft_num2name": "{'F14': 'incident_severity', 'F7': 'insured_hobbies', 'F17': 'authorities_contacted', 'F18': 'insured_education_level', 'F15': 'umbrella_limit', 'F24': 'insured_relationship', 'F32': 'auto_make', 'F30': 'insured_occupation', 'F10': 'capital-gains', 'F6': 'policy_deductable', 'F1': 'policy_state', 'F12': 'auto_year', 'F20': 'insured_sex', 'F27': 'vehicle_claim', 'F2': 'incident_city', 'F11': 'number_of_vehicles_involved', 'F16': 'insured_zip', 'F28': 'injury_claim', 'F13': 'property_claim', 'F33': 'incident_type', 'F4': 'total_claim_amount', 'F3': 'police_report_available', 'F8': 'property_damage', 'F9': 'incident_state', 'F19': 'policy_annual_premium', 'F31': 'incident_hour_of_the_day', 'F5': 'collision_type', 'F22': 'capital-loss', 'F21': 'bodily_injuries', 'F26': 'policy_csl', 'F29': 'witnesses', 'F23': 'age', 'F25': 'months_as_customer'}",
         "old2new_ft_nums": "{'F27': 'F14', 'F23': 'F7', 'F28': 'F17', 'F21': 'F18', 'F5': 'F15', 'F24': 'F24', 'F33': 'F32', 'F22': 'F30', 'F7': 'F10', 'F3': 'F6', 'F18': 'F1', 'F17': 'F12', 'F20': 'F20', 'F16': 'F27', 'F30': 'F2', 'F10': 'F11', 'F6': 'F16', 'F14': 'F28', 'F15': 'F13', 'F25': 'F33', 'F13': 'F4', 'F32': 'F3', 'F31': 'F8', 'F29': 'F9', 'F4': 'F19', 'F9': 'F31', 'F26': 'F5', 'F8': 'F22', 'F11': 'F21', 'F19': 'F26', 'F12': 'F29', 'F2': 'F23', 'F1': 'F25'}",
         "old2new_classes": "{'C1': 'C1', 'C2': 'C2'}",
-        "class2name": "{'C1': 'Fraud', 'C2': 'Fraud'}"
+        "class2name": "{'C1': 'Not Fraud', 'C2': 'Fraud'}"
     },
     {
         "model_name": "GradientBoostingClassifier",
@@ -5159,7 +5159,7 @@
         "ft_num2name": "{'F8': 'incident_severity', 'F25': 'insured_hobbies', 'F9': 'insured_relationship', 'F2': 'umbrella_limit', 'F27': 'insured_education_level', 'F7': 'authorities_contacted', 'F24': 'incident_type', 'F3': 'policy_csl', 'F31': 'number_of_vehicles_involved', 'F5': 'capital-loss', 'F32': 'property_damage', 'F22': 'insured_occupation', 'F23': 'age', 'F18': 'incident_state', 'F21': 'insured_zip', 'F4': 'collision_type', 'F1': 'property_claim', 'F13': 'injury_claim', 'F33': 'capital-gains', 'F19': 'witnesses', 'F10': 'incident_city', 'F20': 'police_report_available', 'F26': 'months_as_customer', 'F28': 'auto_year', 'F6': 'insured_sex', 'F14': 'policy_state', 'F29': 'vehicle_claim', 'F15': 'total_claim_amount', 'F17': 'bodily_injuries', 'F16': 'incident_hour_of_the_day', 'F12': 'policy_annual_premium', 'F11': 'policy_deductable', 'F30': 'auto_make'}",
         "old2new_ft_nums": "{'F27': 'F8', 'F23': 'F25', 'F24': 'F9', 'F5': 'F2', 'F21': 'F27', 'F28': 'F7', 'F25': 'F24', 'F19': 'F3', 'F10': 'F31', 'F8': 'F5', 'F31': 'F32', 'F22': 'F22', 'F2': 'F23', 'F29': 'F18', 'F6': 'F21', 'F26': 'F4', 'F15': 'F1', 'F14': 'F13', 'F7': 'F33', 'F12': 'F19', 'F30': 'F10', 'F32': 'F20', 'F1': 'F26', 'F17': 'F28', 'F20': 'F6', 'F18': 'F14', 'F16': 'F29', 'F13': 'F15', 'F11': 'F17', 'F9': 'F16', 'F4': 'F12', 'F3': 'F11', 'F33': 'F30'}",
         "old2new_classes": "{'C1': 'C1', 'C2': 'C2'}",
-        "class2name": "{'C1': 'Fraud', 'C2': 'Fraud'}"
+        "class2name": "{'C1': 'Not Fraud', 'C2': 'Fraud'}"
     },
     {
         "model_name": "RandomForestClassifier",
@@ -6833,7 +6833,7 @@
         "ft_num2name": "{'F11': 'incident_severity', 'F16': 'insured_relationship', 'F6': 'authorities_contacted', 'F22': 'vehicle_claim', 'F27': 'umbrella_limit', 'F25': 'insured_hobbies', 'F32': 'incident_type', 'F29': 'policy_deductable', 'F26': 'auto_make', 'F17': 'number_of_vehicles_involved', 'F1': 'insured_occupation', 'F12': 'property_damage', 'F15': 'incident_state', 'F28': 'auto_year', 'F7': 'capital-loss', 'F13': 'policy_csl', 'F8': 'collision_type', 'F4': 'capital-gains', 'F30': 'property_claim', 'F5': 'incident_hour_of_the_day', 'F24': 'police_report_available', 'F18': 'policy_annual_premium', 'F31': 'incident_city', 'F19': 'insured_zip', 'F3': 'bodily_injuries', 'F2': 'injury_claim', 'F20': 'witnesses', 'F23': 'total_claim_amount', 'F10': 'insured_education_level', 'F14': 'insured_sex', 'F21': 'policy_state', 'F33': 'age', 'F9': 'months_as_customer'}",
         "old2new_ft_nums": "{'F27': 'F11', 'F24': 'F16', 'F28': 'F6', 'F16': 'F22', 'F5': 'F27', 'F23': 'F25', 'F25': 'F32', 'F3': 'F29', 'F33': 'F26', 'F10': 'F17', 'F22': 'F1', 'F31': 'F12', 'F29': 'F15', 'F17': 'F28', 'F8': 'F7', 'F19': 'F13', 'F26': 'F8', 'F7': 'F4', 'F15': 'F30', 'F9': 'F5', 'F32': 'F24', 'F4': 'F18', 'F30': 'F31', 'F6': 'F19', 'F11': 'F3', 'F14': 'F2', 'F12': 'F20', 'F13': 'F23', 'F21': 'F10', 'F20': 'F14', 'F18': 'F21', 'F2': 'F33', 'F1': 'F9'}",
         "old2new_classes": "{'C1': 'C1', 'C2': 'C2'}",
-        "class2name": "{'C1': 'Fraud', 'C2': 'Fraud'}"
+        "class2name": "{'C1': 'Not Fraud', 'C2': 'Fraud'}"
     },
     {
         "model_name": "SVC",
@@ -7587,7 +7587,7 @@
         "ft_num2name": "{'F9': 'incident_severity', 'F20': 'insured_hobbies', 'F2': 'insured_occupation', 'F22': 'umbrella_limit', 'F12': 'policy_csl', 'F1': 'authorities_contacted', 'F21': 'insured_education_level', 'F17': 'collision_type', 'F28': 'months_as_customer', 'F15': 'vehicle_claim', 'F18': 'insured_relationship', 'F13': 'capital-gains', 'F5': 'auto_make', 'F19': 'injury_claim', 'F7': 'incident_city', 'F27': 'insured_sex', 'F29': 'number_of_vehicles_involved', 'F24': 'incident_hour_of_the_day', 'F14': 'age', 'F4': 'property_claim', 'F33': 'policy_annual_premium', 'F23': 'police_report_available', 'F32': 'property_damage', 'F6': 'incident_state', 'F16': 'policy_deductable', 'F31': 'capital-loss', 'F25': 'insured_zip', 'F11': 'incident_type', 'F8': 'bodily_injuries', 'F10': 'witnesses', 'F26': 'policy_state', 'F3': 'total_claim_amount', 'F30': 'auto_year'}",
         "old2new_ft_nums": "{'F27': 'F9', 'F23': 'F20', 'F22': 'F2', 'F5': 'F22', 'F19': 'F12', 'F28': 'F1', 'F21': 'F21', 'F26': 'F17', 'F1': 'F28', 'F16': 'F15', 'F24': 'F18', 'F7': 'F13', 'F33': 'F5', 'F14': 'F19', 'F30': 'F7', 'F20': 'F27', 'F10': 'F29', 'F9': 'F24', 'F2': 'F14', 'F15': 'F4', 'F4': 'F33', 'F32': 'F23', 'F31': 'F32', 'F29': 'F6', 'F3': 'F16', 'F8': 'F31', 'F6': 'F25', 'F25': 'F11', 'F11': 'F8', 'F12': 'F10', 'F18': 'F26', 'F13': 'F3', 'F17': 'F30'}",
         "old2new_classes": "{'C2': 'C1', 'C1': 'C2'}",
-        "class2name": "{'C1': 'Fraud', 'C2': 'Fraud'}"
+        "class2name": "{'C1': 'Fraud', 'C2': 'Not Fraud'}"
     },
     {
         "model_name": "SVM_linear",
@@ -10448,7 +10448,7 @@
         "ft_num2name": "{'F30': 'incident_severity', 'F5': 'incident_city', 'F33': 'injury_claim', 'F10': 'insured_occupation', 'F11': 'insured_zip', 'F9': 'authorities_contacted', 'F6': 'auto_year', 'F25': 'police_report_available', 'F12': 'bodily_injuries', 'F15': 'insured_hobbies', 'F27': 'insured_sex', 'F1': 'auto_make', 'F24': 'property_damage', 'F31': 'witnesses', 'F22': 'insured_relationship', 'F7': 'age', 'F32': 'vehicle_claim', 'F4': 'months_as_customer', 'F20': 'property_claim', 'F18': 'incident_type', 'F23': 'capital-gains', 'F14': 'policy_deductable', 'F19': 'policy_annual_premium', 'F28': 'incident_state', 'F29': 'umbrella_limit', 'F26': 'total_claim_amount', 'F13': 'collision_type', 'F2': 'incident_hour_of_the_day', 'F16': 'insured_education_level', 'F17': 'number_of_vehicles_involved', 'F3': 'policy_csl', 'F8': 'policy_state', 'F21': 'capital-loss'}",
         "old2new_ft_nums": "{'F27': 'F30', 'F30': 'F5', 'F14': 'F33', 'F22': 'F10', 'F6': 'F11', 'F28': 'F9', 'F17': 'F6', 'F32': 'F25', 'F11': 'F12', 'F23': 'F15', 'F20': 'F27', 'F33': 'F1', 'F31': 'F24', 'F12': 'F31', 'F24': 'F22', 'F2': 'F7', 'F16': 'F32', 'F1': 'F4', 'F15': 'F20', 'F25': 'F18', 'F7': 'F23', 'F3': 'F14', 'F4': 'F19', 'F29': 'F28', 'F5': 'F29', 'F13': 'F26', 'F26': 'F13', 'F9': 'F2', 'F21': 'F16', 'F10': 'F17', 'F19': 'F3', 'F18': 'F8', 'F8': 'F21'}",
         "old2new_classes": "{'C1': 'C1', 'C2': 'C2'}",
-        "class2name": "{'C1': 'Fraud', 'C2': 'Fraud'}"
+        "class2name": "{'C1': 'Not Fraud', 'C2': 'Fraud'}"
     },
     {
         "model_name": "KNeighborsClassifier",
@@ -14620,7 +14620,7 @@
         "ft_num2name": "{'F7': 'insured_hobbies', 'F15': 'incident_severity', 'F8': 'auto_make', 'F16': 'number_of_vehicles_involved', 'F1': 'insured_education_level', 'F2': 'collision_type', 'F5': 'insured_occupation', 'F21': 'incident_city', 'F28': 'incident_type', 'F23': 'auto_year', 'F9': 'insured_relationship', 'F20': 'authorities_contacted', 'F17': 'witnesses', 'F26': 'bodily_injuries', 'F19': 'umbrella_limit', 'F30': 'policy_csl', 'F24': 'insured_sex', 'F3': 'injury_claim', 'F27': 'policy_deductable', 'F14': 'total_claim_amount', 'F10': 'police_report_available', 'F33': 'property_damage', 'F25': 'incident_state', 'F13': 'policy_annual_premium', 'F4': 'capital-loss', 'F11': 'insured_zip', 'F18': 'capital-gains', 'F12': 'incident_hour_of_the_day', 'F29': 'policy_state', 'F22': 'age', 'F31': 'vehicle_claim', 'F6': 'property_claim', 'F32': 'months_as_customer'}",
         "old2new_ft_nums": "{'F23': 'F7', 'F27': 'F15', 'F33': 'F8', 'F10': 'F16', 'F21': 'F1', 'F26': 'F2', 'F22': 'F5', 'F30': 'F21', 'F25': 'F28', 'F17': 'F23', 'F24': 'F9', 'F28': 'F20', 'F12': 'F17', 'F11': 'F26', 'F5': 'F19', 'F19': 'F30', 'F20': 'F24', 'F14': 'F3', 'F3': 'F27', 'F13': 'F14', 'F32': 'F10', 'F31': 'F33', 'F29': 'F25', 'F4': 'F13', 'F8': 'F4', 'F6': 'F11', 'F7': 'F18', 'F9': 'F12', 'F18': 'F29', 'F2': 'F22', 'F16': 'F31', 'F15': 'F6', 'F1': 'F32'}",
         "old2new_classes": "{'C1': 'C2', 'C2': 'C1'}",
-        "class2name": "{'C2': 'Fraud', 'C1': 'Fraud'}"
+        "class2name": "{'C2': 'Not Fraud', 'C1': 'Fraud'}"
     },
     {
         "model_name": "GradientBoostingClassifier",
@@ -15658,7 +15658,7 @@
         "ft_num2name": "{'F9': 'incident_severity', 'F24': 'insured_relationship', 'F6': 'authorities_contacted', 'F14': 'vehicle_claim', 'F30': 'umbrella_limit', 'F22': 'insured_hobbies', 'F3': 'incident_type', 'F11': 'policy_deductable', 'F18': 'auto_make', 'F23': 'number_of_vehicles_involved', 'F33': 'insured_occupation', 'F16': 'property_damage', 'F29': 'incident_state', 'F20': 'auto_year', 'F15': 'capital-loss', 'F28': 'policy_csl', 'F25': 'collision_type', 'F13': 'capital-gains', 'F21': 'property_claim', 'F8': 'incident_hour_of_the_day', 'F12': 'police_report_available', 'F31': 'policy_annual_premium', 'F19': 'incident_city', 'F5': 'insured_zip', 'F7': 'bodily_injuries', 'F4': 'injury_claim', 'F2': 'witnesses', 'F1': 'total_claim_amount', 'F27': 'insured_education_level', 'F32': 'insured_sex', 'F26': 'policy_state', 'F17': 'age', 'F10': 'months_as_customer'}",
         "old2new_ft_nums": "{'F27': 'F9', 'F24': 'F24', 'F28': 'F6', 'F16': 'F14', 'F5': 'F30', 'F23': 'F22', 'F25': 'F3', 'F3': 'F11', 'F33': 'F18', 'F10': 'F23', 'F22': 'F33', 'F31': 'F16', 'F29': 'F29', 'F17': 'F20', 'F8': 'F15', 'F19': 'F28', 'F26': 'F25', 'F7': 'F13', 'F15': 'F21', 'F9': 'F8', 'F32': 'F12', 'F4': 'F31', 'F30': 'F19', 'F6': 'F5', 'F11': 'F7', 'F14': 'F4', 'F12': 'F2', 'F13': 'F1', 'F21': 'F27', 'F20': 'F32', 'F18': 'F26', 'F2': 'F17', 'F1': 'F10'}",
         "old2new_classes": "{'C1': 'C1', 'C2': 'C2'}",
-        "class2name": "{'C1': 'Fraud', 'C2': 'Fraud'}"
+        "class2name": "{'C1': 'Not Fraud', 'C2': 'Fraud'}"
     },
     {
         "model_name": "SGDClassifier",
@@ -18584,7 +18584,7 @@
         "ft_num2name": "{'F23': 'incident_severity', 'F22': 'insured_hobbies', 'F7': 'authorities_contacted', 'F30': 'insured_education_level', 'F14': 'umbrella_limit', 'F13': 'insured_relationship', 'F20': 'auto_make', 'F8': 'insured_occupation', 'F6': 'capital-gains', 'F18': 'policy_deductable', 'F29': 'policy_state', 'F12': 'auto_year', 'F10': 'insured_sex', 'F19': 'vehicle_claim', 'F16': 'incident_city', 'F2': 'number_of_vehicles_involved', 'F1': 'insured_zip', 'F11': 'injury_claim', 'F17': 'property_claim', 'F24': 'incident_type', 'F31': 'total_claim_amount', 'F15': 'police_report_available', 'F33': 'property_damage', 'F25': 'incident_state', 'F26': 'policy_annual_premium', 'F9': 'incident_hour_of_the_day', 'F21': 'collision_type', 'F4': 'capital-loss', 'F27': 'bodily_injuries', 'F32': 'policy_csl', 'F3': 'witnesses', 'F5': 'age', 'F28': 'months_as_customer'}",
         "old2new_ft_nums": "{'F27': 'F23', 'F23': 'F22', 'F28': 'F7', 'F21': 'F30', 'F5': 'F14', 'F24': 'F13', 'F33': 'F20', 'F22': 'F8', 'F7': 'F6', 'F3': 'F18', 'F18': 'F29', 'F17': 'F12', 'F20': 'F10', 'F16': 'F19', 'F30': 'F16', 'F10': 'F2', 'F6': 'F1', 'F14': 'F11', 'F15': 'F17', 'F25': 'F24', 'F13': 'F31', 'F32': 'F15', 'F31': 'F33', 'F29': 'F25', 'F4': 'F26', 'F9': 'F9', 'F26': 'F21', 'F8': 'F4', 'F11': 'F27', 'F19': 'F32', 'F12': 'F3', 'F2': 'F5', 'F1': 'F28'}",
         "old2new_classes": "{'C1': 'C2', 'C2': 'C1'}",
-        "class2name": "{'C2': 'Fraud', 'C1': 'Fraud'}"
+        "class2name": "{'C2': 'Not Fraud', 'C1': 'Fraud'}"
     },
     {
         "model_name": "LGBMClassifier",
@@ -22978,7 +22978,7 @@
         "ft_num2name": "{'F3': 'incident_severity', 'F5': 'incident_city', 'F14': 'injury_claim', 'F20': 'insured_occupation', 'F1': 'insured_zip', 'F12': 'authorities_contacted', 'F7': 'auto_year', 'F33': 'police_report_available', 'F18': 'bodily_injuries', 'F10': 'insured_hobbies', 'F17': 'insured_sex', 'F27': 'auto_make', 'F26': 'property_damage', 'F19': 'witnesses', 'F32': 'insured_relationship', 'F2': 'age', 'F16': 'vehicle_claim', 'F11': 'months_as_customer', 'F31': 'property_claim', 'F21': 'incident_type', 'F4': 'capital-gains', 'F22': 'policy_deductable', 'F24': 'policy_annual_premium', 'F9': 'incident_state', 'F15': 'umbrella_limit', 'F29': 'total_claim_amount', 'F25': 'collision_type', 'F8': 'incident_hour_of_the_day', 'F13': 'insured_education_level', 'F28': 'number_of_vehicles_involved', 'F30': 'policy_csl', 'F6': 'policy_state', 'F23': 'capital-loss'}",
         "old2new_ft_nums": "{'F27': 'F3', 'F30': 'F5', 'F14': 'F14', 'F22': 'F20', 'F6': 'F1', 'F28': 'F12', 'F17': 'F7', 'F32': 'F33', 'F11': 'F18', 'F23': 'F10', 'F20': 'F17', 'F33': 'F27', 'F31': 'F26', 'F12': 'F19', 'F24': 'F32', 'F2': 'F2', 'F16': 'F16', 'F1': 'F11', 'F15': 'F31', 'F25': 'F21', 'F7': 'F4', 'F3': 'F22', 'F4': 'F24', 'F29': 'F9', 'F5': 'F15', 'F13': 'F29', 'F26': 'F25', 'F9': 'F8', 'F21': 'F13', 'F10': 'F28', 'F19': 'F30', 'F18': 'F6', 'F8': 'F23'}",
         "old2new_classes": "{'C1': 'C2', 'C2': 'C1'}",
-        "class2name": "{'C2': 'Fraud', 'C1': 'Fraud'}"
+        "class2name": "{'C2': 'Not Fraud', 'C1': 'Fraud'}"
     },
     {
         "model_name": "AdaBoostClassifier",
@@ -28269,7 +28269,7 @@
         "ft_num2name": "{'F17': 'incident_severity', 'F26': 'incident_city', 'F25': 'injury_claim', 'F2': 'insured_occupation', 'F10': 'insured_zip', 'F32': 'authorities_contacted', 'F21': 'auto_year', 'F3': 'police_report_available', 'F9': 'bodily_injuries', 'F23': 'insured_hobbies', 'F7': 'insured_sex', 'F13': 'auto_make', 'F19': 'property_damage', 'F14': 'witnesses', 'F18': 'insured_relationship', 'F24': 'age', 'F20': 'vehicle_claim', 'F27': 'months_as_customer', 'F4': 'property_claim', 'F15': 'incident_type', 'F28': 'capital-gains', 'F6': 'policy_deductable', 'F5': 'policy_annual_premium', 'F1': 'incident_state', 'F11': 'umbrella_limit', 'F12': 'total_claim_amount', 'F30': 'collision_type', 'F31': 'incident_hour_of_the_day', 'F22': 'insured_education_level', 'F16': 'number_of_vehicles_involved', 'F29': 'policy_csl', 'F8': 'policy_state', 'F33': 'capital-loss'}",
         "old2new_ft_nums": "{'F27': 'F17', 'F30': 'F26', 'F14': 'F25', 'F22': 'F2', 'F6': 'F10', 'F28': 'F32', 'F17': 'F21', 'F32': 'F3', 'F11': 'F9', 'F23': 'F23', 'F20': 'F7', 'F33': 'F13', 'F31': 'F19', 'F12': 'F14', 'F24': 'F18', 'F2': 'F24', 'F16': 'F20', 'F1': 'F27', 'F15': 'F4', 'F25': 'F15', 'F7': 'F28', 'F3': 'F6', 'F4': 'F5', 'F29': 'F1', 'F5': 'F11', 'F13': 'F12', 'F26': 'F30', 'F9': 'F31', 'F21': 'F22', 'F10': 'F16', 'F19': 'F29', 'F18': 'F8', 'F8': 'F33'}",
         "old2new_classes": "{'C1': 'C2', 'C2': 'C1'}",
-        "class2name": "{'C2': 'Fraud', 'C1': 'Fraud'}"
+        "class2name": "{'C2': 'Not Fraud', 'C1': 'Fraud'}"
     },
     {
         "model_name": "LogisticRegression",
@@ -29771,7 +29771,7 @@
         "ft_num2name": "{'F21': 'incident_severity', 'F8': 'insured_hobbies', 'F26': 'authorities_contacted', 'F11': 'umbrella_limit', 'F32': 'number_of_vehicles_involved', 'F14': 'insured_education_level', 'F18': 'insured_relationship', 'F13': 'months_as_customer', 'F30': 'collision_type', 'F3': 'insured_occupation', 'F2': 'age', 'F25': 'policy_csl', 'F20': 'policy_annual_premium', 'F15': 'auto_make', 'F31': 'incident_city', 'F24': 'incident_state', 'F6': 'policy_state', 'F22': 'incident_hour_of_the_day', 'F28': 'capital-gains', 'F33': 'vehicle_claim', 'F27': 'property_claim', 'F19': 'police_report_available', 'F12': 'property_damage', 'F10': 'policy_deductable', 'F29': 'insured_zip', 'F9': 'capital-loss', 'F17': 'incident_type', 'F4': 'bodily_injuries', 'F23': 'witnesses', 'F5': 'insured_sex', 'F1': 'total_claim_amount', 'F16': 'injury_claim', 'F7': 'auto_year'}",
         "old2new_ft_nums": "{'F27': 'F21', 'F23': 'F8', 'F28': 'F26', 'F5': 'F11', 'F10': 'F32', 'F21': 'F14', 'F24': 'F18', 'F1': 'F13', 'F26': 'F30', 'F22': 'F3', 'F2': 'F2', 'F19': 'F25', 'F4': 'F20', 'F33': 'F15', 'F30': 'F31', 'F29': 'F24', 'F18': 'F6', 'F9': 'F22', 'F7': 'F28', 'F16': 'F33', 'F15': 'F27', 'F32': 'F19', 'F31': 'F12', 'F3': 'F10', 'F6': 'F29', 'F8': 'F9', 'F25': 'F17', 'F11': 'F4', 'F12': 'F23', 'F20': 'F5', 'F13': 'F1', 'F14': 'F16', 'F17': 'F7'}",
         "old2new_classes": "{'C1': 'C1', 'C2': 'C2'}",
-        "class2name": "{'C1': 'Fraud', 'C2': 'Fraud'}"
+        "class2name": "{'C1': 'Not Fraud', 'C2': 'Fraud'}"
     },
     {
         "model_name": "BernoulliNB",
@@ -30556,7 +30556,7 @@
         "ft_num2name": "{'F1': 'incident_severity', 'F31': 'insured_hobbies', 'F14': 'insured_occupation', 'F10': 'umbrella_limit', 'F6': 'policy_csl', 'F16': 'authorities_contacted', 'F5': 'insured_education_level', 'F4': 'collision_type', 'F20': 'months_as_customer', 'F7': 'vehicle_claim', 'F26': 'insured_relationship', 'F22': 'capital-gains', 'F21': 'auto_make', 'F11': 'injury_claim', 'F23': 'incident_city', 'F2': 'insured_sex', 'F3': 'number_of_vehicles_involved', 'F18': 'incident_hour_of_the_day', 'F9': 'age', 'F15': 'property_claim', 'F19': 'policy_annual_premium', 'F30': 'police_report_available', 'F28': 'property_damage', 'F29': 'incident_state', 'F12': 'policy_deductable', 'F8': 'capital-loss', 'F17': 'insured_zip', 'F32': 'incident_type', 'F24': 'bodily_injuries', 'F33': 'witnesses', 'F27': 'policy_state', 'F13': 'total_claim_amount', 'F25': 'auto_year'}",
         "old2new_ft_nums": "{'F27': 'F1', 'F23': 'F31', 'F22': 'F14', 'F5': 'F10', 'F19': 'F6', 'F28': 'F16', 'F21': 'F5', 'F26': 'F4', 'F1': 'F20', 'F16': 'F7', 'F24': 'F26', 'F7': 'F22', 'F33': 'F21', 'F14': 'F11', 'F30': 'F23', 'F20': 'F2', 'F10': 'F3', 'F9': 'F18', 'F2': 'F9', 'F15': 'F15', 'F4': 'F19', 'F32': 'F30', 'F31': 'F28', 'F29': 'F29', 'F3': 'F12', 'F8': 'F8', 'F6': 'F17', 'F25': 'F32', 'F11': 'F24', 'F12': 'F33', 'F18': 'F27', 'F13': 'F13', 'F17': 'F25'}",
         "old2new_classes": "{'C2': 'C2', 'C1': 'C1'}",
-        "class2name": "{'C2': 'Fraud', 'C1': 'Fraud'}"
+        "class2name": "{'C2': 'Fraud', 'C1': 'Not Fraud'}"
     },
     {
         "model_name": "RandomForestClassifier",
