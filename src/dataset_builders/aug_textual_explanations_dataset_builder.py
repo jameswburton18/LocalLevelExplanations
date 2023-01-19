@@ -104,7 +104,7 @@ class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
 if __name__ == "__main__":
     # Note that if changes are made to the dataset then it will raise a ChecksumError.
     # To fix this you need to delete the cached files in ~/.cache/huggingface/datasets/
-    dataset = datasets.load_dataset("src/aug_textual_explanations_dataset_builder.py", download_mode="force_redownload", load_from_cache_file=False)#, ignore_verifications=True)
+    dataset = datasets.load_dataset("src/dataset_builders/aug_textual_explanations_dataset_builder.py", download_mode="force_redownload", load_from_cache_file=False)#, ignore_verifications=True)
     
     # Save the dataset to huggingface
     dataset.push_to_hub("aug-text-exps", private=True)
