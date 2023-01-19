@@ -567,6 +567,7 @@ batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-base
+num_beams: 20
 predict_batch_size: 2
 
 --- # text 2
@@ -579,6 +580,7 @@ max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: facebook/bart-base
 output_root: models/bart-base/
+num_beams: 20
 predict_batch_size: 2
 
 --- # text 3
@@ -590,6 +592,7 @@ batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-base
+num_beams: 20
 predict_batch_size: 2
 
 --- # text 4
@@ -602,6 +605,7 @@ max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: facebook/bart-base
 output_root: models/bart-base/
+num_beams: 20
 predict_batch_size: 2
 
 --- # text 5
@@ -613,9 +617,10 @@ tags:
  - t5-base
  - augmented
 batch_size: 8
-max_features: 15
+max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
 model_base: t5-base
+num_beams: 20
 predict_batch_size: 2
 augmented_ds: true
 
@@ -626,10 +631,11 @@ tags:
  - bart
  - augmented
 batch_size: 8
-max_features: 15
+max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
 model_base: facebook/bart-base
 output_root: models/bart-base/
+num_beams: 20
 predict_batch_size: 2
 augmented_ds: true
 
@@ -638,8 +644,11 @@ config: essel_test
 fast_dev_run: true
 do_train: true
 linearisation: text
-max_features: 15
+max_features: 20
 tags:
  - t5-base
-batch_size: 4
-simplify_narr_qs: true
+batch_size: 8
+num_beams: 20
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+augmented_ds: false

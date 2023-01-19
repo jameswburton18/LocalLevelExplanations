@@ -78,8 +78,10 @@ fast_dev_run: false
 tags:
  - t5-base
 batch_size: 32
+max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-base
+version: hard # [normal, hard]
 predict_batch_size: 2
 
 --- # text 2
@@ -87,17 +89,20 @@ config: text_2
 fast_dev_run: false
 tags:
  - bart
-batch_size: 64
+batch_size: 32
+max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: facebook/bart-base
 output_root: models/bart-base/
+version: hard # [normal, hard]
 predict_batch_size: 2
 
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
 do_train: true
-batch_size: 32
+batch_size: 64
+max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 # model_base: facebook/bart-base
 # output_root: models/qa/bart-base/
