@@ -1,12 +1,12 @@
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments, Trainer
-# import lmap
+from transformers import (
+    AutoModelForSeq2SeqLM, AutoTokenizer, 
+    TrainingArguments, Trainer
+)
 from datasets import load_dataset
 from evaluate import load
 from src.utils import (
-    linearise_input, convert_to_features, form_stepwise_input, 
-    simplify_feat_names,
-    label_qs,
-    simplify_narr_question
+    linearise_input, convert_to_features, label_qs,
+    simplify_narr_question, nums_to_names
 )
 import wandb
 import os
@@ -25,7 +25,7 @@ parser.add_argument('--config', type=str, default='essel_test',
 config_type = parser.parse_args().config
 
 def main():
-    # import yaml file
+    # Import yaml file
     with open('configs/train_default.yaml') as f:
         args = yaml.safe_load(f)
     
@@ -44,14 +44,6 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
     dataset = load_dataset("james-burton/textual-explanations") if not args['augmented_ds'] else \
         load_dataset("james-burton/aug-text-exps")
-    
-    # # Add fts as special tokens
-    # if args['add_fts_as_tokens']:
-    #     feature_tokens = [f'F{i}' for i in range(47)]
-    #     tokenizer.add_tokens(feature_tokens)
-    #     model.resize_token_embeddings(len(tokenizer))
-        
-    # dataset = dataset.map(simplify_feat_names) if args['simplify_ft_names'] else dataset
     
     if args['simplify_narr_qs']:
         dataset = dataset.map(lambda x: simplify_narr_question(label_qs(x)),
@@ -95,9 +87,11 @@ def main():
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
-    # Save args to json file
+    # Save args file
     with open(os.path.join(output_dir, 'args.json'), 'w') as f:
         json.dump(args, f)
+    with open(os.path.join(output_dir, 'args.yaml'), 'w') as f:
+        yaml.dump(args, f)
 
     # Initialise training arguments and trainer
     training_args = TrainingArguments(
@@ -157,13 +151,53 @@ def main():
                                                  use_cache=True)
             preds = tokenizer.batch_decode(sample_outputs, skip_special_tokens=True)
             all_preds.extend(preds)
-        
+            
+        all_preds_w_names = [nums_to_names(pred, eval(c2s), eval(f2s))
+                             for pred, c2s, f2s
+                             in zip(all_preds,
+                                    dataset['test']['class2name'],
+                                    dataset['test']['ft_num2name'])]
+        narrs_w_names = [nums_to_names(narr, eval(c2s), eval(f2s))
+                             for narr, c2s, f2s
+                             in zip(dataset['test']['narration'],
+                                    dataset['test']['class2name'],
+                                    dataset['test']['ft_num2name'])]
+        input_w_names = [nums_to_names(inp, eval(c2s), eval(f2s))
+                             for inp, c2s, f2s
+                             in zip(dataset['test']['input'],
+                                    dataset['test']['class2name'],
+                                    dataset['test']['ft_num2name'])]
         
         # Evaluate the predictions
         bleurt = load('bleurt',checkpoint="bleurt-base-512")
         bleu = load('bleu')
         meteor = load('meteor')
         
+        for names in ['w_names', 'w/o_names']:
+            if names == 'w_names':
+                preds = all_preds_w_names
+                refs = narrs_w_names
+                suffix = '_w_names'
+            else:
+                preds = all_preds
+                refs = dataset['test']['narration']
+                suffix = ''
+                
+            bleurt_results = bleurt.compute(predictions=preds,
+                                            references=refs)
+            bleu_results = bleu.compute(predictions=all_preds,
+                                        references=[[r] for r in refs])
+            meteor_results = meteor.compute(predictions=all_preds,
+                                            references=[[r] for r in refs])
+            # Log the results
+            results = {f'bleurt{suffix}': np.mean(bleurt_results['scores']),
+                       f'bleu{suffix}': bleu_results['bleu'],
+                       f'meteor{suffix}': meteor_results['meteor']}
+            
+            
+            
+            
+        '''
         if args['simplify_narr_qs']:
             # Results by narr_q_label_group
             grp_lens = {}
@@ -175,12 +209,12 @@ def main():
                 grp_all_preds = [p for x, p in zip(
                     [lab_grp == grp for lab_grp in dataset['test']['narr_q_label_group']], all_preds) if x]
                 
-                grp_bleurt_results = bleurt.compute(predictions=grp_all_preds, 
-                                                references=grp_data)
-                grp_bleu_results = bleu.compute(predictions=grp_all_preds, 
-                                            references=[[r] for r in grp_data])
-                grp_meteor_results = meteor.compute(predictions=grp_all_preds, 
+                grp_bleurt_results = bleurt.compute(predictions=grp_all_preds,
+                                                    references=grp_data)
+                grp_bleu_results = bleu.compute(predictions=grp_all_preds,
                                                 references=[[r] for r in grp_data])
+                grp_meteor_results = meteor.compute(predictions=grp_all_preds,
+                                                    references=[[r] for r in grp_data])
                 grp_lens[grp] = len(grp_data)
                 
                 results[f'bleurt_{grp}'] = np.mean(grp_bleurt_results['scores'])
@@ -205,16 +239,22 @@ def main():
             results = {'bleurt': np.mean(bleurt_results['scores']),
                     'bleu': bleu_results['bleu'],
                     'meteor': meteor_results['meteor']}
-        
+        '''
         
         # Save the predictions
         readable_predictions = ['.\n'.join(pred.split('. ')) for pred in all_preds]
+        readable_preds_w_names = ['.\n'.join(pred.split('. ')) for pred in all_preds_w_names]
         print(f'Saving predictions to {output_dir}')
         with open(os.path.join(output_dir, 'test_predictions_readable.txt'), 'w') as f:
-            for input, pred in zip(dataset['test']['input'], readable_predictions):
+            for ans, input, pred in zip(dataset['test']['narration'], dataset['test']['input'], readable_predictions):
                 f.write(f'INPUT: {input} \n\n')
+                f.write(f'GOLD: {ans} \n\n')
                 f.write(f'OUTPUT: {pred} \n\n')
-            f.write('\n\n'.join(readable_predictions))
+        with open(os.path.join(output_dir, 'test_predictions_readable_w_names.txt'), 'w') as f:
+            for ans, input, pred in zip(narrs_w_names, input_w_names, readable_preds_w_names):
+                f.write(f'INPUT: {input} \n\n')
+                f.write(f'GOLD: {ans} \n\n')
+                f.write(f'OUTPUT: {pred} \n\n')
         with open(os.path.join(output_dir, 'test_predictions.txt'), 'w') as f:
             f.write('\n'.join(all_preds))
         with open(os.path.join(output_dir, 'test_results.txt'), 'w') as f:
