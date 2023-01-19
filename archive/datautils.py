@@ -1,4 +1,4 @@
-from src.attribution_sentence_templates import *
+from archive.attribution_sentence_templates import *
 import copy
 import functools
 import re

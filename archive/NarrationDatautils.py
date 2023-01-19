@@ -8,7 +8,7 @@ import re
 import sacrebleu
 from nltk.tokenize import word_tokenize
 
-from src.attribution_sentence_templates import *
+from archive.attribution_sentence_templates import *
 
 
 def readSentences(file,lower=False):
