@@ -26,12 +26,12 @@ config_type = parser.parse_args().config
 
 def main():
     # import yaml file
-    with open('configs/jb_train_default.yaml') as f:
+    with open('configs/train_default.yaml') as f:
         args = yaml.safe_load(f)
     
     # Update default args with chosen config
     if config_type != 'default':
-        with open('configs/jb_train_configs.yaml') as f:
+        with open('configs/train_configs.yaml') as f:
             yaml_configs = yaml.safe_load_all(f)
             yaml_args = next(
                 conf for conf in yaml_configs if conf['config'] == config_type)
