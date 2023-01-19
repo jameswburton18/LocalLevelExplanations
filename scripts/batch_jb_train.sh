@@ -1,16 +1,15 @@
 #!/bin/bash
 
-# for num in 3
+# NCC
+# for cfg in essel_7 ord_first_7 ft_first_7
 # do
-#     for cfg in ft_first_${num}_qa ord_first_${num}_qa essel_${num}_qa
-#     do
-#         sbatch --job-name=$cfg scripts/jb_train.sh $cfg
-#         sleep 4 # so that wandb runs don't get assigned the same number
-#     done
+#     sbatch --job-name=$cfg scripts/jb_train.sh $cfg
+#     sleep 4 # so that wandb runs don't get assigned the same number
 # done
 
-for cfg in essel_7 ord_first_7 ft_first_7
+# OFFICE
+for cfg in text_4 text_5 text_6
 do
-    sbatch --job-name=$cfg scripts/jb_train.sh $cfg
+    sbatch --job-name=$cfg scripts/jb_train_office_pc.sh $cfg
     sleep 4 # so that wandb runs don't get assigned the same number
 done
