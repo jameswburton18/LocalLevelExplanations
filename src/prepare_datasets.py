@@ -19,22 +19,25 @@ def prepare_dataset():
 
     tasknames = set([(a['task_name'], a['predicted_class'], a['predicted_class_label']) for a in ds])
     task2name_dict = {f'{t}_{c}': name for (t, c, name) in tasknames}
-    task2name_dict.update({'Air Quality Prediction_C4': 'Other',
-                        'Cab Surge Pricing System_C1': 'Low',
-                        'Cab Surge Pricing System_C2': 'Medium',
-                        'Cab Surge Pricing System_C3': 'High',
-                        'Car Acceptability Valuation_C3': 'Other A',
-                        'Car Acceptability Valuation_C4': 'Other B',
-                        'Concrete Strength Classification_C3': 'Other',
-                        'Customer Churn Modelling_C3': 'Other',
-                        'Flight Price-Range Classification_C4': 'Special',
-                        'Food Ordering Customer Churn Prediction_C3': 'Accept',
-                        'German Credit Evaluation_C3': 'Other',
-                        'Mobile Price-Range Classification_C3': 'r3',
-                        'Suspicious Bidding Identification_C2': 'Suspicious',
-                        'Used Cars Price-Range Prediction_C3': 'Medium',
-                        'Wine Quality Prediction_C1': 'low_quality',
-                        })
+    task2name_dict.update({'Airline Passenger Satisfaction_C2': 'satisfied',
+                           'Air Quality Prediction_C4': 'Other',
+                           'Cab Surge Pricing System_C1': 'Low',
+                           'Cab Surge Pricing System_C2': 'Medium',
+                           'Cab Surge Pricing System_C3': 'High',
+                           'Car Acceptability Valuation_C3': 'Other A',
+                           'Car Acceptability Valuation_C4': 'Other B',
+                           'Concrete Strength Classification_C3': 'Other',
+                           'Customer Churn Modelling_C3': 'Other',
+                           'Flight Price-Range Classification_C4': 'Special',
+                           'Food Ordering Customer Churn Prediction_C3': 'Accept',
+                           'German Credit Evaluation_C3': 'Other',
+                           'Mobile Price-Range Classification_C3': 'r3',
+                           'Suspicious Bidding Identification_C2': 'Suspicious',
+                           'Used Cars Price-Range Prediction_C3': 'Medium',
+                           'Vehicle Insurance Claims_C1': 'Not Fraud',
+                           'Vehicle Insurance Claims_C2': 'Fraud',
+                           'Wine Quality Prediction_C1': 'low_quality',
+                           })
 
     for i in range(len(ds)):
         # Some of the data is in string form, eval() is to convert it to dict
@@ -75,7 +78,7 @@ def prepare_dataset():
         ds[i]['narrative_questions'] = [ft_ptn.sub(lambda m: old2new_ft_nums[re.escape(
             m.group(0))], x) for x in ds[i]['narrative_questions']]
         
-        # # Shuffle class names too
+        # Shuffle class names too
         new_classes = list(ds[i]['classes_dict'].keys()).copy()
         random.shuffle(new_classes)
         old2new_classes = dict(zip(list(ds[i]['classes_dict'].keys()), new_classes))
@@ -97,6 +100,7 @@ def prepare_dataset():
         ds[i]['class2name'] = str({c: task2name_dict[t_c] for c, t_c in zip(
             eval(ds[i]['classes_dict']).keys(), task_classes)})
 
+        
         
         for key in ['deleted', 'mturk_id','narrative_status', 'date_submitted',
                     'date_approved', 'features_placeholder', 'is_paid', 'redeem_code', 'narrator',
@@ -330,6 +334,6 @@ def prepare_qa_dataset_hard():
 
 if __name__ == "__main__":
     prepare_dataset()
-    prepare_aug_dataset()
-    prepare_qa_dataset()
-    prepare_qa_dataset_hard()
+    # prepare_aug_dataset()
+    # prepare_qa_dataset()
+    # prepare_qa_dataset_hard()
