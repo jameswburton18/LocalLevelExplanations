@@ -154,7 +154,7 @@ def main():
                                                  num_return_sequences=1,
                                                  do_sample=True,
                                                  early_stopping=True,
-                                                 use_cache=False)
+                                                 use_cache=True)
             preds = tokenizer.batch_decode(sample_outputs, skip_special_tokens=True)
             all_preds.extend(preds)
         
