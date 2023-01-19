@@ -31,3 +31,4 @@ max_output_len: 250
 predict_batch_size: 4
 save_total_limit: 1
 augmented_ds: false
+simplify_narr_qs: false
