@@ -106,6 +106,7 @@ Could also do a contrastive loss where I say that the answer (with correct numbe
     * What is the xth most important feature?
     * Top x postive features: 
     * Top x negative features:
+    NOTE: This has been moved to prepare_datasets.py
 * I have also built an augmented dataset in `jb_prepare_dataset.py` has the same data-TextExp pairs but the feature and class names are reshuffled.
 
 I have generated outputs for: 
