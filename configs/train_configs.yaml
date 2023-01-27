@@ -561,12 +561,14 @@ predict_batch_size: 2
 --- # text
 config: text
 fast_dev_run: false
+do_train: false
 tags:
  - t5-base
 batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-base
+resume_from_checkpoint: 
 num_beams: 20
 predict_batch_size: 2
 
@@ -611,8 +613,7 @@ predict_batch_size: 2
 --- # text 5
 config: text_5
 fast_dev_run: false
-do_train: true
-do_predict: true
+do_train: false
 tags:
  - t5-base
  - augmented
@@ -639,16 +640,236 @@ num_beams: 20
 predict_batch_size: 2
 augmented_ds: true
 
+--- # text 7
+config: text_7
+fast_dev_run: false
+tags:
+ - t5-base
+ - augmented
+ - qa pretrain
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/glamorous-wave-37/checkpoint-6750
+num_beams: 20
+predict_batch_size: 2
+augmented_ds: true
+
+--- # text 8
+config: text_8
+fast_dev_run: false
+tags:
+ - bart
+ - augmented
+ - qa pretrain
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/bart-base/fanciful-dragon-38/checkpoint-3750
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+augmented_ds: true
+
+--- # text 9
+config: text_9
+fast_dev_run: false
+tags:
+ - t5-base
+ - qa pretrain
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/glamorous-wave-37/checkpoint-6750
+num_beams: 20
+predict_batch_size: 2
+
+--- # text 10
+config: text_10
+fast_dev_run: false
+tags:
+ - bart
+ - qa pretrain
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/bart-base/fanciful-dragon-38/checkpoint-3750
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+
+--- # text big test
+config: text_bigtest
+fast_dev_run: false
+tags:
+ - t5-base
+ - big-test
+batch_size: 8
+max_features: 15
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-base
+resume_from_checkpoint: 
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 2 big test
+config: text_2_bigtest
+fast_dev_run: false
+tags:
+ - bart
+ - big-test
+batch_size: 8
+max_features: 15
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-base
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 3 big test
+config: text_3_bigtest
+fast_dev_run: false
+tags:
+ - t5-base
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-base
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 4 big test
+config: text_4_bigtest
+fast_dev_run: false
+tags:
+ - bart
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-base
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 5 big test
+config: text_5_bigtest
+fast_dev_run: false
+do_train: false
+tags:
+ - t5-base
+ - augmented
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: t5-base
+num_beams: 20
+predict_batch_size: 2
+augmented_ds: true
+big_test_set: true
+
+--- # text 6 big test
+config: text_6_bigtest
+fast_dev_run: false
+tags:
+ - bart
+ - augmented
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: facebook/bart-base
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+augmented_ds: true
+big_test_set: true
+
+--- # text 7 big test
+config: text_7_bigtest
+fast_dev_run: false
+tags:
+ - t5-base
+ - augmented
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/glamorous-wave-37/checkpoint-6750
+num_beams: 20
+predict_batch_size: 2
+augmented_ds: true
+big_test_set: true
+
+--- # text 8 big test
+config: text_8_bigtest
+fast_dev_run: false
+tags:
+ - bart
+ - augmented
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/bart-base/fanciful-dragon-38/checkpoint-3750
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+augmented_ds: true
+big_test_set: true
+
+--- # text 9 big test
+config: text_9_bigtest
+fast_dev_run: false
+tags:
+ - t5-base
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/glamorous-wave-37/checkpoint-6750
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 10 big test
+config: text_10_bigtest
+fast_dev_run: false
+tags:
+ - bart
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/bart-base/fanciful-dragon-38/checkpoint-3750
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
 do_train: true
-linearisation: text
-max_features: 20
 tags:
  - t5-base
+ - big-test
 batch_size: 8
+max_features: 15
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-base
+resume_from_checkpoint: 
 num_beams: 20
-# model_base: facebook/bart-base
-# output_root: models/bart-base/
-augmented_ds: false
+predict_batch_size: 2
+augmented_ds: true
+big_test_set: true

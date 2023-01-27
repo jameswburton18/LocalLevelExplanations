@@ -1,5 +1,5 @@
 from transformers import (
-    AutoModelForSeq2SeqLM, AutoTokenizer, 
+    AutoModelForSeq2SeqLM, AutoTokenizer, DataCollatorWithPadding,
     TrainingArguments, Trainer
 )
 from datasets import load_dataset
@@ -39,11 +39,22 @@ def main():
         print(f'Updating with:\n{yaml_args}\n')
     print(f'\n{args}\n')
     
-    # Load model, tokenizer and dataset
+    # Load model and tokenizer
     model = AutoModelForSeq2SeqLM.from_pretrained(args['model_base'], return_dict=True)
     tokenizer = AutoTokenizer.from_pretrained(args['model_base'])
-    dataset = load_dataset("james-burton/textual-explanations") if not args['augmented_ds'] else \
-        load_dataset("james-burton/aug-text-exps")
+    
+    # Dataset
+    if args['augmented_ds']:
+        if args['big_test_set']:
+            ds_path = 'james-burton/aug-text-exps-702010'
+        else:
+            ds_path = 'james-burton/aug-text-exps'
+    else:
+        if args['big_test_set']:
+            ds_path = 'james-burton/textual-explanations-702010'
+        else:
+            ds_path = 'james-burton/textual-explanations'
+    dataset = load_dataset(ds_path) 
     
     if args['simplify_narr_qs']:
         dataset = dataset.map(lambda x: simplify_narr_question(label_qs(x)),
@@ -71,14 +82,13 @@ def main():
         print("\n######################    Running in fast dev mode    #######################\n")
 
     # If not, initialize wandb
-    if not args['fast_dev_run']:
+    else:
         wandb.init(
             project="Local Level Explanations",
             tags=args['tags'],
             save_code=True, 
             config={'my_args/'+k: v for k, v in args.items()},
         )
-        # wandb.log(args)
         os.environ['WANDB_LOG_MODEL'] = 'True'
         output_dir = os.path.join(args['output_root'], wandb.run.name)
         print(f'Results will be saved @: {output_dir}')
@@ -173,6 +183,7 @@ def main():
         bleu = load('bleu')
         meteor = load('meteor')
         
+        results = {}
         for names in ['w_names', 'w/o_names']:
             if names == 'w_names':
                 preds = all_preds_w_names
@@ -185,14 +196,14 @@ def main():
                 
             bleurt_results = bleurt.compute(predictions=preds,
                                             references=refs)
-            bleu_results = bleu.compute(predictions=all_preds,
+            bleu_results = bleu.compute(predictions=preds,
                                         references=[[r] for r in refs])
-            meteor_results = meteor.compute(predictions=all_preds,
+            meteor_results = meteor.compute(predictions=preds,
                                             references=[[r] for r in refs])
             # Log the results
-            results = {f'bleurt{suffix}': np.mean(bleurt_results['scores']),
-                       f'bleu{suffix}': bleu_results['bleu'],
-                       f'meteor{suffix}': meteor_results['meteor']}
+            results.update({f'bleurt{suffix}': np.mean(bleurt_results['scores']),
+                            f'bleu{suffix}': bleu_results['bleu'],
+                            f'meteor{suffix}': meteor_results['meteor']})
             
             
             

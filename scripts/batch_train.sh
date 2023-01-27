@@ -8,8 +8,11 @@
 # done
 
 # OFFICE
-for cfg in text_4 text_5 text_6
+for idx in {1..10}
 do
-    sbatch --job-name=$cfg scripts/train_office_pc.sh $cfg
-    sleep 4 # so that wandb runs don't get assigned the same number
+    for cfg in text_${idx}_bigtest #text text_2 text_3 text_4 text_5
+    do
+            sbatch --job-name=$cfg scripts/train_office_pc.sh $cfg
+            sleep 4 # so that wandb runs don't get assigned the same number
+    done
 done

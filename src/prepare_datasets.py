@@ -122,13 +122,21 @@ def prepare_dataset():
     json.dump(train, open('jb_data/train.json', 'w', encoding='utf-8'), indent=4)
     json.dump(test, open('jb_data/test.json', 'w', encoding='utf-8'), indent=4)
     json.dump(val, open('jb_data/val.json', 'w', encoding='utf-8'), indent=4)
+    
+    train = ds[:int(0.7*len(ds))]
+    test = ds[int(0.7*len(ds)):int(0.9*len(ds))]
+    val = ds[int(0.9*len(ds)):]
+
+    json.dump(train, open('jb_data/train_70-20-10.json', 'w', encoding='utf-8'), indent=4)
+    json.dump(test, open('jb_data/test_70-20-10.json', 'w', encoding='utf-8'), indent=4)
+    json.dump(val, open('jb_data/val.json', 'w', encoding='utf-8'), indent=4)
 
 
 # This second part of the code is to create the augmented datasets
 def prepare_aug_dataset():
     random.seed(2)
 
-    for ds in ['train', 'val']:
+    for ds in ['train', 'val', 'train_70-20-10']:
         num_repeats = 10
         new = []
         for j in range(num_repeats):
@@ -271,7 +279,7 @@ def question_generator_hard(dict, i=None):
     q2 = f'Of the top {x} features, which are negative?'
     a2 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'negative'])
     
-    # 3) Of these features [list], which are support the prediction?
+    # 3) Of these features [list], which support the prediction?
     x = random.randint(2,5)
     top_x_fts = dict['feature_nums'][:x]
     q3 = f'Of these features [{", ".join(top_x_fts)}], which support the prediction?'
@@ -335,5 +343,5 @@ def prepare_qa_dataset_hard():
 if __name__ == "__main__":
     prepare_dataset()
     prepare_aug_dataset()
-    prepare_qa_dataset()
-    prepare_qa_dataset_hard()
+    # prepare_qa_dataset()
+    # prepare_qa_dataset_hard()
