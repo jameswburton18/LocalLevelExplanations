@@ -63,9 +63,16 @@ def linearise_input(data_row, method, max_fts=15, data_only=False):
     elif method == 'ft_first':
         data_row['input'] = ft_first_input + preamble + questions
     elif method == 'text':
-        data_row['input'] = text_input
+        data_row['input'] = text_input   
+    elif method == 'baseline_input':
+        data_row['input'] = f'Predicted class is {chosen_class}, value of {classes_dict[chosen_class]}. '\
+        f'Other classes and values are {other_classes}. '\
+        f'Top features are {commas_and_and(feature_nums[:])}. '\
+        f'Postive features are {commas_and_and([f for f, s in zip(feature_nums[:3], sign) if s == "pos"])}. '\
+        f'Negative features are {commas_and_and([f for f, s in zip(feature_nums[:3], sign) if s == "neg"])}. '\
+        f'Lowest impact features are {commas_and_and(data_row["feature_nums"][-3:])}.'
     else:
-        raise ValueError('method must be one of essel, ord_first or ft_first')
+        raise ValueError('method must be one of essel, ord_first or ft_first, text or baseline_input.')
 
     return data_row
 
@@ -162,7 +169,7 @@ def simplify_narr_question(row):
         q2 = 'Summarise the top features.'
     elif label == 'E':
         q2 = f'Summarise these top features ({commas_and_and(mentioned_fts[2])}).'
-    else: # label in ['F', 'G', 'H']
+    else:  # label in ['F', 'G', 'H']
         q2 = f'Summarise these top features ({commas_and_and(mentioned_fts[1])}).'
         
     if label in ['A', 'B', 'C', 'F', 'G', 'H']:
@@ -182,6 +189,14 @@ def simplify_narr_question(row):
     row['original_narrative_questions'] = row['narrative_questions']
     row['narrative_questions'] = [q1, q2, q3, q4]
     return row
+
+def nums_to_names(narration, class2name_dict, ft_num2name_dict):
+    """Converts feature numbers to names"""
+    cls_ptn = re.compile("|".join([f'{k}\\b' for k in class2name_dict.keys() if k != None]))
+    narr = cls_ptn.sub(lambda x: f'\"{class2name_dict[x.group()]}\"', narration)
+    ft_ptn = re.compile("|".join([f'{k}\\b' for k in ft_num2name_dict.keys()]))
+    narr = ft_ptn.sub(lambda x: ft_num2name_dict[x.group()], narr)
+    return narr
 
 def old_linearise_input(data_row, method, max_fts=15, data_only=False):
     """Linearise data row to be in chosen form. 
@@ -239,11 +254,3 @@ def old_linearise_input(data_row, method, max_fts=15, data_only=False):
         raise ValueError('method must be one of essel, ord_first or ft_first')
 
     return data_row
-
-def nums_to_names(narration, class2name_dict, ft_num2name_dict):
-    """Converts feature numbers to names"""
-    cls_ptn = re.compile("|".join([f'{k}\\b' for k in class2name_dict.keys() if k != None]))
-    narr = cls_ptn.sub(lambda x: f'\"{class2name_dict[x.group()]}\"', narration)
-    ft_ptn = re.compile("|".join([f'{k}\\b' for k in ft_num2name_dict.keys()]))
-    narr = ft_ptn.sub(lambda x: ft_num2name_dict[x.group()], narr)
-    return narr
