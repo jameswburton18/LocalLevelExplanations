@@ -4,6 +4,7 @@ import random
 import numpy as np
 import inflect
 from tqdm import tqdm
+from datasets import load_dataset
 
 def prepare_dataset():
     # This part of the code is the format the data in a nice way, from the raw data
@@ -197,19 +198,23 @@ def prepare_aug_dataset():
 # QnA dataset functions
 #####################################################################
 def create_classes_dict():
+    '''
+    We create this with 
+    '''
     sign_dict = {1: 'positive', -1: 'negative', 0: 'negligible'}
     x = dict()
     classes = ['C1', 'C2']
     random.shuffle(['C1', 'C2'])
-    pct = random.randint(500,9500)/100
+    num_fts = random.randint(6, 20)
+    pct = random.randint(0,10_000)/100
     other_pct = round(100 - pct, 2)
     class_dict  = {classes[0]: format(pct, '.2f'), classes[1]: format(other_pct, '.2f')}
     x['predicted_class'] = max(class_dict, key=class_dict.get)
     x['classes_dict'] = str({f'{k}': f'{v}%' for k,v in class_dict.items()})
-    x['feature_nums'] = [f'F{i}' for i in random.sample(range(1, 80), 15)]
-    values = sorted([random.randint(-50,50)/100 for i in range(15)], key=abs, reverse=True)
+    x['feature_nums'] = [f'F{i}' for i in random.sample(range(1, 80), num_fts)]
+    values = sorted([random.randint(-50,50)/100 for i in range(num_fts)], key=abs, reverse=True)
     x['sign'] = [sign_dict[np.sign(i)] for i in values]
-    x['values'] =  x['values'] = [format(v, '.2f') for v in values]
+    x['values'] = [format(v, '.2f') for v in values]
     return x
 
 def question_generator(dict, i=None):
@@ -267,40 +272,60 @@ def question_generator_hard(dict, i=None):
     4) Of these features [list], which are against the prediction?
     5) What is the value of FX?
     '''
+    top_20_fts = dict['feature_nums'][:20]
+    top_20_signs = dict['sign'][:20]
+    top_20_vals = dict['values'][:20]
+    bottom_5_fts = dict['feature_nums'][-5:]
+    
     # 1) Of top x features, which are positive?
     x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
+    top_x_fts = top_20_fts[:x]
     q1 = f'Of the top {x} features, which are positive?'
-    a1 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'positive'])
+    a1 = ', '.join([ft for ft, sign in zip(top_x_fts, top_20_signs) if sign == 'positive'])
     
     # 2) Of top x features, which are negative?
     x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
+    top_x_fts = top_20_fts[:x]
     q2 = f'Of the top {x} features, which are negative?'
-    a2 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'negative'])
+    a2 = ', '.join([ft for ft, sign in zip(top_x_fts, top_20_signs) if sign == 'negative'])
     
     # 3) Of these features [list], which support the prediction?
     x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
-    q3 = f'Of these features [{", ".join(top_x_fts)}], which support the prediction?'
-    a3 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'positive'])
+    rnd_x_fts, rnd_x_signs = zip(*random.sample(list(zip(top_20_fts, top_20_signs)), x))
+    q3 = f'Of these features [{", ".join(rnd_x_fts)}], which support the prediction?'
+    a3 = ', '.join([ft for ft, sign in zip(rnd_x_fts, rnd_x_signs) if sign == 'positive'])
     
     # 4) Of these features [list], which are against the prediction?
     x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
-    q4 = f'Of these features [{", ".join(top_x_fts)}], which are against the prediction?'
-    a4 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'negative'])
+    rnd_x_fts, rnd_x_signs = zip(*random.sample(list(zip(top_20_fts, top_20_signs)), x))
+    q4 = f'Of these features [{", ".join(rnd_x_fts)}], which are against the prediction?'
+    a4 = ', '.join([ft for ft, sign in zip(rnd_x_fts, rnd_x_signs) if sign == 'negative'])
     
-    # 5) What is the value of FX?
-    choice = random.randint(0,len(dict['feature_nums'])-1)
-    feat = dict['feature_nums'][choice]
-    q5 = f'What is the value of {feat}?'
-    a5 = dict['values'][choice]
+    # 5) Which features have an absolute value greater than x?
+    x = random.randint(30,45)/100
+    q5 = f'Which features have an absolute value greater than {x}?'
+    a5 = ', '.join([ft for ft, val in zip(top_20_fts, top_20_vals) if abs(float(val)) > x])
+        
+    # 6) What is the value of FX?
+    choice = random.randint(0,len(top_20_fts)-1)
+    feat = top_20_fts[choice]
+    q6 = f'What is the value of {feat}?'
+    a6 = top_20_vals[choice]
+    
+    # 7) Which are the x least influential features?
+    x = random.randint(2,5)
+    q7 = f'Which are the {x} least influential features?'
+    a7 = ', '.join(bottom_5_fts[-x:])
+    
+    # 8) What is the prediction for class X?
+    rnd_class, rnd_class_val = random.choice(list(eval(dict['classes_dict']).items()))
+    q8 = f'What is the prediction for class {rnd_class}?'
+    a8 = rnd_class_val
     
     
-    q_a_choice = random.randint(0,4)
-    dict['question'] = [q1, q2, q3, q4, q5][q_a_choice]
-    dict['answer'] = [a1, a2, a3, a4, a5][q_a_choice]
+    q_a_choice = random.randint(0,7)
+    dict['question'] = [q1, q2, q3, q4, q5, q6, q7, q8][q_a_choice]
+    dict['answer'] = [a1, a2, a3, a4, a5, a6, a7, a8][q_a_choice]
     dict['question_id'] = q_a_choice
     
     if i is not None:
@@ -327,10 +352,14 @@ def prepare_qa_dataset():
 def prepare_qa_dataset_hard():
     random.seed(77)
     qa_data_hard = [question_generator_hard(create_classes_dict(),i) for i in tqdm(range(30000))]
+    real_data = load_dataset('james-burton/textual-explanations-702010')
+    real_qa = [question_generator_hard(real_data['train'][i],i) for i in tqdm(range(len(real_data['train'])))]
+    real_qa.extend([question_generator_hard(real_data['validation'][i],i) for i in tqdm(range(len(real_data['validation'])))])
+    real_qa.extend([question_generator_hard(real_data['test'][i],i) for i in tqdm(range(len(real_data['test'])))])
     # Split into train, test, val 80:10:10
     random.shuffle(qa_data_hard)
-    train = qa_data_hard[:int(0.8*len(qa_data_hard))]
-    test = qa_data_hard[int(0.8*len(qa_data_hard)):int(0.9*len(qa_data_hard))]
+    train = qa_data_hard[:int(0.9*len(qa_data_hard))]
+    test = real_qa
     val = qa_data_hard[int(0.9*len(qa_data_hard)):]
 
     with open('jb_data/qa_train_hard.json', 'w') as f:
@@ -341,7 +370,7 @@ def prepare_qa_dataset_hard():
         json.dump(val, f)
 
 if __name__ == "__main__":
-    prepare_dataset()
-    prepare_aug_dataset()
+    # prepare_dataset()
+    # prepare_aug_dataset()
     # prepare_qa_dataset()
-    # prepare_qa_dataset_hard()
+    prepare_qa_dataset_hard()
