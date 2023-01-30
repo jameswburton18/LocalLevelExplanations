@@ -75,33 +75,35 @@ predict_batch_size: 2
 --- # text
 config: text
 fast_dev_run: false
+do_train: false
 tags:
  - t5-base
 batch_size: 32
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
-model_base: t5-base
+model_base: models/qa/t5-base/glamorous-wave-37/checkpoint-6750
 version: hard # [normal, hard]
 predict_batch_size: 2
 
 --- # text 2
 config: text_2
 fast_dev_run: false
+do_train: false
 tags:
  - bart
 batch_size: 32
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
-model_base: facebook/bart-base
-output_root: models/bart-base/
+model_base: models/bart-base/fanciful-dragon-38/checkpoint-3750
+output_root: models/qa/bart-base/
 version: hard # [normal, hard]
 predict_batch_size: 2
 
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
-do_train: true
-batch_size: 64
+do_train: false
+batch_size: 32
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 # model_base: facebook/bart-base

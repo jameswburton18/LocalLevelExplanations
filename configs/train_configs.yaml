@@ -760,7 +760,6 @@ big_test_set: true
 --- # text 5 big test
 config: text_5_bigtest
 fast_dev_run: false
-do_train: false
 tags:
  - t5-base
  - augmented
