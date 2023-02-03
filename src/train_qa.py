@@ -46,10 +46,11 @@ def main():
         else load_dataset("james-burton/text-exp-qa-hard")
     dataset = dataset.map(
         lambda x: form_qa_input_output(x, args['linearisation'], args['max_features']),
-        load_from_cache_file=False)
+        load_from_cache_file=True #False
+        )
     dataset = dataset.map(
-        lambda x: convert_to_features(x, tokenizer, args['max_input_len']), 
-        batched=True, load_from_cache_file=False
+        lambda x: convert_to_features(x, tokenizer, args['max_input_len'], args['max_output_len']), 
+        batch_size=args['batch_size'],load_from_cache_file=True #False 
         )
     
     # Fast dev run if want to run quickly and not save to wandb
@@ -57,7 +58,7 @@ def main():
         args['num_epochs'] = 1
         args['tags'].append("fast-dev-run")
         dataset['train'] = dataset['train'].select(range(50))
-        dataset['test'] = dataset['test'].select(range(10))
+        dataset['test'] = dataset['test'].select(range(50))
         output_dir = os.path.join(args['output_root'], 'testing')
         print("\n######################    Running in fast dev mode    #######################\n")
 
@@ -171,10 +172,26 @@ def main():
         
         pred_eq_ans = [a.strip()==p.strip() for a, p in zip(dataset['test']['narration'], all_preds)]
         q_ids = dataset['test']['question_id']
-        Q_ID_DICT = {0: 'val_of_F', 1: 'FA_minus_FB', 2: 'xth_most_important',
-                     3: 'top_x_pos', 4: 'top_x_neg'} if args['version'] == 'normal' else {
-                         0: 'of_top_pos', 1: 'of_top_neg', 2: 'of_these_support',
-                         3: 'of_these_against', 4: 'val_of_F', 5: 'val_of_C'}
+        Q_ID_DICT = (
+            {
+                0: "val_of_F",
+                1: "FA_minus_FB",
+                2: "xth_most_important",
+                3: "top_x_pos",
+                4: "top_x_neg",
+            }
+            if args["version"] == "normal"
+            else {
+                0: "of_top_pos",
+                1: "of_top_neg",
+                2: "of_these_support",
+                3: "of_these_against",
+                4: "fts_>_x",
+                5: "val_of_F",
+                6: "least_important_fts",
+                7: "val_of_C",
+            }
+        )
         # check accuracy per question id
         q_id_acc = {}
         for qid, eq in zip(q_ids, pred_eq_ans):
