@@ -99,12 +99,89 @@ output_root: models/qa/bart-base/
 version: hard # [normal, hard]
 predict_batch_size: 2
 
+
+# NEW QnA ds
+--- # text 3 
+config: text_3
+fast_dev_run: false
+do_train: true
+tags:
+ - t5-base
+batch_size: 16
+max_features: 20
+max_input_len: 400
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-base
+version: hard # [normal, hard]
+predict_batch_size: 2
+
+--- # text 4
+config: text_4
+fast_dev_run: false
+do_train: true
+tags:
+ - bart
+batch_size: 16
+max_features: 20
+max_input_len: 400
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-base
+output_root: models/qa/bart-base/
+version: hard # [normal, hard]
+predict_batch_size: 2
+
+--- # text 5
+config: text_5
+fast_dev_run: false
+do_train: true
+tags:
+ - t5-base
+batch_size: 16
+max_features: 20
+max_input_len: 400
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-base
+version: hard # [normal, hard]
+predict_batch_size: 2
+num_epochs: 6
+
+--- # text 6
+config: text_6
+fast_dev_run: false
+do_train: true
+tags:
+ - bart
+batch_size: 16
+max_features: 20
+max_input_len: 400
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-base
+output_root: models/qa/bart-base/
+version: hard # [normal, hard]
+predict_batch_size: 2
+num_epochs: 6
+
+--- # text 3 
+config: text_7
+fast_dev_run: false
+do_train: true
+tags:
+ - t5-large
+batch_size: 16
+max_features: 20
+max_input_len: 400
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-large
+version: hard # [normal, hard]
+predict_batch_size: 2
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
-do_train: false
+do_train: true
 batch_size: 32
 max_features: 20
+max_input_len: 400
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 # model_base: facebook/bart-base
 # output_root: models/qa/bart-base/

@@ -856,6 +856,201 @@ num_beams: 20
 predict_batch_size: 2
 big_test_set: true
 
+--- # text 11
+config: text_11
+fast_dev_run: false
+tags:
+ - t5-base
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/dancing-fireworks-44/checkpoint-15192
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 12 
+config: text_12
+fast_dev_run: false
+tags:
+ - bart
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/legendary-rat-45/checkpoint-15192
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+
+--- # text 13
+config: text_13
+fast_dev_run: false
+tags:
+ - t5-base
+ - augmented
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/dancing-fireworks-44/checkpoint-15192
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 14
+config: text_14
+fast_dev_run: false
+tags:
+ - bart
+ - augmented
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/legendary-rat-45/checkpoint-15192
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 15
+config: text_15
+fast_dev_run: false
+tags:
+ - t5-base
+ - qa pretrain v2
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/golden-rooster-46/checkpoint-10128
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 16
+config: text_16
+fast_dev_run: false
+tags:
+ - bart
+ - qa pretrain v2
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/abundant-chrysanthemum-47/checkpoint-10128
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 17
+config: text_17
+fast_dev_run: false
+tags:
+ - t5-base
+ - augmented v3
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 18
+config: text_18
+fast_dev_run: false
+tags:
+ - bart
+ - augmented v3
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: facebook/bart-base
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 19
+config: text_19
+fast_dev_run: false
+tags:
+ - t5-base
+ - augmented v3
+ - qa pretrain v2
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/golden-rooster-46/checkpoint-10128
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 20
+config: text_20
+fast_dev_run: false
+tags:
+ - bart
+ - augmented v3
+ - qa pretrain v2
+ - big-test
+batch_size: 8
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/abundant-chrysanthemum-47/checkpoint-10128
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 21
+config: text_21
+fast_dev_run: false
+tags:
+ - t5-large
+ - big-test
+batch_size: 2
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-large
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 22
+config: text_22
+fast_dev_run: false
+tags:
+ - t5-large
+ - big-test
+ - augmented v3
+batch_size: 2
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-large
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
@@ -866,9 +1061,7 @@ tags:
 batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
-model_base: t5-base
-resume_from_checkpoint: 
+model_base: gpt2
 num_beams: 20
 predict_batch_size: 2
-augmented_ds: true
 big_test_set: true
