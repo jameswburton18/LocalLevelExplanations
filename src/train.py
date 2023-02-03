@@ -46,7 +46,8 @@ def main():
     # Dataset
     if args['augmented_ds']:
         if args['big_test_set']:
-            ds_path = 'james-burton/aug-text-exps-702010'
+            # ds_path = 'james-burton/aug-text-exps-702010'
+            ds_path = 'james-burton/aug-text-exps-v3'
         else:
             ds_path = 'james-burton/aug-text-exps'
     else:
