@@ -368,6 +368,8 @@ def prepare_qa_dataset_hard():
         json.dump(test, f)
     with open('jb_data/qa_val_hard.json', 'w') as f:
         json.dump(val, f)
+#####################################################################
+
 
 if __name__ == "__main__":
     # prepare_dataset()
