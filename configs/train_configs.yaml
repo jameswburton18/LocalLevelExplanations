@@ -1032,7 +1032,7 @@ max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-large
 num_beams: 20
-predict_batch_size: 2
+predict_batch_size: 1
 big_test_set: true
 
 --- # text 22
@@ -1047,7 +1047,7 @@ max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-large
 num_beams: 20
-predict_batch_size: 2
+predict_batch_size: 1
 big_test_set: true
 augmented_ds: true
 
