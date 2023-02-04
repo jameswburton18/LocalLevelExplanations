@@ -161,17 +161,32 @@ version: hard # [normal, hard]
 predict_batch_size: 2
 num_epochs: 6
 
---- # text 3 
+--- # text 7
 config: text_7
 fast_dev_run: false
 do_train: true
 tags:
  - t5-large
-batch_size: 16
+batch_size: 4
 max_features: 20
 max_input_len: 400
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-large
+version: hard # [normal, hard]
+predict_batch_size: 2
+
+--- # text 8
+config: text_8
+fast_dev_run: false
+do_train: true
+tags:
+ - bart-large
+batch_size: 4
+max_features: 20
+max_input_len: 400
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-large
+output_root: models/qa/bart-base/
 version: hard # [normal, hard]
 predict_batch_size: 2
 

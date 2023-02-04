@@ -1051,6 +1051,129 @@ predict_batch_size: 2
 big_test_set: true
 augmented_ds: true
 
+--- # text 23
+config: text_23
+fast_dev_run: false
+tags:
+ - bart-large
+ - big-test
+batch_size: 2
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-large
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 24
+config: text_24
+fast_dev_run: false
+tags:
+ - bart-large
+ - big-test
+ - augmented v3
+batch_size: 2
+max_features: 20
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-large
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 25
+config: text_25
+fast_dev_run: false
+tags:
+ - t5-base
+ - big-test
+batch_size: 8
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-base
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 26
+config: text_26
+fast_dev_run: false
+tags:
+ - bart
+ - big-test
+batch_size: 8
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-base
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 27
+config: text_27
+fast_dev_run: false
+tags:
+ - t5-base
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/t5-base/dancing-fireworks-44/checkpoint-15192
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 28
+config: text_28
+fast_dev_run: false
+tags:
+ - bart
+ - qa pretrain
+ - big-test
+batch_size: 8
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/legendary-rat-45/checkpoint-15192
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 29
+config: text_29
+fast_dev_run: false
+tags:
+ - t5-base
+ - augmented v3
+ - big-test
+batch_size: 8
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 30
+config: text_30
+fast_dev_run: false
+tags:
+ - bart
+ - augmented v3
+ - big-test
+batch_size: 8
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: facebook/bart-base
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
