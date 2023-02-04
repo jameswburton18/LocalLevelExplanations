@@ -1206,6 +1206,38 @@ predict_batch_size: 2
 big_test_set: true
 augmented_ds: true
 
+--- # text 33
+config: text_33
+fast_dev_run: false
+tags:
+ - t5-large
+ - big-test
+ - augmented v3
+batch_size: 4
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-large
+output_root: models/t5-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+augmented_ds: true
+
+--- # text 34
+config: text_34
+fast_dev_run: false
+tags:
+ - t5-large
+ - big-test
+batch_size: 4
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-large
+output_root: models/t5-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
