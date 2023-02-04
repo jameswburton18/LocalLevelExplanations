@@ -167,7 +167,7 @@ fast_dev_run: false
 do_train: true
 tags:
  - t5-large
-batch_size: 4
+batch_size: 2
 max_features: 20
 max_input_len: 400
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -181,7 +181,7 @@ fast_dev_run: false
 do_train: true
 tags:
  - bart-large
-batch_size: 4
+batch_size: 2
 max_features: 20
 max_input_len: 400
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
