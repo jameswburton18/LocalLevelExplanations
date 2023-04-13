@@ -536,7 +536,7 @@ def prepare_qa_dataset_hard():
             for i in tqdm(range(len(real_data["test"])))
         ]
     )
-    # Split into train, test, val 80:10:10
+    # The test set is from the real data and the val and train are from the generated data
     random.shuffle(qa_data_hard)
     train = qa_data_hard[: int(0.9 * len(qa_data_hard))]
     test = real_qa
@@ -552,9 +552,26 @@ def prepare_qa_dataset_hard():
 
 def prepare_unseen_qa_testset():
     random.seed(77)
-    qa_data = [
-        question_generator_unseen(create_classes_dict(), i) for i in tqdm(range(3000))
+    real_data = load_dataset("james-burton/textual-explanations-702010")
+    real_qa = [
+        question_generator_unseen(real_data["train"][i], i)
+        for i in tqdm(range(len(real_data["train"])))
     ]
+    real_qa.extend(
+        [
+            question_generator_unseen(real_data["validation"][i], i)
+            for i in tqdm(range(len(real_data["validation"])))
+        ]
+    )
+    real_qa.extend(
+        [
+            question_generator_unseen(real_data["test"][i], i)
+            for i in tqdm(range(len(real_data["test"])))
+        ]
+    )
+
+    with open("jb_data/qa_test_unseen.json", "w") as f:
+        json.dump(real_qa, f)
 
 
 #####################################################################
@@ -564,4 +581,5 @@ if __name__ == "__main__":
     # prepare_dataset()
     # prepare_aug_dataset()
     # prepare_qa_dataset()
-    prepare_qa_dataset_hard()
+    # prepare_qa_dataset_hard()
+    prepare_unseen_qa_testset()
