@@ -15,16 +15,16 @@ DESCRIPTION = """\
         - old2new_classes
         - class2name
     """
-    
 
-    
+
 _TRAIN_DOWNLOAD_URL = "jb_data/train_70-20-10_augmented.json"
 _DEV_DOWNLOAD_URL = "jb_data/val.json"
 _TEST_DOWNLOAD_URL = "jb_data/test_70-20-10.json"
 
+
 class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
     """TextualExplanationDataset dataset."""
-    
+
     VERSION = datasets.Version("2.7.0")
 
     BUILDER_CONFIGS = [
@@ -37,7 +37,7 @@ class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
 
     def __init__(self, data_dir=None, **kwargs):
         super().__init__()
-    
+
     def _info(self):
         # classes_dict is a dictionary
         return datasets.DatasetInfo(
@@ -64,7 +64,7 @@ class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
             ),
             supervised_keys=None,
         )
-        
+
     def _split_generators(self, dl_manager):
         """Returns SplitGenerators."""
         train_path = dl_manager.download_and_extract(_TRAIN_DOWNLOAD_URL)
@@ -72,11 +72,17 @@ class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
         test_path = dl_manager.download_and_extract(_TEST_DOWNLOAD_URL)
 
         return [
-            datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"filepath": train_path}),
-            datasets.SplitGenerator(name=datasets.Split.VALIDATION, gen_kwargs={"filepath": dev_path}),
-            datasets.SplitGenerator(name=datasets.Split.TEST, gen_kwargs={"filepath": test_path}),
+            datasets.SplitGenerator(
+                name=datasets.Split.TRAIN, gen_kwargs={"filepath": train_path}
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.VALIDATION, gen_kwargs={"filepath": dev_path}
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST, gen_kwargs={"filepath": test_path}
+            ),
         ]
-        
+
     def _generate_examples(self, filepath):
         """Yields examples."""
         with open(filepath, encoding="utf-8") as f:
@@ -101,11 +107,15 @@ class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
                     "class2name": row["class2name"],
                 }
 
+
 if __name__ == "__main__":
     # Note that if changes are made to the dataset then it will raise a ChecksumError.
     # To fix this you need to delete the cached files in ~/.cache/huggingface/datasets/
-    dataset = datasets.load_dataset("src/dataset_builders/aug_textual_explanations_v3_dataset_builder.py", download_mode="force_redownload")#, ignore_verifications=True)
-    
+    dataset = datasets.load_dataset(
+        "src/dataset_builders/aug_textual_explanations_v3_dataset_builder.py",
+        download_mode="force_redownload",
+    )  # , ignore_verifications=True)
+
     # Save the dataset to huggingface
     dataset.push_to_hub("aug-text-exps-v3", private=True)
     print()
