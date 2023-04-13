@@ -1,574 +1,14 @@
---- # ESSEL
-config: essel
-fast_dev_run: false
-tags:
- - t5-base
-batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-
---- # ord first
-config: ord_first
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-
---- # ft first
-config: ft_first
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-
---- # ESSEL 2
-config: essel_2
-fast_dev_run: false
-tags:
- - bart
-batch_size: 8
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-
---- # ord first 2
-config: ord_first_2
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
-batch_size: 64
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-
---- # ft first 2
-config: ft_first_2
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
-batch_size: 64
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-
---- # ESSEL qa first
-config: essel_qa
-fast_dev_run: false
-tags:
- - t5-base
- - qa pretrain
-# batch_size: 8
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: models/qa/t5-base/silver-sky-30/checkpoint-30000
-output_root: models/t5-base/
-predict_batch_size: 2
-
---- # ord first qa first
-config: ord_first_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
- - qa pretrain
-# batch_size: 32
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: models/qa/t5-base/dark-bird-35/checkpoint-37500
-output_root: models/t5-base/
-predict_batch_size: 2
-
---- # ft first qa first
-config: ft_first_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
- - qa pretrain
-batch_size: 8
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: models/qa/t5-base/lunar-sponge-36/checkpoint-123000
-output_root: models/t5-base/
-predict_batch_size: 2
-
---- # ESSEL 2 qa first
-config: essel_2_qa
-fast_dev_run: false
-tags:
- - bart
- - qa pretrain
-# batch_size: 16
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: models/qa/bart-base/helpful-aardvark-21/checkpoint-6000
-output_root: models/bart-base/
-predict_batch_size: 2
-
---- # ord first 2 qa first
-config: ord_first_2_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
- - qa pretrain
-# batch_size: 16
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: models/qa/bart-base/warm-sky-22/checkpoint-18750
-output_root: models/bart-base/
-predict_batch_size: 2
-
---- # ft first 2 qa first
-config: ft_first_2_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
- - qa pretrain
-# batch_size: 8
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: models/qa/bart-base/chocolate-dust-23/checkpoint-18750
-output_root: models/bart-base/
-predict_batch_size: 2
-
---- # ESSEL 3
-config: essel_3
-fast_dev_run: false
-tags:
- - t5-base
- - augmented
-batch_size: 8
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-augmented_ds: true
-
---- # ord first 3
-config: ord_first_3
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
- - augmented
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-augmented_ds: true
-
---- # ft first 3
-config: ft_first_3
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
- - augmented
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-augmented_ds: true
-
---- # ESSEL 4
-config: essel_4
-fast_dev_run: false
-tags:
- - bart
- - augmented
-batch_size: 16
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ord first 4
-config: ord_first_4
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
- - augmented
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ft first 4
-config: ft_first_4
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
- - augmented
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ESSEL 3 qa
-config: essel_3_qa
-fast_dev_run: false
-tags:
- - t5-base
- - augmented
- - qa pretrain
-batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-augmented_ds: true
-
---- # ord first 3 qa
-config: ord_first_3_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
- - augmented
- - qa pretrain
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-augmented_ds: true
-
---- # ft first 3 qa
-config: ft_first_3_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
- - augmented
- - qa pretrain
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-predict_batch_size: 2
-augmented_ds: true
-
---- # ESSEL 4 qa
-config: essel_4_qa
-fast_dev_run: false
-tags:
- - bart
- - augmented
- - qa pretrain
-# batch_size: 16
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ord first 4 qa
-config: ord_first_4_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
- - augmented
- - qa pretrain
-# batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ft first 4 qa
-config: ft_first_4_qa
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - bart
- - augmented
- - qa pretrain
-# batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: facebook/bart-base
-output_root: models/bart-base/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ESSEL 5
-config: essel_5
-fast_dev_run: false
-tags:
- - flan-t5
- - augmented
-batch_size: 8
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: google/flan-t5-base
-output_root: models/flan-t5/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ord first 5
-config: ord_first_5
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - flan-t5
- - augmented
-batch_size: 8
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: google/flan-t5-base
-output_root: models/flan-t5/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ft first 5
-config: ft_first_5
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - flan-t5
- - augmented
-batch_size: 8
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: google/flan-t5-base
-output_root: models/flan-t5/
-predict_batch_size: 2
-augmented_ds: true
-
---- # ESSEL 6
-config: essel_6
-fast_dev_run: false
-tags:
- - t5-base
- - fts_as_tokens
-batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-add_fts_as_tokens: true
-predict_batch_size: 2
-
---- # ord first 6
-config: ord_first_6
-fast_dev_run: false
-do_train: true
-do_predict: true
-
-tags:
- - t5-base
- - fts_as_tokens
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-add_fts_as_tokens: true
-predict_batch_size: 2
-
---- # ft first 6
-config: ft_first_6
-fast_dev_run: false
-do_train: true
-do_predict: true
-tags:
- - t5-base
- - fts_as_tokens
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-add_fts_as_tokens: true
-predict_batch_size: 2
-
---- # ESSEL 7
-config: essel_7
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_ft_names
-batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_ft_names: true
-predict_batch_size: 2
-
---- # ord first 7
-config: ord_first_7
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_ft_names
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_ft_names: true
-predict_batch_size: 2
-
---- # ft first 7
-config: ft_first_7
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_ft_names
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_ft_names: true
-predict_batch_size: 2
-
---- # ESSEL 7
-config: essel_7
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_ft_names
-batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_ft_names: true
-predict_batch_size: 2
-
---- # ord first 7
-config: ord_first_7
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_ft_names
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_ft_names: true
-predict_batch_size: 2
-
---- # ft first 7
-config: ft_first_7
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_ft_names
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_ft_names: true
-predict_batch_size: 2
-
---- # ESSEL 8
-config: essel_8
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_qs
-batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_narr_qs: true
-predict_batch_size: 2
-
---- # ord first 8
-config: ord_first_8
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_qs
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_narr_qs: true
-predict_batch_size: 2
-
---- # ft first 8
-config: ft_first_8
-fast_dev_run: false
-tags:
- - t5-base
- - simplify_narr_qs
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_narr_qs: true
-predict_batch_size: 2
-
---- # ESSEL 9
-config: essel_9
-fast_dev_run: false
-tags:
- - input_size_fix
- - t5-base
- - simplify_qs
-batch_size: 4
-linearisation: essel # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_narr_qs: true
-max_features: 35
-max_input_len: 500
-predict_batch_size: 2
-
---- # ord first 9
-config: ord_first_9
-fast_dev_run: false
-tags:
- - input_size_fix
- - t5-base
- - simplify_qs
-batch_size: 4
-linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_narr_qs: true
-max_features: 35
-max_input_len: 500
-predict_batch_size: 2
-
---- # ft first 9
-config: ft_first_9
-fast_dev_run: false
-tags:
- - input_size_fix
- - t5-base
- - simplify_qs
-batch_size: 4
-linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
-model_base: t5-base
-simplify_narr_qs: true
-max_features: 35
-max_input_len: 500
-predict_batch_size: 2
-
 --- # text
 config: text
 fast_dev_run: false
 do_train: false
 tags:
- - t5-base
+  - t5-base
 batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-base
-resume_from_checkpoint: 
+resume_from_checkpoint:
 num_beams: 20
 predict_batch_size: 2
 
@@ -576,7 +16,7 @@ predict_batch_size: 2
 config: text_2
 fast_dev_run: false
 tags:
- - bart
+  - bart
 batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -589,7 +29,7 @@ predict_batch_size: 2
 config: text_3
 fast_dev_run: false
 tags:
- - t5-base
+  - t5-base
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -601,7 +41,7 @@ predict_batch_size: 2
 config: text_4
 fast_dev_run: false
 tags:
- - bart
+  - bart
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -615,8 +55,8 @@ config: text_5
 fast_dev_run: false
 do_train: false
 tags:
- - t5-base
- - augmented
+  - t5-base
+  - augmented
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -629,8 +69,8 @@ augmented_ds: true
 config: text_6
 fast_dev_run: false
 tags:
- - bart
- - augmented
+  - bart
+  - augmented
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -644,9 +84,9 @@ augmented_ds: true
 config: text_7
 fast_dev_run: false
 tags:
- - t5-base
- - augmented
- - qa pretrain
+  - t5-base
+  - augmented
+  - qa pretrain
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -659,9 +99,9 @@ augmented_ds: true
 config: text_8
 fast_dev_run: false
 tags:
- - bart
- - augmented
- - qa pretrain
+  - bart
+  - augmented
+  - qa pretrain
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -675,8 +115,8 @@ augmented_ds: true
 config: text_9
 fast_dev_run: false
 tags:
- - t5-base
- - qa pretrain
+  - t5-base
+  - qa pretrain
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -688,8 +128,8 @@ predict_batch_size: 2
 config: text_10
 fast_dev_run: false
 tags:
- - bart
- - qa pretrain
+  - bart
+  - qa pretrain
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -702,13 +142,13 @@ predict_batch_size: 2
 config: text_bigtest
 fast_dev_run: false
 tags:
- - t5-base
- - big-test
+  - t5-base
+  - big-test
 batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-base
-resume_from_checkpoint: 
+resume_from_checkpoint:
 num_beams: 20
 predict_batch_size: 2
 big_test_set: true
@@ -717,8 +157,8 @@ big_test_set: true
 config: text_2_bigtest
 fast_dev_run: false
 tags:
- - bart
- - big-test
+  - bart
+  - big-test
 batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -732,8 +172,8 @@ big_test_set: true
 config: text_3_bigtest
 fast_dev_run: false
 tags:
- - t5-base
- - big-test
+  - t5-base
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -746,8 +186,8 @@ big_test_set: true
 config: text_4_bigtest
 fast_dev_run: false
 tags:
- - bart
- - big-test
+  - bart
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -761,9 +201,9 @@ big_test_set: true
 config: text_5_bigtest
 fast_dev_run: false
 tags:
- - t5-base
- - augmented
- - big-test
+  - t5-base
+  - augmented
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -777,9 +217,9 @@ big_test_set: true
 config: text_6_bigtest
 fast_dev_run: false
 tags:
- - bart
- - augmented
- - big-test
+  - bart
+  - augmented
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -794,10 +234,10 @@ big_test_set: true
 config: text_7_bigtest
 fast_dev_run: false
 tags:
- - t5-base
- - augmented
- - qa pretrain
- - big-test
+  - t5-base
+  - augmented
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -811,10 +251,10 @@ big_test_set: true
 config: text_8_bigtest
 fast_dev_run: false
 tags:
- - bart
- - augmented
- - qa pretrain
- - big-test
+  - bart
+  - augmented
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -829,9 +269,9 @@ big_test_set: true
 config: text_9_bigtest
 fast_dev_run: false
 tags:
- - t5-base
- - qa pretrain
- - big-test
+  - t5-base
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -844,9 +284,9 @@ big_test_set: true
 config: text_10_bigtest
 fast_dev_run: false
 tags:
- - bart
- - qa pretrain
- - big-test
+  - bart
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -860,9 +300,9 @@ big_test_set: true
 config: text_11
 fast_dev_run: false
 tags:
- - t5-base
- - qa pretrain
- - big-test
+  - t5-base
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -871,13 +311,13 @@ num_beams: 20
 predict_batch_size: 2
 big_test_set: true
 
---- # text 12 
+--- # text 12
 config: text_12
 fast_dev_run: false
 tags:
- - bart
- - qa pretrain
- - big-test
+  - bart
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -887,15 +327,14 @@ num_beams: 20
 predict_batch_size: 2
 big_test_set: true
 
-
 --- # text 13
 config: text_13
 fast_dev_run: false
 tags:
- - t5-base
- - augmented
- - qa pretrain
- - big-test
+  - t5-base
+  - augmented
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -909,10 +348,10 @@ augmented_ds: true
 config: text_14
 fast_dev_run: false
 tags:
- - bart
- - augmented
- - qa pretrain
- - big-test
+  - bart
+  - augmented
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -927,9 +366,9 @@ augmented_ds: true
 config: text_15
 fast_dev_run: false
 tags:
- - t5-base
- - qa pretrain v2
- - big-test
+  - t5-base
+  - qa pretrain v2
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -942,9 +381,9 @@ big_test_set: true
 config: text_16
 fast_dev_run: false
 tags:
- - bart
- - qa pretrain v2
- - big-test
+  - bart
+  - qa pretrain v2
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -958,9 +397,9 @@ big_test_set: true
 config: text_17
 fast_dev_run: false
 tags:
- - t5-base
- - augmented v3
- - big-test
+  - t5-base
+  - augmented v3
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -973,9 +412,9 @@ augmented_ds: true
 config: text_18
 fast_dev_run: false
 tags:
- - bart
- - augmented v3
- - big-test
+  - bart
+  - augmented v3
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -990,10 +429,10 @@ augmented_ds: true
 config: text_19
 fast_dev_run: false
 tags:
- - t5-base
- - augmented v3
- - qa pretrain v2
- - big-test
+  - t5-base
+  - augmented v3
+  - qa pretrain v2
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -1007,10 +446,10 @@ augmented_ds: true
 config: text_20
 fast_dev_run: false
 tags:
- - bart
- - augmented v3
- - qa pretrain v2
- - big-test
+  - bart
+  - augmented v3
+  - qa pretrain v2
+  - big-test
 batch_size: 8
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -1025,8 +464,8 @@ augmented_ds: true
 config: text_21
 fast_dev_run: false
 tags:
- - t5-large
- - big-test
+  - t5-large
+  - big-test
 batch_size: 2
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1039,9 +478,9 @@ big_test_set: true
 config: text_22
 fast_dev_run: false
 tags:
- - t5-large
- - big-test
- - augmented v3
+  - t5-large
+  - big-test
+  - augmented v3
 batch_size: 2
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1055,8 +494,8 @@ augmented_ds: true
 config: text_23
 fast_dev_run: false
 tags:
- - bart-large
- - big-test
+  - bart-large
+  - big-test
 batch_size: 2
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1069,9 +508,9 @@ big_test_set: true
 config: text_24
 fast_dev_run: false
 tags:
- - bart-large
- - big-test
- - augmented v3
+  - bart-large
+  - big-test
+  - augmented v3
 batch_size: 2
 max_features: 20
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1086,8 +525,8 @@ augmented_ds: true
 config: text_25
 fast_dev_run: false
 tags:
- - t5-base
- - big-test
+  - t5-base
+  - big-test
 batch_size: 8
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1100,8 +539,8 @@ big_test_set: true
 config: text_26
 fast_dev_run: false
 tags:
- - bart
- - big-test
+  - bart
+  - big-test
 batch_size: 8
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1115,9 +554,9 @@ big_test_set: true
 config: text_27
 fast_dev_run: false
 tags:
- - t5-base
- - qa pretrain
- - big-test
+  - t5-base
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -1130,9 +569,9 @@ big_test_set: true
 config: text_28
 fast_dev_run: false
 tags:
- - bart
- - qa pretrain
- - big-test
+  - bart
+  - qa pretrain
+  - big-test
 batch_size: 8
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -1146,9 +585,9 @@ big_test_set: true
 config: text_29
 fast_dev_run: false
 tags:
- - t5-base
- - augmented v3
- - big-test
+  - t5-base
+  - augmented v3
+  - big-test
 batch_size: 8
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -1161,9 +600,9 @@ augmented_ds: true
 config: text_30
 fast_dev_run: false
 tags:
- - bart
- - augmented v3
- - big-test
+  - bart
+  - augmented v3
+  - big-test
 batch_size: 8
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first']
@@ -1178,8 +617,8 @@ augmented_ds: true
 config: text_31
 fast_dev_run: false
 tags:
- - bart-large
- - big-test
+  - bart-large
+  - big-test
 batch_size: 4
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1193,9 +632,9 @@ big_test_set: true
 config: text_32
 fast_dev_run: false
 tags:
- - bart-large
- - big-test
- - augmented v3
+  - bart-large
+  - big-test
+  - augmented v3
 batch_size: 4
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1210,9 +649,9 @@ augmented_ds: true
 config: text_33
 fast_dev_run: false
 tags:
- - t5-large
- - big-test
- - augmented v3
+  - t5-large
+  - big-test
+  - augmented v3
 batch_size: 4
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1227,8 +666,8 @@ augmented_ds: true
 config: text_34
 fast_dev_run: false
 tags:
- - t5-large
- - big-test
+  - t5-large
+  - big-test
 batch_size: 4
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1243,8 +682,8 @@ config: essel_test
 fast_dev_run: true
 do_train: true
 tags:
- - t5-base
- - big-test
+  - t5-base
+  - big-test
 batch_size: 8
 max_features: 15
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
@@ -1252,3 +691,562 @@ model_base: gpt2
 num_beams: 20
 predict_batch_size: 2
 big_test_set: true
+# --- # ESSEL
+# config: essel
+# fast_dev_run: false
+# tags:
+#  - t5-base
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+
+# --- # ord first
+# config: ord_first
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+
+# --- # ft first
+# config: ft_first
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+
+# --- # ESSEL 2
+# config: essel_2
+# fast_dev_run: false
+# tags:
+#  - bart
+# batch_size: 8
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+
+# --- # ord first 2
+# config: ord_first_2
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+# batch_size: 64
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+
+# --- # ft first 2
+# config: ft_first_2
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+# batch_size: 64
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+
+# --- # ESSEL qa first
+# config: essel_qa
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - qa pretrain
+# # batch_size: 8
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: models/qa/t5-base/silver-sky-30/checkpoint-30000
+# output_root: models/t5-base/
+# predict_batch_size: 2
+
+# --- # ord first qa first
+# config: ord_first_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - qa pretrain
+# # batch_size: 32
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: models/qa/t5-base/dark-bird-35/checkpoint-37500
+# output_root: models/t5-base/
+# predict_batch_size: 2
+
+# --- # ft first qa first
+# config: ft_first_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - qa pretrain
+# batch_size: 8
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: models/qa/t5-base/lunar-sponge-36/checkpoint-123000
+# output_root: models/t5-base/
+# predict_batch_size: 2
+
+# --- # ESSEL 2 qa first
+# config: essel_2_qa
+# fast_dev_run: false
+# tags:
+#  - bart
+#  - qa pretrain
+# # batch_size: 16
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: models/qa/bart-base/helpful-aardvark-21/checkpoint-6000
+# output_root: models/bart-base/
+# predict_batch_size: 2
+
+# --- # ord first 2 qa first
+# config: ord_first_2_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+#  - qa pretrain
+# # batch_size: 16
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: models/qa/bart-base/warm-sky-22/checkpoint-18750
+# output_root: models/bart-base/
+# predict_batch_size: 2
+
+# --- # ft first 2 qa first
+# config: ft_first_2_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+#  - qa pretrain
+# # batch_size: 8
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: models/qa/bart-base/chocolate-dust-23/checkpoint-18750
+# output_root: models/bart-base/
+# predict_batch_size: 2
+
+# --- # ESSEL 3
+# config: essel_3
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - augmented
+# batch_size: 8
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ord first 3
+# config: ord_first_3
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - augmented
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ft first 3
+# config: ft_first_3
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - augmented
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ESSEL 4
+# config: essel_4
+# fast_dev_run: false
+# tags:
+#  - bart
+#  - augmented
+# batch_size: 16
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ord first 4
+# config: ord_first_4
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+#  - augmented
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ft first 4
+# config: ft_first_4
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+#  - augmented
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ESSEL 3 qa
+# config: essel_3_qa
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - augmented
+#  - qa pretrain
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ord first 3 qa
+# config: ord_first_3_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - augmented
+#  - qa pretrain
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ft first 3 qa
+# config: ft_first_3_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - augmented
+#  - qa pretrain
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ESSEL 4 qa
+# config: essel_4_qa
+# fast_dev_run: false
+# tags:
+#  - bart
+#  - augmented
+#  - qa pretrain
+# # batch_size: 16
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ord first 4 qa
+# config: ord_first_4_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+#  - augmented
+#  - qa pretrain
+# # batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ft first 4 qa
+# config: ft_first_4_qa
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - bart
+#  - augmented
+#  - qa pretrain
+# # batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: facebook/bart-base
+# output_root: models/bart-base/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ESSEL 5
+# config: essel_5
+# fast_dev_run: false
+# tags:
+#  - flan-t5
+#  - augmented
+# batch_size: 8
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: google/flan-t5-base
+# output_root: models/flan-t5/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ord first 5
+# config: ord_first_5
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - flan-t5
+#  - augmented
+# batch_size: 8
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: google/flan-t5-base
+# output_root: models/flan-t5/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ft first 5
+# config: ft_first_5
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - flan-t5
+#  - augmented
+# batch_size: 8
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: google/flan-t5-base
+# output_root: models/flan-t5/
+# predict_batch_size: 2
+# augmented_ds: true
+
+# --- # ESSEL 6
+# config: essel_6
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - fts_as_tokens
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# add_fts_as_tokens: true
+# predict_batch_size: 2
+
+# --- # ord first 6
+# config: ord_first_6
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+
+# tags:
+#  - t5-base
+#  - fts_as_tokens
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# add_fts_as_tokens: true
+# predict_batch_size: 2
+
+# --- # ft first 6
+# config: ft_first_6
+# fast_dev_run: false
+# do_train: true
+# do_predict: true
+# tags:
+#  - t5-base
+#  - fts_as_tokens
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# add_fts_as_tokens: true
+# predict_batch_size: 2
+
+# --- # ESSEL 7
+# config: essel_7
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_ft_names
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_ft_names: true
+# predict_batch_size: 2
+
+# --- # ord first 7
+# config: ord_first_7
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_ft_names
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_ft_names: true
+# predict_batch_size: 2
+
+# --- # ft first 7
+# config: ft_first_7
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_ft_names
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_ft_names: true
+# predict_batch_size: 2
+
+# --- # ESSEL 7
+# config: essel_7
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_ft_names
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_ft_names: true
+# predict_batch_size: 2
+
+# --- # ord first 7
+# config: ord_first_7
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_ft_names
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_ft_names: true
+# predict_batch_size: 2
+
+# --- # ft first 7
+# config: ft_first_7
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_ft_names
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_ft_names: true
+# predict_batch_size: 2
+
+# --- # ESSEL 8
+# config: essel_8
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_qs
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_narr_qs: true
+# predict_batch_size: 2
+
+# --- # ord first 8
+# config: ord_first_8
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_qs
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_narr_qs: true
+# predict_batch_size: 2
+
+# --- # ft first 8
+# config: ft_first_8
+# fast_dev_run: false
+# tags:
+#  - t5-base
+#  - simplify_narr_qs
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_narr_qs: true
+# predict_batch_size: 2
+
+# --- # ESSEL 9
+# config: essel_9
+# fast_dev_run: false
+# tags:
+#  - input_size_fix
+#  - t5-base
+#  - simplify_qs
+# batch_size: 4
+# linearisation: essel # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_narr_qs: true
+# max_features: 35
+# max_input_len: 500
+# predict_batch_size: 2
+
+# --- # ord first 9
+# config: ord_first_9
+# fast_dev_run: false
+# tags:
+#  - input_size_fix
+#  - t5-base
+#  - simplify_qs
+# batch_size: 4
+# linearisation: ord_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_narr_qs: true
+# max_features: 35
+# max_input_len: 500
+# predict_batch_size: 2
+
+# --- # ft first 9
+# config: ft_first_9
+# fast_dev_run: false
+# tags:
+#  - input_size_fix
+#  - t5-base
+#  - simplify_qs
+# batch_size: 4
+# linearisation: ft_first # ['essel', 'ord_first', 'ft_first']
+# model_base: t5-base
+# simplify_narr_qs: true
+# max_features: 35
+# max_input_len: 500
+# predict_batch_size: 2
