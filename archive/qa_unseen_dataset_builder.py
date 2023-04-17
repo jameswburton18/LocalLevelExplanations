@@ -8,7 +8,7 @@ DESCRIPTION = """\
     """
 
 
-_TEST_DOWNLOAD_URL = "jb_data/qa_test_unseen.json"
+_TEST_DOWNLOAD_URL = "data/processed/qa_test_unseen.json"
 
 
 class QADatasetBuilder(datasets.GeneratorBasedBuilder):

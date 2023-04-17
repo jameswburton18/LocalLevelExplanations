@@ -4,119 +4,138 @@ import random
 import inflect
 from tqdm import tqdm
 
+
 def create_classes_dict():
-    sign_dict = {1: 'positive', -1: 'negative', 0: 'negligible'}
+    sign_dict = {1: "positive", -1: "negative", 0: "negligible"}
     x = dict()
-    classes = ['C1', 'C2']
-    random.shuffle(['C1', 'C2'])
-    pct = random.randint(500,9500)/100
+    classes = ["C1", "C2"]
+    random.shuffle(["C1", "C2"])
+    pct = random.randint(500, 9500) / 100
     other_pct = round(100 - pct, 2)
-    class_dict  = {classes[0]: format(pct, '.2f'), classes[1]: format(other_pct, '.2f')}
-    x['predicted_class'] = max(class_dict, key=class_dict.get)
-    x['classes_dict'] = str({f'{k}': f'{v}%' for k,v in class_dict.items()})
-    x['feature_nums'] = [f'F{i}' for i in random.sample(range(1, 80), 15)]
-    values = sorted([random.randint(-50,50)/100 for i in range(15)], key=abs, reverse=True)
-    x['sign'] = [sign_dict[np.sign(i)] for i in values]
-    x['values'] =  x['values'] = [format(v, '.2f') for v in values]
+    class_dict = {classes[0]: format(pct, ".2f"), classes[1]: format(other_pct, ".2f")}
+    x["predicted_class"] = max(class_dict, key=class_dict.get)
+    x["classes_dict"] = str({f"{k}": f"{v}%" for k, v in class_dict.items()})
+    x["feature_nums"] = [f"F{i}" for i in random.sample(range(1, 80), 15)]
+    values = sorted(
+        [random.randint(-50, 50) / 100 for i in range(15)], key=abs, reverse=True
+    )
+    x["sign"] = [sign_dict[np.sign(i)] for i in values]
+    x["values"] = x["values"] = [format(v, ".2f") for v in values]
     return x
+
 
 def question_generator(dict, i=None):
     # 'What is the value of FA?'
-    choice = random.randint(0,len(dict['feature_nums'])-1)
-    feat = dict['feature_nums'][choice]
-    q1 = f'What is the value of {feat}?'
-    val = dict['values'][choice]
+    choice = random.randint(0, len(dict["feature_nums"]) - 1)
+    feat = dict["feature_nums"][choice]
+    q1 = f"What is the value of {feat}?"
+    val = dict["values"][choice]
     a1 = val
-    
+
     # What is FA - FB?
-    choice1 = random.randint(0,len(dict['feature_nums'])-1)
-    feat1 = dict['feature_nums'][choice1]
-    val1 = dict['values'][choice1]
-    choice2 = random.randint(0,len(dict['feature_nums'])-1)
-    feat2 = dict['feature_nums'][choice2]
-    val2 = dict['values'][choice2]
-    q2 = f'What is the difference between {feat1} and {feat2}?'
-    a2 = format(float(val1) - float(val2), '.2f')
-    
+    choice1 = random.randint(0, len(dict["feature_nums"]) - 1)
+    feat1 = dict["feature_nums"][choice1]
+    val1 = dict["values"][choice1]
+    choice2 = random.randint(0, len(dict["feature_nums"]) - 1)
+    feat2 = dict["feature_nums"][choice2]
+    val2 = dict["values"][choice2]
+    q2 = f"What is the difference between {feat1} and {feat2}?"
+    a2 = format(float(val1) - float(val2), ".2f")
+
     # What is the xth most important feature?
     p = inflect.engine()
-    choice = random.randint(0,len(dict['feature_nums'])-1)
-    feat = dict['feature_nums'][choice]
-    q3 = f'What is the {p.ordinal(choice+1)} most important feature?'
+    choice = random.randint(0, len(dict["feature_nums"]) - 1)
+    feat = dict["feature_nums"][choice]
+    q3 = f"What is the {p.ordinal(choice+1)} most important feature?"
     a3 = feat
-    
-    # Top x postive features: 
-    x = random.randint(1,5)
-    top_x_pos_fts = [ft for ft, sign in zip(dict['feature_nums'],dict['sign']) if sign == 'positive'][:x]
-    q4 = f'What are the top {x} positive features?'
-    a4 = ', '.join(top_x_pos_fts)
-    
-    # Top x negative features: 
-    x = random.randint(1,5)
-    top_x_neg_fts = [ft for ft, sign in zip(dict['feature_nums'],dict['sign']) if sign == 'negative'][:x]
-    q5 = f'What are the top {x} negative features?'
-    a5 = ', '.join(top_x_neg_fts)
-    
-    q_a_choice = random.randint(0,3)
-    dict['question'] = [q1, q2, q3, q4, q5][q_a_choice]
-    dict['answer'] = [a1, a2, a3, a4, a5][q_a_choice]
-    dict['question_id'] = q_a_choice
-    
+
+    # Top x postive features:
+    x = random.randint(1, 5)
+    top_x_pos_fts = [
+        ft for ft, sign in zip(dict["feature_nums"], dict["sign"]) if sign == "positive"
+    ][:x]
+    q4 = f"What are the top {x} positive features?"
+    a4 = ", ".join(top_x_pos_fts)
+
+    # Top x negative features:
+    x = random.randint(1, 5)
+    top_x_neg_fts = [
+        ft for ft, sign in zip(dict["feature_nums"], dict["sign"]) if sign == "negative"
+    ][:x]
+    q5 = f"What are the top {x} negative features?"
+    a5 = ", ".join(top_x_neg_fts)
+
+    q_a_choice = random.randint(0, 3)
+    dict["question"] = [q1, q2, q3, q4, q5][q_a_choice]
+    dict["answer"] = [a1, a2, a3, a4, a5][q_a_choice]
+    dict["question_id"] = q_a_choice
+
     if i is not None:
-        dict['id'] = i
-    
+        dict["id"] = i
+
     return dict
 
+
 def question_generator_hard(dict, i=None):
-    '''
+    """
     1) Of top x features, which are positive?
     2) Of top x features, which are negative?
     3) Of these features [list], which are support the prediction?
     4) Of these features [list], which are against the prediction?
     5) What is the value of FX?
-    '''
+    """
     # 1) Of top x features, which are positive?
-    x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
-    q1 = f'Of the top {x} features, which are positive?'
-    a1 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'positive'])
-    
+    x = random.randint(2, 5)
+    top_x_fts = dict["feature_nums"][:x]
+    q1 = f"Of the top {x} features, which are positive?"
+    a1 = ", ".join(
+        [ft for ft, sign in zip(top_x_fts, dict["sign"]) if sign == "positive"]
+    )
+
     # 2) Of top x features, which are negative?
-    x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
-    q2 = f'Of the top {x} features, which are negative?'
-    a2 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'negative'])
-    
+    x = random.randint(2, 5)
+    top_x_fts = dict["feature_nums"][:x]
+    q2 = f"Of the top {x} features, which are negative?"
+    a2 = ", ".join(
+        [ft for ft, sign in zip(top_x_fts, dict["sign"]) if sign == "negative"]
+    )
+
     # 3) Of these features [list], which are support the prediction?
-    x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
+    x = random.randint(2, 5)
+    top_x_fts = dict["feature_nums"][:x]
     q3 = f'Of these features [{", ".join(top_x_fts)}], which support the prediction?'
-    a3 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'positive'])
-    
+    a3 = ", ".join(
+        [ft for ft, sign in zip(top_x_fts, dict["sign"]) if sign == "positive"]
+    )
+
     # 4) Of these features [list], which are against the prediction?
-    x = random.randint(2,5)
-    top_x_fts = dict['feature_nums'][:x]
-    q4 = f'Of these features [{", ".join(top_x_fts)}], which are against the prediction?'
-    a4 = ', '.join([ft for ft, sign in zip(top_x_fts, dict['sign']) if sign == 'negative'])
-    
+    x = random.randint(2, 5)
+    top_x_fts = dict["feature_nums"][:x]
+    q4 = (
+        f'Of these features [{", ".join(top_x_fts)}], which are against the prediction?'
+    )
+    a4 = ", ".join(
+        [ft for ft, sign in zip(top_x_fts, dict["sign"]) if sign == "negative"]
+    )
+
     # 5) What is the value of FX?
-    choice = random.randint(0,len(dict['feature_nums'])-1)
-    feat = dict['feature_nums'][choice]
-    q5 = f'What is the value of {feat}?'
-    a5 = dict['values'][choice]
-    
-    
-    q_a_choice = random.randint(0,4)
-    dict['question'] = [q1, q2, q3, q4, q5][q_a_choice]
-    dict['answer'] = [a1, a2, a3, a4, a5][q_a_choice]
-    dict['question_id'] = q_a_choice
-    
+    choice = random.randint(0, len(dict["feature_nums"]) - 1)
+    feat = dict["feature_nums"][choice]
+    q5 = f"What is the value of {feat}?"
+    a5 = dict["values"][choice]
+
+    q_a_choice = random.randint(0, 4)
+    dict["question"] = [q1, q2, q3, q4, q5][q_a_choice]
+    dict["answer"] = [a1, a2, a3, a4, a5][q_a_choice]
+    dict["question_id"] = q_a_choice
+
     if i is not None:
-        dict['id'] = i
-        
+        dict["id"] = i
+
     return dict
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # random.seed(77)
     # qa_data = [question_generator(create_classes_dict(),i) for i in range(30000)]
     # # Split into train, test, val 80:10:10
@@ -125,24 +144,26 @@ if __name__ == '__main__':
     # test = qa_data[int(0.8*len(qa_data)):int(0.9*len(qa_data))]
     # val = qa_data[int(0.9*len(qa_data)):]
 
-    # with open('jb_data/qa_train.json', 'w') as f:
+    # with open('data/processed/qa_train.json', 'w') as f:
     #     json.dump(train, f)
-    # with open('jb_data/qa_test.json', 'w') as f:
+    # with open('data/processed/qa_test.json', 'w') as f:
     #     json.dump(test, f)
-    # with open('jb_data/qa_val.json', 'w') as f:
+    # with open('data/processed/qa_val.json', 'w') as f:
     #     json.dump(val, f)
 
     random.seed(77)
-    qa_data_hard = [question_generator_hard(create_classes_dict(),i) for i in tqdm(range(30000))]
+    qa_data_hard = [
+        question_generator_hard(create_classes_dict(), i) for i in tqdm(range(30000))
+    ]
     # Split into train, test, val 80:10:10
     random.shuffle(qa_data_hard)
-    train = qa_data_hard[:int(0.8*len(qa_data_hard))]
-    test = qa_data_hard[int(0.8*len(qa_data_hard)):int(0.9*len(qa_data_hard))]
-    val = qa_data_hard[int(0.9*len(qa_data_hard)):]
+    train = qa_data_hard[: int(0.8 * len(qa_data_hard))]
+    test = qa_data_hard[int(0.8 * len(qa_data_hard)) : int(0.9 * len(qa_data_hard))]
+    val = qa_data_hard[int(0.9 * len(qa_data_hard)) :]
 
-    with open('jb_data/qa_train_hard.json', 'w') as f:
+    with open("data/processed/qa_train_hard.json", "w") as f:
         json.dump(train, f)
-    with open('jb_data/qa_test_hard.json', 'w') as f:
+    with open("data/processed/qa_test_hard.json", "w") as f:
         json.dump(test, f)
-    with open('jb_data/qa_val_hard.json', 'w') as f:
+    with open("data/processed/qa_val_hard.json", "w") as f:
         json.dump(val, f)
