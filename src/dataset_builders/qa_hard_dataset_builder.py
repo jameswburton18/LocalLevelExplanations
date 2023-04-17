@@ -7,9 +7,9 @@ DESCRIPTION = """\
     """
 
 
-_TRAIN_DOWNLOAD_URL = "jb_data/qa_train_hard.json"
-_DEV_DOWNLOAD_URL = "jb_data/qa_val_hard.json"
-_TEST_DOWNLOAD_URL = "jb_data/qa_test_hard.json"
+_TRAIN_DOWNLOAD_URL = "data/processed/qa_train_hard.json"
+_DEV_DOWNLOAD_URL = "data/processed/qa_val_hard.json"
+_TEST_DOWNLOAD_URL = "data/processed/qa_test_hard.json"
 
 
 class QADatasetBuilder(datasets.GeneratorBasedBuilder):

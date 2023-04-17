@@ -3,8 +3,8 @@ import json
 
 DESCRIPTION = """\
     This dataset is exactly the format of the original dataset, but with the feature 
-    names randomised for 10 repetitions. Therefore the train and val sets are 10x
-    the size of the original dataset. The test set is the same as the original dataset.
+    names randomised for 10 repetitions. Therefore the train set is 10x
+    the size of the original dataset. The val test set is the same as the original dataset.
     
     There are several features that are dictionaries
     that have been stored as strings as the keys for said diciotnaries are not the same 
@@ -14,12 +14,14 @@ DESCRIPTION = """\
         - old2new_ft_nums
         - old2new_classes
         - class2name
+        
+    This is the increased test set size version of the dataset (70-20-10)
     """
 
 
-_TRAIN_DOWNLOAD_URL = "jb_data/train_70-20-10_augmented.json"
-_DEV_DOWNLOAD_URL = "jb_data/val.json"
-_TEST_DOWNLOAD_URL = "jb_data/test_70-20-10.json"
+_TRAIN_DOWNLOAD_URL = "data/processed/train_70-20-10_augmented.json"
+_DEV_DOWNLOAD_URL = "data/processed/val.json"
+_TEST_DOWNLOAD_URL = "data/processed/test_70-20-10.json"
 
 
 class AugTextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):

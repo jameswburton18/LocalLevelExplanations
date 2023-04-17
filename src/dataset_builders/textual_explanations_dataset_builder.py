@@ -24,9 +24,9 @@ DESCRIPTION = """\
     """
 
 
-_TRAIN_DOWNLOAD_URL = "jb_data/train.json"
-_DEV_DOWNLOAD_URL = "jb_data/val.json"
-_TEST_DOWNLOAD_URL = "jb_data/test.json"
+_TRAIN_DOWNLOAD_URL = "data/processed/train.json"
+_DEV_DOWNLOAD_URL = "data/processed/val.json"
+_TEST_DOWNLOAD_URL = "data/processed/test.json"
 
 
 class TextualExplanationDatasetBuilder(datasets.GeneratorBasedBuilder):
