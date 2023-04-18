@@ -14,7 +14,7 @@
 #     sleep 4 # so that wandb runs don't get assigned the same number
 # done
 
-for idx in 22 # {7..10}
+for idx in 27 28 # {7..10}
 do
     for cfg in text_${idx}
     do

@@ -8,7 +8,7 @@
 # done
 
 # OFFICE
-for cfg in text_5 text_6
+for cfg in text_7
 do
     sbatch --job-name=${cfg}_qa scripts/train_qa_office_pc.sh $cfg
     sleep 4 # so that wandb runs don't get assigned the same number
