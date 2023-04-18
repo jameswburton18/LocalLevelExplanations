@@ -12,7 +12,7 @@ pip install -r requirements.txt
 ## Datasets
 
 * Running `src/prepare_datasets.py` will create regular, augmented and QnA json files saving them to `data/processed/`
-* `src/dataset_builders/` contains scripts to create huggingface datasets from the json files 
+* `src/dataset_builders/` contains scripts to create huggingface datasets from the json files
 
 Alternatively, the datasets can be download directly from huggingface:
 
