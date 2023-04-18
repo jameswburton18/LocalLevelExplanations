@@ -11,8 +11,9 @@ def prepare_dataset():
     # This part of the code is the format the data in a nice way, from the raw data
     random.seed(42)
 
-    all_train = json.load(open("raw_data/all_train.json", encoding="utf-8"))
-    test = json.load(open("raw_data/test_set_new.json", encoding="utf-8"))
+    # Combined the original train and test set as they are slightly different, so need to combine and shuffle
+    all_train = json.load(open("data/raw/all_train.json", encoding="utf-8"))
+    test = json.load(open("data/raw/test_set_new.json", encoding="utf-8"))
     ds = all_train + test
     no_task = [x for x in ds if x.get("task_name", None) == None]
     ds = [x for x in ds if x.get("task_name", None) != None]
@@ -22,6 +23,7 @@ def prepare_dataset():
     tasknames = set(
         [(a["task_name"], a["predicted_class"], a["predicted_class_label"]) for a in ds]
     )
+    # Give consistent names to the classes
     task2name_dict = {f"{t}_{c}": name for (t, c, name) in tasknames}
     task2name_dict.update(
         {
@@ -161,7 +163,7 @@ def prepare_dataset():
             except:
                 pass
     # no_task = prepare_all(no_task)
-    json.dump(ds, open("jb_data/all.json", "w", encoding="utf-8"), indent=4)
+    json.dump(ds, open("data/processed/all.json", "w", encoding="utf-8"), indent=4)
 
     # Split into train, test, val 80:10:10
     random.shuffle(ds)
@@ -169,19 +171,23 @@ def prepare_dataset():
     test = ds[int(0.8 * len(ds)) : int(0.9 * len(ds))]
     val = ds[int(0.9 * len(ds)) :]
 
-    json.dump(train, open("jb_data/train.json", "w", encoding="utf-8"), indent=4)
-    json.dump(test, open("jb_data/test.json", "w", encoding="utf-8"), indent=4)
-    json.dump(val, open("jb_data/val.json", "w", encoding="utf-8"), indent=4)
+    json.dump(train, open("data/processed/train.json", "w", encoding="utf-8"), indent=4)
+    json.dump(test, open("data/processed/test.json", "w", encoding="utf-8"), indent=4)
+    json.dump(val, open("data/processed/val.json", "w", encoding="utf-8"), indent=4)
 
     train = ds[: int(0.7 * len(ds))]
     test = ds[int(0.7 * len(ds)) : int(0.9 * len(ds))]
     val = ds[int(0.9 * len(ds)) :]
 
     json.dump(
-        train, open("jb_data/train_70-20-10.json", "w", encoding="utf-8"), indent=4
+        train,
+        open("data/processed/train_70-20-10.json", "w", encoding="utf-8"),
+        indent=4,
     )
-    json.dump(test, open("jb_data/test_70-20-10.json", "w", encoding="utf-8"), indent=4)
-    json.dump(val, open("jb_data/val.json", "w", encoding="utf-8"), indent=4)
+    json.dump(
+        test, open("data/processed/test_70-20-10.json", "w", encoding="utf-8"), indent=4
+    )
+    json.dump(val, open("data/processed/val.json", "w", encoding="utf-8"), indent=4)
 
 
 # This second part of the code is to create the augmented datasets
@@ -192,7 +198,9 @@ def prepare_aug_dataset():
         num_repeats = 10
         new = []
         for j in range(num_repeats):
-            original = json.load(open(f"jb_data/{ds}.json", "r", encoding="utf-8"))
+            original = json.load(
+                open(f"data/processed/{ds}.json", "r", encoding="utf-8")
+            )
             for i in range(len(original)):
                 new.append(original[i].copy())
                 # Shuffle feature names to ensure separation of train and test
@@ -284,7 +292,9 @@ def prepare_aug_dataset():
                 )
 
         json.dump(
-            new, open(f"jb_data/{ds}_augmented.json", "w", encoding="utf-8"), indent=4
+            new,
+            open(f"data/processed/{ds}_augmented.json", "w", encoding="utf-8"),
+            indent=4,
         )
 
 
@@ -449,6 +459,61 @@ def question_generator_hard(dict, i=None):
     return dict
 
 
+def prepare_qa_dataset():
+    random.seed(77)
+    qa_data = [question_generator(create_classes_dict(), i) for i in range(30000)]
+    # Split into train, test, val 80:10:10
+    random.shuffle(qa_data)
+    train = qa_data[: int(0.8 * len(qa_data))]
+    test = qa_data[int(0.8 * len(qa_data)) : int(0.9 * len(qa_data))]
+    val = qa_data[int(0.9 * len(qa_data)) :]
+
+    with open("data/processed/qa_train.json", "w") as f:
+        json.dump(train, f)
+    with open("data/processed/qa_test.json", "w") as f:
+        json.dump(test, f)
+    with open("data/processed/qa_val.json", "w") as f:
+        json.dump(val, f)
+
+
+def prepare_qa_dataset_hard():
+    random.seed(77)
+    qa_data_hard = [
+        question_generator_hard(create_classes_dict(), i) for i in tqdm(range(30000))
+    ]
+    real_data = load_dataset("james-burton/textual-explanations-702010")
+    real_qa = [
+        question_generator_hard(real_data["train"][i], i)
+        for i in tqdm(range(len(real_data["train"])))
+    ]
+    real_qa.extend(
+        [
+            question_generator_hard(real_data["validation"][i], i)
+            for i in tqdm(range(len(real_data["validation"])))
+        ]
+    )
+    real_qa.extend(
+        [
+            question_generator_hard(real_data["test"][i], i)
+            for i in tqdm(range(len(real_data["test"])))
+        ]
+    )
+    # The test set is from the real data and the val and train are from the generated data
+    random.shuffle(qa_data_hard)
+    train = qa_data_hard[: int(0.9 * len(qa_data_hard))]
+    test = real_qa
+    val = qa_data_hard[int(0.9 * len(qa_data_hard)) :]
+
+    with open("data/processed/qa_train_hard.json", "w") as f:
+        json.dump(train, f)
+    with open("data/processed/qa_test_hard.json", "w") as f:
+        json.dump(test, f)
+    with open("data/processed/qa_val_hard.json", "w") as f:
+        json.dump(val, f)
+
+
+# Unused
+"""
 def question_generator_unseen(dict, i=None):
     # 1) What are the top {x} positive features?
     # 2) What are the top {x} negative features?
@@ -496,60 +561,6 @@ def question_generator_unseen(dict, i=None):
 
     return dict
 
-
-def prepare_qa_dataset():
-    random.seed(77)
-    qa_data = [question_generator(create_classes_dict(), i) for i in range(30000)]
-    # Split into train, test, val 80:10:10
-    random.shuffle(qa_data)
-    train = qa_data[: int(0.8 * len(qa_data))]
-    test = qa_data[int(0.8 * len(qa_data)) : int(0.9 * len(qa_data))]
-    val = qa_data[int(0.9 * len(qa_data)) :]
-
-    with open("jb_data/qa_train.json", "w") as f:
-        json.dump(train, f)
-    with open("jb_data/qa_test.json", "w") as f:
-        json.dump(test, f)
-    with open("jb_data/qa_val.json", "w") as f:
-        json.dump(val, f)
-
-
-def prepare_qa_dataset_hard():
-    random.seed(77)
-    qa_data_hard = [
-        question_generator_hard(create_classes_dict(), i) for i in tqdm(range(30000))
-    ]
-    real_data = load_dataset("james-burton/textual-explanations-702010")
-    real_qa = [
-        question_generator_hard(real_data["train"][i], i)
-        for i in tqdm(range(len(real_data["train"])))
-    ]
-    real_qa.extend(
-        [
-            question_generator_hard(real_data["validation"][i], i)
-            for i in tqdm(range(len(real_data["validation"])))
-        ]
-    )
-    real_qa.extend(
-        [
-            question_generator_hard(real_data["test"][i], i)
-            for i in tqdm(range(len(real_data["test"])))
-        ]
-    )
-    # The test set is from the real data and the val and train are from the generated data
-    random.shuffle(qa_data_hard)
-    train = qa_data_hard[: int(0.9 * len(qa_data_hard))]
-    test = real_qa
-    val = qa_data_hard[int(0.9 * len(qa_data_hard)) :]
-
-    with open("jb_data/qa_train_hard.json", "w") as f:
-        json.dump(train, f)
-    with open("jb_data/qa_test_hard.json", "w") as f:
-        json.dump(test, f)
-    with open("jb_data/qa_val_hard.json", "w") as f:
-        json.dump(val, f)
-
-
 def prepare_unseen_qa_testset():
     random.seed(77)
     real_data = load_dataset("james-burton/textual-explanations-702010")
@@ -570,16 +581,15 @@ def prepare_unseen_qa_testset():
         ]
     )
 
-    with open("jb_data/qa_test_unseen.json", "w") as f:
+    with open("data/processed/qa_test_unseen.json", "w") as f:
         json.dump(real_qa, f)
-
+"""
 
 #####################################################################
 
 
 if __name__ == "__main__":
-    # prepare_dataset()
-    # prepare_aug_dataset()
-    # prepare_qa_dataset()
-    # prepare_qa_dataset_hard()
-    prepare_unseen_qa_testset()
+    prepare_dataset()
+    prepare_aug_dataset()
+    prepare_qa_dataset()
+    prepare_qa_dataset_hard()
