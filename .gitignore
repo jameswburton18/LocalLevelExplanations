@@ -20,3 +20,4 @@ ncc-logs/
 model_preds/
 TrainModels/
 my_package.egg-info/
+archive/
