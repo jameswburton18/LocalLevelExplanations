@@ -24,6 +24,8 @@ aug_text_exp_dataset = load_dataset("james-burton/aug-text-exps-v3")
 qa_dataset = load_dataset("james-burton/text-exp-qa-hard")
 ```
 
+Note that the datasets will need to be processed: example in `notebooks/inference_example.ipynb`
+
 ## Models
 
 Training the models is done using `src/train.py` which will save the model to `models/` in subdirectories named after the model type and the model used. Weights and biases is used to log the training process and to generate the folder name.
