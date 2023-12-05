@@ -695,6 +695,35 @@ predict_batch_size: 2
 big_test_set: true
 augmented_ds: true
 
+--- # text 36
+config: text_36
+fast_dev_run: false
+tags:
+  - t5-base
+  - big-test
+batch_size: 8
+max_features: 20
+linearisation: baseline_input # ['essel', 'ord_first', 'ft_first', text]
+model_base: t5-base
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
+--- # text 37
+config: text_37
+fast_dev_run: false
+tags:
+  - bart-base
+  - big-test
+batch_size: 8
+max_features: 20
+linearisation: baseline_input # ['essel', 'ord_first', 'ft_first', text]
+model_base: facebook/bart-base
+output_root: models/bart-base/
+num_beams: 20
+predict_batch_size: 2
+big_test_set: true
+
 --- # ESSEL test
 config: essel_test
 fast_dev_run: true
