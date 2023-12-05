@@ -1213,13 +1213,13 @@ tags:
  - t5-large
  - big-test
  - augmented v3
-batch_size: 4
+batch_size: 2
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-large
 output_root: models/t5-base/
 num_beams: 20
-predict_batch_size: 2
+predict_batch_size: 1
 big_test_set: true
 augmented_ds: true
 
@@ -1229,14 +1229,34 @@ fast_dev_run: false
 tags:
  - t5-large
  - big-test
-batch_size: 4
+batch_size: 2
 max_features: 10
 linearisation: text # ['essel', 'ord_first', 'ft_first', text]
 model_base: t5-large
 output_root: models/t5-base/
 num_beams: 20
+predict_batch_size: 1
+big_test_set: true
+
+--- # text 35
+config: text_35
+fast_dev_run: false
+tags:
+ - bart-large
+ - augmented v3
+ - qa pretrain
+ - big-test
+batch_size: 4
+max_features: 10
+linearisation: text # ['essel', 'ord_first', 'ft_first']
+model_base: models/qa/bart-base/enchanting-wonton-56/checkpoint-67500
+output_root: models/bart-base/
+num_beams: 20
 predict_batch_size: 2
 big_test_set: true
+augmented_ds: true
+
+
 
 --- # ESSEL test
 config: essel_test
