@@ -5,6 +5,7 @@
 # Environments
 .env
 .venv
+testenv/
 env/
 venv/
 ENV/
@@ -19,3 +20,5 @@ ncc-logs/
 model_preds/
 TrainModels/
 my_package.egg-info/
+archive/
+scripts/
