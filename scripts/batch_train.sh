@@ -14,11 +14,12 @@
 #     sleep 4 # so that wandb runs don't get assigned the same number
 # done
 
-for idx in 22 # {7..10}
+for idx in 35 # {33..34}
 do
     for cfg in text_${idx}
     do
-        sbatch --job-name=$cfg scripts/train_office_pc.sh $cfg
+        # sbatch --job-name=$cfg scripts/train_office_pc.sh $cfg
+        sbatch --job-name=$cfg scripts/train.sh $cfg
         sleep 4 # so that wandb runs don't get assigned the same number
     done
 done
